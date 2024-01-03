@@ -7,10 +7,13 @@
     "./code": "./src/code.tsx"
   },
   "scripts": {
-    "build": "yarn test && tsc --outDir dist",
+    "build": "yarn test && tsup src/index.ts --format cjs,esm --dts",
     "lint": "eslint --ext .ts,.tsx .",
     "test": "echo \"Tests not yet implemented.\""
   },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "@turbo/gen": "^1.10.12",
     "@types/eslint": "^8.44.7",
@@ -19,5 +22,10 @@
     "@typescript-eslint/parser": "^6.17.0",
     "eslint": "^8.56.0",
     "typescript": "^5.2.2"
-  }
+  },
+  "files": [
+    "dist",
+    "src",
+    "tsconfig.json"
+  ]
 }
