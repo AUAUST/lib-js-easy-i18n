@@ -1,6 +1,6 @@
 {
   "name": "@auaust/easy-i18n",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "build": "yarn test && tsup src/index.ts --format cjs,esm --dts",
     "lint": "eslint --ext .ts,.tsx .",

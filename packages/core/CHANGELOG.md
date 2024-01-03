@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.0.3
+
+### Patch Changes
+
+- 4e1eeb0: Remove artifact from Turbo's template
+
 ## 0.0.2
 
 ### Patch Changes
