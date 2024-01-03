@@ -7,7 +7,7 @@
     "./code": "./src/code.tsx"
   },
   "scripts": {
-    "build": "yarn test && tsc",
+    "build": "yarn test && tsc --outDir dist",
     "lint": "eslint --ext .ts,.tsx .",
     "test": "echo \"Tests not yet implemented.\""
   },

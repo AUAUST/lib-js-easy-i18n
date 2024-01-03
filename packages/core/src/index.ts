@@ -1,1 +1,1 @@
-export default "test";
+export default "@auaust/easy-i18n";
