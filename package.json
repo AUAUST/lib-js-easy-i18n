@@ -12,7 +12,9 @@
     "dev": "turbo dev",
     "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "publish": "turbo publish"
   },
   "devDependencies": {
     "prettier": "^3.1.0",

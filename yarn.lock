@@ -137,6 +137,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@local/configs@workspace:packages/configs":
+  version: 0.0.0-use.local
+  resolution: "@local/configs@workspace:packages/configs"
+  languageName: unknown
+  linkType: soft
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"

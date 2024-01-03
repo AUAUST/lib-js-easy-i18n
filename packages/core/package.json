@@ -1,7 +1,6 @@
 {
   "name": "@auaust/easy-i18n",
   "version": "0.0.0",
-  "private": true,
   "exports": {
     "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
