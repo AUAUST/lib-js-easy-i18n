@@ -9,8 +9,7 @@
   "scripts": {
     "build": "yarn test && tsc",
     "lint": "tsc --noEmit",
-    "test": "echo \"Tests not yet implemented.\"",
-    "publish": "yarn build && changeset publish"
+    "test": "echo \"Tests not yet implemented.\""
   },
   "devDependencies": {
     "@turbo/gen": "^1.10.12",

@@ -14,9 +14,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "publish": "turbo publish"
+    "publish": "yarn build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "prettier": "^3.1.0",
     "turbo": "latest"
   },

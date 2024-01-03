@@ -1,3 +1,4 @@
 {
-  "name": "@local/configs"
+  "name": "@local/configs",
+  "private": true
 }
