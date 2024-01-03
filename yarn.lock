@@ -1512,6 +1512,11 @@ __metadata:
   resolution: "easy-i18n@workspace:."
   dependencies:
     "@changesets/cli": "npm:^2.27.1"
+    "@types/eslint": "npm:^8.44.7"
+    "@types/node": "npm:^20.5.2"
+    "@typescript-eslint/eslint-plugin": "npm:^6.17.0"
+    "@typescript-eslint/parser": "npm:^6.17.0"
+    eslint: "npm:^8.56.0"
     prettier: "npm:^3.1.0"
     turbo: "npm:latest"
   languageName: unknown
