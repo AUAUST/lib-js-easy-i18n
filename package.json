@@ -1,14 +1,19 @@
 {
-  "name": "@auaust/easy-i18n",
+  "name": "easy-i18n",
   "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
   "author": {
     "email": "aurian@auaust.ch",
     "name": "Aurian Aubert",
     "url": "https://auaust.ch"
   },
+  "scripts": {
+    "preinstall": "npx only-allow yarn",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo lint"
+  },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
     "prettier": "^3.1.0",
     "turbo": "latest"
   },
@@ -16,16 +21,7 @@
     "node": ">=18"
   },
   "packageManager": "yarn@4.0.2",
-  "private": false,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo lint",
-    "preinstall": "npx only-allow yarn"
-  },
   "workspaces": [
-    "apps/*",
     "packages/*"
   ]
 }
