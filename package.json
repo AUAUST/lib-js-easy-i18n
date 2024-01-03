@@ -10,6 +10,7 @@
     "preinstall": "npx only-allow yarn",
     "build": "turbo build",
     "dev": "turbo dev",
+    "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint"
   },
