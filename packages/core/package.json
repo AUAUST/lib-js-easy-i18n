@@ -10,7 +10,6 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "@turbo/gen": "^1.10.12",
     "@types/eslint": "^8.44.7",
     "@types/node": "^20.5.2",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
