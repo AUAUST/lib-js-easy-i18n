@@ -4,21 +4,27 @@
   "scripts": {
     "build": "yarn test && tsup src/index.ts --format cjs,esm --dts",
     "lint": "eslint --ext .ts,.tsx .",
-    "test": "echo \"Tests not yet implemented.\""
+    "test": "yarn jest"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/eslint": "^8.44.7",
     "@types/node": "^20.5.2",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
     "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   },
   "files": [
     "dist",
     "src"
-  ]
+  ],
+  "dependencies": {
+    "@auaust/primitive-kit": "^0.9.4"
+  }
 }
