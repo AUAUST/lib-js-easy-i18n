@@ -1,26 +1,28 @@
 import { O, S } from "@auaust/primitive-kit";
 
 import { t, type TFunction } from "~/t";
+import type {
+  Locale,
+  TranslationsSchema as TTranslations,
+} from "~/types/config";
+import type {
+  GenericNamespacedTranslations,
+  Namespace,
+  NestedTranslationsRecord,
+} from "~/types/translations";
 import {
-  getOptions,
-  type TranslationsOptions,
-  type TranslationsInit,
-} from "~/utils/TranslationsInit";
-import {
-  on,
-  off,
   emit,
+  off,
+  on,
   type CallbacksStore,
   type TranslationsEvent,
   type TranslationsEventCallback,
 } from "~/utils/Events";
-import type {
-  NamespacedTranslations,
-  Namespace,
-  GenericNamespacedTranslations,
-  NestedTranslationsRecord,
-} from "~/types/translations";
-import type { Translations as TTranslations, Locale } from "~/types/config";
+import {
+  getOptions,
+  type TranslationsInit,
+  type TranslationsOptions,
+} from "~/utils/TranslationsInit";
 
 export class Translations {
   /**

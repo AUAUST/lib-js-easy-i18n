@@ -35,8 +35,8 @@ const tooShallowKeysOptions = ["notfound", "object"] as const;
 type TooShallowKeysOptions = (typeof tooShallowKeysOptions)[number];
 
 export {
-  notfoundKeysHandlers,
   notFoundKeysOptions,
+  notfoundKeysHandlers,
   tooDeepKeysOptions,
   tooShallowKeysOptions,
 };

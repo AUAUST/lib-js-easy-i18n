@@ -2,17 +2,17 @@
  * This file provides user-extensible interfaces that allows to make sure the type level matches the configuration.
  */
 
+import type {
+  GenericNamespacedTranslations,
+  Namespace,
+  NestedTranslationsRecord,
+} from "~/types/translations";
 import type { IsInterfaceEmpty } from "~/types/utils";
 import type {
   NotFoundKeysOptions,
   TooDeepKeysOptions,
   TooShallowKeysOptions,
 } from "../utils/InvalidKeys";
-import type {
-  NestedTranslationsRecord,
-  Namespace,
-  GenericNamespacedTranslations,
-} from "~/types/translations";
 
 /**
  * An interface you can extend with the namespaces you want to use.
@@ -99,10 +99,14 @@ interface TranslationsConfigDefaults {
 
 // USER-PROVIDED TRANSLATIONS-RELATED TYPES
 
-/** All the translations based on the user-provided default locale. Record of namespaces to their translations. */
-export type Translations = keyof RegisteredTranslations extends never
+/**
+ * A type that represents the structure of the available translations. It is as specific as the user-provided translations allow.
+ * Based on the `RegisteredTranslations` interface but falls back to a generic nested object of unknown translations if no namespaces are provided.
+ * Each root key is a namespace.
+ */
+export type TranslationsSchema = keyof RegisteredTranslations extends never
   ? // No namespaces provided, use generic translations.
-    NestedTranslationsRecord
+    Record<string, NestedTranslationsRecord>
   : // Handle the different allowed types for a namespace.
     {
       [K in keyof RegisteredTranslations]: RegisteredTranslations[K] extends true
@@ -169,7 +173,7 @@ export type RegisteredNamespaces = keyof RegisteredTranslations;
 /** The namespaces that provide explicit types. False for namespaces that allow any translation. */
 export type WellKnownNamespaces = UsesExtendedTranslations<
   {
-    [K in Namespace]: string extends keyof Translations[K] ? never : K;
+    [K in Namespace]: string extends keyof TranslationsSchema[K] ? never : K;
   }[Namespace],
   string
 >;
@@ -200,5 +204,5 @@ export type TooDeepKeysReturnType =
 export type TooShallowKeysReturnType =
   // If `tooShallowKeys` is set to "object", it'll be an object.
   GetConfig<"tooShallowKeys"> extends "object"
-    ? Translations
+    ? TranslationsSchema
     : NotFoundKeysReturnType;

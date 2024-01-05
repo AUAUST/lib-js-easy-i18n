@@ -1,18 +1,18 @@
-import { Join, Split, DeepEndValues } from "~/types/utils";
 import type {
-  Translations,
+  DefaultNamespace,
   KeysSeparator,
   NamespaceSeparator,
-  WellKnownNamespaces,
-  UsesGenericTypes,
-  DefaultNamespace,
+  TranslationsSchema,
   UsesExtendedTranslations,
+  UsesGenericTypes,
+  WellKnownNamespaces,
 } from "~/types/config";
 import type {
-  NestedTranslationsRecord,
   Namespace,
+  NestedTranslationsRecord,
   Translation,
 } from "~/types/translations";
+import { DeepEndValues, Join, Split } from "~/types/utils";
 
 /** A union of all the possible keys that can be passed to `t`. */
 export type NamespacedKeys = UsesGenericTypes<
@@ -96,8 +96,8 @@ export type KeysForDefaultNamespace<IncludeNamespaces extends boolean = false> =
  */
 type TheStore = {
   [N in Namespace]: N extends WellKnownNamespaces
-    ? ParseTranslations<Translations[N], N>
-    : NestedTranslationsDefinition<Translations[N], N, []>;
+    ? ParseTranslations<TranslationsSchema[N], N>
+    : NestedTranslationsDefinition<TranslationsSchema[N], N, []>;
 };
 
 /** A type that can either be a final translation or a nested object of translations. */

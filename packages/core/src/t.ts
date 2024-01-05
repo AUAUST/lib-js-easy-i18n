@@ -1,20 +1,12 @@
 import { O, S } from "@auaust/primitive-kit";
 import type {
   NamespaceSeparator,
-  UsesExtendedTranslations,
-} from "~/types/config";
-import type {
-  Namespace,
-  NestedTranslationsRecord,
-  Translation,
-} from "~/types/translations";
-import type {
   NotFoundKeysReturnType,
   TooDeepKeysReturnType,
   TooShallowKeysReturnType,
+  UsesExtendedTranslations,
   UsesGenericTypes,
 } from "~/types/config";
-import type { TranslationsOptions } from "~/utils/TranslationsInit";
 import type {
   FunctionTranslationKeys,
   FunctionTranslationKeysToNamespaceMap,
@@ -24,6 +16,12 @@ import type {
   StringTranslationKeysToNamespaceMap,
   TranslationDefinition,
 } from "~/types/store";
+import type {
+  Namespace,
+  NestedTranslationsRecord,
+  Translation,
+} from "~/types/translations";
+import type { TranslationsOptions } from "~/utils/TranslationsInit";
 
 import { notfoundKeysHandlers } from "~/utils/InvalidKeys";
 

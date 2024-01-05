@@ -2,13 +2,14 @@
 
 import { O, S } from "@auaust/primitive-kit";
 
-import type { Locale, Translations } from "~/types/config";
+import type { Locale, TranslationsSchema } from "~/types/config";
 import type {
-  Namespace,
+  GenericNamespacedTranslations,
   LocaleDefinition,
   LocaleDefinitionInit,
+  Namespace,
   NamespacedTranslations,
-  GenericNamespacedTranslations,
+  NestedTranslationsRecord,
 } from "~/types/translations";
 import {
   notFoundKeysOptions,
@@ -153,7 +154,7 @@ export interface TranslationsInit {
     namespaces: Ns,
   ) => Promise<
     | {
-        [K in Ns[number]]?: Translations;
+        [K in Ns[number]]?: NestedTranslationsRecord;
       }
     | undefined
   >;
@@ -167,7 +168,7 @@ export interface TranslationsInit {
   loadNamespace?: (
     locale: Locale,
     namespace: Namespace,
-  ) => Promise<Translations | undefined>;
+  ) => Promise<NestedTranslationsRecord | undefined>;
 }
 
 /**
@@ -227,7 +228,7 @@ export interface TranslationsOptions {
     locale: Locale,
     namespaces: Namespace[],
   ) => Promise<{
-    [K in Namespace]?: Translations;
+    [K in Namespace]?: NestedTranslationsRecord;
   }>;
 }
 
@@ -358,7 +359,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
     loadNamespaces: (() => {
       // If the user provides a function that supports loading multiple namespaces at once, use it.
-      // We only ensure the return value is always an object.
+      // // We only ensure the return value is always an object.
       if (init.loadNamespaces) {
         const loaderFn = init.loadNamespaces;
 

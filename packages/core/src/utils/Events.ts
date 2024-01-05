@@ -1,7 +1,7 @@
-import type { Locale, Translations } from "../types/config";
-import type { Namespace } from "../types/translations";
 import type { Translations as TranslationsClass } from "../Translations";
 import type { TFunction } from "../t";
+import type { Locale, TranslationsSchema } from "../types/config";
+import type { Namespace } from "../types/translations";
 
 import { S } from "@auaust/primitive-kit";
 
@@ -48,7 +48,7 @@ export interface TranslationsEvents {
    */
   translationsLoaded: (
     Translations: TranslationsClass,
-    translations: Translations,
+    translations: TranslationsSchema,
     locale: Locale,
     requestedNamespaces: Namespace[],
   ) => void;

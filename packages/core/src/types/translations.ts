@@ -1,5 +1,5 @@
+import type { Locale, TranslationsSchema } from "~/types/config";
 import type { NestedRecord } from "~/types/utils";
-import type { Translations, Locale } from "~/types/config";
 
 // TRANSLATION OBJECTS-RELATED TYPES
 
@@ -21,8 +21,8 @@ export type GenericNamespacedTranslations = Record<
 >;
 
 /** A translation object for a specific namespace. */
-export type TranslationsForNamespace<N extends keyof Translations> =
-  Translations[N];
+export type TranslationsForNamespace<N extends keyof TranslationsSchema> =
+  TranslationsSchema[N];
 
 /** The global translation object. It's a record of locales to their namespaced translations. */
 export type TranslationsStore = Record<Locale, NamespacedTranslations>;
@@ -35,7 +35,7 @@ export type PartialTranslationsStore = Partial<
 // NAMESPACES-RELATED TYPES
 
 /** A namespace is a string that identifies a group of translations. */
-export type Namespace = keyof Translations;
+export type Namespace = keyof TranslationsSchema;
 
 // SINGLE TRANSLATION-RELATED TYPES
 
