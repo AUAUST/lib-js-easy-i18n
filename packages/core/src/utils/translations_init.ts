@@ -18,7 +18,7 @@ import {
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
-} from "~/utils/InvalidKeys";
+} from "~/utils/invalid_keys";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.

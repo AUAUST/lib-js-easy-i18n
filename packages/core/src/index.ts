@@ -1,6 +1,6 @@
 import { Translations } from "~/Translations";
 import type { Namespace } from "~/types/translations";
-import type { TranslationsInit } from "~/utils/TranslationsInit";
+import type { TranslationsInit } from "~/utils/translations_init";
 import type { TFunction, TFunctionReturnType } from "./t";
 import type {
   AllowedLocales,

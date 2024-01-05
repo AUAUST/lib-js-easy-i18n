@@ -17,12 +17,12 @@ import {
   type CallbacksStore,
   type TranslationsEvent,
   type TranslationsEventCallback,
-} from "~/utils/Events";
+} from "~/utils/events";
 import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "~/utils/TranslationsInit";
+} from "~/utils/translations_init";
 
 export class Translations {
   /**

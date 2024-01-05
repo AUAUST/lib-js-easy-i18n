@@ -1,6 +1,6 @@
 import { describe, test, expect, jest } from "@jest/globals";
 import { GenericNamespacedTranslations } from "~/types/translations";
-import { TranslationsInit } from "~/utils/TranslationsInit";
+import { TranslationsInit } from "~/utils/translations_init";
 import { Translations } from "~/index";
 
 // function translation

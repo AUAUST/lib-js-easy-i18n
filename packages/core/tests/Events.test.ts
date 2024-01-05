@@ -1,6 +1,6 @@
 import { describe, test, expect, jest } from "@jest/globals";
 
-import { on, off, emit } from "~/utils/Events";
+import { on, off, emit } from "~/utils/events";
 
 describe("Events registry", () => {
   test("exports the required functions", () => {
@@ -162,7 +162,7 @@ describe("Events registry", () => {
     off(store, "TEST", callback1);
     off(store, "TEST", callback2);
 
-    emit(store, "TEST", ["arg1", "arg2"]);
+    emit(store, "tesT", ["arg1", "arg2"]);
 
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(callback2).toHaveBeenCalledTimes(1);

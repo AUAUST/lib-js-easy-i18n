@@ -3,7 +3,7 @@ import { O, S } from "@auaust/primitive-kit";
 /**
  * Handlers for keys that are not found.
  */
-const notfoundKeysHandlers = {
+const notFoundKeysHandlers = {
   rawkey: (key) => S(key), // S will convert undefined to empty string
   prettykey: (key) =>
     S.toCustomCase(key, {
@@ -15,10 +15,10 @@ const notfoundKeysHandlers = {
   undefined: () => undefined,
 } as const satisfies Record<string, (key?: string) => string | undefined>;
 
-type InvalidKeysTypes = keyof typeof notfoundKeysHandlers;
+type InvalidKeysTypes = keyof typeof notFoundKeysHandlers;
 
-const notFoundKeysOptions = O.keys(notfoundKeysHandlers);
-type NotFoundKeysOptions = keyof typeof notfoundKeysHandlers;
+const notFoundKeysOptions = O.keys(notFoundKeysHandlers);
+type NotFoundKeysOptions = keyof typeof notFoundKeysHandlers;
 
 /**
  * Allowed values for `tooDeepKeys`.
@@ -36,7 +36,7 @@ type TooShallowKeysOptions = (typeof tooShallowKeysOptions)[number];
 
 export {
   notFoundKeysOptions,
-  notfoundKeysHandlers,
+  notFoundKeysHandlers as notfoundKeysHandlers,
   tooDeepKeysOptions,
   tooShallowKeysOptions,
 };
