@@ -43,7 +43,7 @@ interface LooselyTypedTFunction {
   (key: string): TFunctionReturnType;
   (
     key: string,
-    options: { ns?: string; arg?: Record<string, any> }
+    options: { ns?: string; arg?: Record<string, any> },
   ): TFunctionReturnType;
 }
 
@@ -54,7 +54,7 @@ interface StrictlyTypedTFunction {
   // Namespaced key provided
   <K extends StringTranslationKeys>(
     key: K,
-    options?: { ns?: undefined }
+    options?: { ns?: undefined },
   ): ReturnTypeFromKey<K>;
 
   // Key provided; namespace in options
@@ -63,7 +63,7 @@ interface StrictlyTypedTFunction {
     key: K,
     options: {
       ns: StringTranslationKeysWithNamespace[K];
-    }
+    },
   ): ReturnTypeFromKey<K, StringTranslationKeysWithNamespace[K]>;
 
   // Keys that lead to function translations; namespace in key
@@ -72,7 +72,7 @@ interface StrictlyTypedTFunction {
     options: {
       ns?: undefined;
       arg: ArgFromKey<K>;
-    }
+    },
   ): ReturnTypeFromKey<K>;
 
   // Keys that lead to function translations; namespace in options
@@ -82,7 +82,7 @@ interface StrictlyTypedTFunction {
     options: {
       ns: FunctionTranslationKeysWithNamespace[K];
       arg: ArgFromKey<K, FunctionTranslationKeysWithNamespace[K]>;
-    }
+    },
   ): ReturnTypeFromKey<K, FunctionTranslationKeysWithNamespace[K]>;
 
   // Edge case: key is empty string
@@ -92,14 +92,14 @@ interface StrictlyTypedTFunction {
   // Without this overload, a user writing the options first wouldn't get any hint on the namespaces.
   (
     key: "" | undefined,
-    options: { ns: Namespace; arg?: any }
+    options: { ns: Namespace; arg?: any },
   ): TooShallowKeysReturnType;
 }
 
 /** Extracts the first argument's type for a function translation. */
 type ArgFromKey<
   K extends string,
-  N extends Namespace | undefined = undefined
+  N extends Namespace | undefined = undefined,
 > = DefinitionFromKey<K, N> extends infer D
   ? D extends GenericFinalTranslationDefinition
     ? D["raw"] extends (...args: any) => any
@@ -111,18 +111,18 @@ type ArgFromKey<
 /** Returns a definition type from a key and namespace. */
 type DefinitionFromKey<
   K extends string,
-  N extends Namespace | undefined = undefined
+  N extends Namespace | undefined = undefined,
 > = K extends `${infer N}${NamespaceSeparator}${infer K}`
   ? K extends ""
     ? undefined
     : LookupKey<N, K>
   : N extends Namespace
-  ? LookupKey<N, K>
-  : undefined;
+    ? LookupKey<N, K>
+    : undefined;
 
 type ReturnTypeFromKey<
   K extends string,
-  N extends Namespace | undefined = undefined
+  N extends Namespace | undefined = undefined,
 > = DefinitionFromKey<K, N> extends infer D
   ? D extends TranslationDefinition
     ? HandleKeyDefinition<D>
@@ -134,8 +134,8 @@ type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
 }
   ? D["final"]
   : D extends { isFinal: null }
-  ? NotFoundKeysReturnType
-  : TooShallowKeysReturnType;
+    ? NotFoundKeysReturnType
+    : TooShallowKeysReturnType;
 
 /** A subset of the `TranslationsOptions` that only contains the parts that are used by the `t` function. */
 type TFunctionConfig = Pick<
@@ -172,7 +172,7 @@ const t: TFunction = function (
   options?: {
     ns?: string;
     arg?: any;
-  }
+  },
 ) {
   if (!key) {
     return this.tooShallowKeys === "object"
@@ -190,7 +190,7 @@ const t: TFunction = function (
 
   if (!localeDefinition) {
     console.error(
-      `Translations: Tried to access translations for a locale that is not allowed: "${this.locale}".`
+      `Translations: Tried to access translations for a locale that is not allowed: "${this.locale}".`,
     );
 
     return notFoundKey(this, key) as any;
@@ -211,7 +211,7 @@ const t: TFunction = function (
           "last segment",
           segments[i],
           translations,
-          translations?.[segments[i]]
+          translations?.[segments[i]],
         );
       }
 
@@ -256,7 +256,7 @@ const t: TFunction = function (
 function parseKey(
   config: TFunctionConfig,
   key: string,
-  options?: { ns?: string }
+  options?: { ns?: string },
 ) {
   let ns: string;
   let rawKey: string | undefined = undefined;

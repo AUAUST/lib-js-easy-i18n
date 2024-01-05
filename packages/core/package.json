@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "scripts": {
     "build": "yarn test && tsup src/index.ts --format cjs,esm --dts",
-    "lint": "eslint --ext .ts,.tsx .",
+    "lint": "tsc --noEmit",
     "test": "yarn jest"
   },
   "main": "dist/index.js",
