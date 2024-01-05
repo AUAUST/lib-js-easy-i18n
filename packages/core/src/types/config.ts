@@ -84,8 +84,8 @@ export interface TranslationsConfig {}
 interface TranslationsConfigDefaults {
   genericTypes: [boolean, false];
 
-  defaultLocale: [string, "en"];
-  allowedLocales: [string[], ["en"]];
+  defaultLocale: [string, string];
+  allowedLocales: [string[], string[]];
 
   defaultNamespace: [keyof RegisteredTranslations, "translations"];
 

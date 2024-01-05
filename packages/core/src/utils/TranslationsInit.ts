@@ -28,7 +28,7 @@ export interface TranslationsInit {
    * The settings related to the locales.
    * If you only have a single locale, you can pass it as a string instead.
    */
-  locales:
+  locales?:
     | Locale
     | {
         /**
@@ -233,12 +233,21 @@ export interface TranslationsOptions {
 }
 
 export function getOptions(init: TranslationsInit): TranslationsOptions {
-  const options = {
+  const options: TranslationsOptions = {
     translations: init.translations ?? ({} as any),
 
     // Locale-related
     ...(() => {
       const localesInit = init.locales;
+
+      if (!localesInit) {
+        return {
+          locale: "default",
+          localesDefinitions: {
+            default: localeDefinition("default", false),
+          },
+        };
+      }
 
       if (S.is(localesInit)) {
         const locale = S.toLowerCase(localesInit);
@@ -421,9 +430,9 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
         );
       };
     })(),
-  } satisfies TranslationsOptions;
+  };
 
-  return options as TranslationsOptions;
+  return options;
 }
 
 function localeDefinition(
