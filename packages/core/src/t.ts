@@ -249,7 +249,10 @@ const t: TFunction = function (
 } satisfies TFunction;
 
 function parseKey(
-  config: TFunctionConfig,
+  config: Pick<
+    TFunctionConfig,
+    "defaultNamespace" | "namespaceSeparator" | "keysSeparator"
+  >,
   key: string,
   options?: { ns?: string },
 ) {
@@ -333,5 +336,5 @@ function tooShallowKey(
   return notFoundKey(config, key);
 }
 
-export { t };
+export { t, parseKey };
 export type { TFunction };
