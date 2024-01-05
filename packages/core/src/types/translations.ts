@@ -1,5 +1,5 @@
 import type { NestedRecord } from "~/types/utils";
-import type { Translations, Locale } from "./config";
+import type { Translations, Locale } from "~/types/config";
 
 // TRANSLATION OBJECTS-RELATED TYPES
 

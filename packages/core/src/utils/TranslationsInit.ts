@@ -2,14 +2,14 @@
 
 import { O, S } from "@auaust/primitive-kit";
 
-import type { Locale, Translations } from "../types/config";
+import type { Locale, Translations } from "~/types/config";
 import type {
   Namespace,
   LocaleDefinition,
   LocaleDefinitionInit,
   NamespacedTranslations,
   GenericNamespacedTranslations,
-} from "../types/translations";
+} from "~/types/translations";
 import {
   notFoundKeysOptions,
   tooDeepKeysOptions,
@@ -17,7 +17,7 @@ import {
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
-} from "./InvalidKeys";
+} from "~/utils/InvalidKeys";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.
@@ -233,7 +233,7 @@ export interface TranslationsOptions {
 
 export function getOptions(init: TranslationsInit): TranslationsOptions {
   const options = {
-    translations: init.translations ?? {},
+    translations: init.translations ?? ({} as any),
 
     // Locale-related
     ...(() => {

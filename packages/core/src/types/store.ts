@@ -7,12 +7,12 @@ import type {
   UsesGenericTypes,
   DefaultNamespace,
   UsesExtendedTranslations,
-} from "./config";
+} from "~/types/config";
 import type {
   NestedTranslationsRecord,
   Namespace,
   Translation,
-} from "./translations";
+} from "~/types/translations";
 
 /** A union of all the possible keys that can be passed to `t`. */
 export type NamespacedKeys = UsesGenericTypes<
@@ -241,15 +241,17 @@ type UnknownTranslationDefinition = {
 
 /** Describes a nested object of translations. */
 type NestedTranslationsDefinition<
-  R extends NestedTranslationsRecord,
+  R extends TranslationOrNested,
   N extends Namespace,
   Path extends string[],
-> = {
-  isFinal: false;
-  children: {
-    [K in keyof R & string]: ParseTranslations<R[K], N, [...Path, K]>;
-  };
-};
+> = R extends NestedTranslationsRecord
+  ? {
+      isFinal: false;
+      children: {
+        [K in keyof R & string]: ParseTranslations<R[K], N, [...Path, K]>;
+      };
+    }
+  : never;
 
 type GenericNestedTranslationsDefinition = {
   isFinal: false;
@@ -318,15 +320,12 @@ export type FunctionTranslationKeys = UsesExtendedTranslations<
 >;
 
 /** Map of namespace-free keys and their corresponding namespace. Only for function translations. */
-export type FunctionTranslationKeysToNamespaceMap = UsesExtendedTranslations<
-  {
-    [K in FunctionTranslationDefinitions["key"]]: Extract<
-      FunctionTranslationDefinitions,
-      { key: K }
-    >["namespace"];
-  },
-  Record<string, string>
->;
+export type FunctionTranslationKeysToNamespaceMap = {
+  [K in FunctionTranslationDefinitions["key"]]: Extract<
+    FunctionTranslationDefinitions,
+    { key: K }
+  >["namespace"];
+};
 
 /** Picks the translation definitions where the `raw` property is a string. */
 export type StringTranslationDefinitions = Extract<
@@ -347,12 +346,9 @@ export type StringTranslationKeys = UsesExtendedTranslations<
 >;
 
 /** Map of namespace-free keys and their corresponding namespace. Only for string translations. */
-export type StringTranslationKeysToNamespaceMap = UsesExtendedTranslations<
-  {
-    [K in StringTranslationDefinitions["key"]]: Extract<
-      StringTranslationDefinitions,
-      { key: K }
-    >["namespace"];
-  },
-  Record<string, string>
->;
+export type StringTranslationKeysToNamespaceMap = {
+  [K in StringTranslationDefinitions["key"]]: Extract<
+    StringTranslationDefinitions,
+    { key: K }
+  >["namespace"];
+};

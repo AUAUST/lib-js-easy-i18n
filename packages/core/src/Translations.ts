@@ -1,11 +1,11 @@
 import { O, S } from "@auaust/primitive-kit";
 
-import { t, type TFunction } from "./t";
+import { t, type TFunction } from "~/t";
 import {
   getOptions,
   type TranslationsOptions,
   type TranslationsInit,
-} from "./utils/TranslationsInit";
+} from "~/utils/TranslationsInit";
 import {
   on,
   off,
@@ -13,14 +13,14 @@ import {
   type CallbacksStore,
   type TranslationsEvent,
   type TranslationsEventCallback,
-} from "./utils/Events";
+} from "~/utils/Events";
 import type {
   NamespacedTranslations,
   Namespace,
   GenericNamespacedTranslations,
   NestedTranslationsRecord,
-} from "./types/translations";
-import type { Translations as TTranslations, Locale } from "./types/config";
+} from "~/types/translations";
+import type { Translations as TTranslations, Locale } from "~/types/config";
 
 export class Translations {
   /**
@@ -249,7 +249,7 @@ export class Translations {
         continue;
       }
 
-      merge(currentTranslations[ns], ts);
+      merge(currentTranslations[ns]!, ts!);
     }
   }
 
@@ -304,7 +304,7 @@ export class Translations {
   ): void;
   registerTranslations(
     locale: Locale,
-    translations: Partial<NamespacedTranslations>,
+    translations: Partial<GenericNamespacedTranslations>,
   ): void;
 
   registerTranslations(
@@ -313,6 +313,7 @@ export class Translations {
     translations?: NestedTranslationsRecord,
   ) {
     locale = S.toLowerCase(locale);
+    let namespacedTranslations: GenericNamespacedTranslations;
 
     if (!this.locales.includes(locale)) {
       console.error(
@@ -327,11 +328,11 @@ export class Translations {
           "Translations: No translations provided to registerTranslations",
         );
 
-      translations = {
+      namespacedTranslations = {
         [namespaceOrTranslations]: translations,
       };
     } else {
-      translations = namespaceOrTranslations;
+      namespacedTranslations = namespaceOrTranslations;
     }
 
     this.addTranslations(locale, translations as GenericNamespacedTranslations);

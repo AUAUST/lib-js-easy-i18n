@@ -1,6 +1,6 @@
-import type { WellKnownNamespaces } from "./config";
-import type { PickProperty } from "./store";
-import type { Namespace, NestedTranslationsRecord } from "./translations";
+import type { WellKnownNamespaces } from "~/types/config";
+import type { PickProperty } from "~/types/store";
+import type { Namespace, NestedTranslationsRecord } from "~/types/translations";
 
 /**
  * A generic object of translations you should use to validate your default locale's translations.

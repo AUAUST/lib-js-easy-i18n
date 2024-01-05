@@ -1,21 +1,20 @@
 import { O, S } from "@auaust/primitive-kit";
 import type {
   NamespaceSeparator,
-  Translations,
   UsesExtendedTranslations,
-} from "./types/config";
+} from "~/types/config";
 import type {
   Namespace,
   NestedTranslationsRecord,
   Translation,
-} from "./types/translations";
+} from "~/types/translations";
 import type {
   NotFoundKeysReturnType,
   TooDeepKeysReturnType,
   TooShallowKeysReturnType,
   UsesGenericTypes,
-} from "./types/config";
-import type { TranslationsOptions } from "./utils/TranslationsInit";
+} from "~/types/config";
+import type { TranslationsOptions } from "~/utils/TranslationsInit";
 import type {
   FunctionTranslationKeys,
   FunctionTranslationKeysToNamespaceMap,
@@ -24,9 +23,9 @@ import type {
   StringTranslationKeys,
   StringTranslationKeysToNamespaceMap,
   TranslationDefinition,
-} from "./types/store";
+} from "~/types/store";
 
-import { notfoundKeysHandlers } from "./utils/InvalidKeys";
+import { notfoundKeysHandlers } from "~/utils/InvalidKeys";
 
 // T-FUNCTION RETURN TYPE
 
@@ -52,6 +51,8 @@ interface LooselyTypedTFunction {
   (key: string): TFunctionReturnType;
   (key: string, options: { ns?: string; arg?: any }): TFunctionReturnType;
 }
+
+type t = keyof StringTranslationKeysToNamespaceMap;
 
 interface StrictlyTypedTFunction {
   // No key provided

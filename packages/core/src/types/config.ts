@@ -8,7 +8,11 @@ import type {
   TooDeepKeysOptions,
   TooShallowKeysOptions,
 } from "../utils/InvalidKeys";
-import { NestedTranslationsRecord, Namespace } from "./translations";
+import type {
+  NestedTranslationsRecord,
+  Namespace,
+  GenericNamespacedTranslations,
+} from "~/types/translations";
 
 /**
  * An interface you can extend with the namespaces you want to use.
@@ -98,7 +102,7 @@ interface TranslationsConfigDefaults {
 /** All the translations based on the user-provided default locale. Record of namespaces to their translations. */
 export type Translations = keyof RegisteredTranslations extends never
   ? // No namespaces provided, use generic translations.
-    Record<string, NestedTranslationsRecord>
+    NestedTranslationsRecord
   : // Handle the different allowed types for a namespace.
     {
       [K in keyof RegisteredTranslations]: RegisteredTranslations[K] extends true
