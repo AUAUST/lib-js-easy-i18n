@@ -17,7 +17,7 @@ export type PartialNamespacedTranslations = Partial<NamespacedTranslations>;
 /** A generic object of namespaces and their translations. */
 export type GenericNamespacedTranslations = Record<
   string,
-  NestedTranslationsRecord
+  NestedTranslationsRecord | undefined
 >;
 
 /** A translation object for a specific namespace. */
@@ -40,7 +40,7 @@ export type Namespace = keyof Translations;
 // SINGLE TRANSLATION-RELATED TYPES
 
 /** A value that can be used as a translation. */
-export type Translation = string | number | ((args: any) => string);
+export type Translation = string | ((args: any) => string);
 
 // LOCALES-RELATED TYPES
 

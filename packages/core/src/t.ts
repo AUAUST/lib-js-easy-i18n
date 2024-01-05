@@ -1,5 +1,9 @@
 import { O, S } from "@auaust/primitive-kit";
-import type { NamespaceSeparator, Translations } from "./types/config";
+import type {
+  NamespaceSeparator,
+  Translations,
+  UsesExtendedTranslations,
+} from "./types/config";
 import type {
   Namespace,
   NestedTranslationsRecord,
@@ -11,14 +15,14 @@ import type {
   TooShallowKeysReturnType,
   UsesGenericTypes,
 } from "./types/config";
-import type { TranslationsOptions } from "./utils/Init";
+import type { TranslationsOptions } from "./utils/TranslationsInit";
 import type {
   FunctionTranslationKeys,
-  FunctionTranslationKeysWithNamespace,
+  FunctionTranslationKeysToNamespaceMap,
   GenericFinalTranslationDefinition,
   LookupKey,
   StringTranslationKeys,
-  StringTranslationKeysWithNamespace,
+  StringTranslationKeysToNamespaceMap,
   TranslationDefinition,
 } from "./types/store";
 
@@ -34,17 +38,19 @@ export type TFunctionReturnType =
   | TooShallowKeysReturnType;
 
 type TFunction = UsesGenericTypes<
+  // Use loose types for `t` if the config says so
   LooselyTypedTFunction,
-  StrictlyTypedTFunction
+  UsesExtendedTranslations<
+    // Also loosely type `t` if there's no type extension on which to base strict types
+    StrictlyTypedTFunction,
+    LooselyTypedTFunction
+  >
 >;
 
 interface LooselyTypedTFunction {
   (): TooShallowKeysReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
   (key: string): TFunctionReturnType;
-  (
-    key: string,
-    options: { ns?: string; arg?: Record<string, any> },
-  ): TFunctionReturnType;
+  (key: string, options: { ns?: string; arg?: any }): TFunctionReturnType;
 }
 
 interface StrictlyTypedTFunction {
@@ -59,12 +65,12 @@ interface StrictlyTypedTFunction {
 
   // Key provided; namespace in options
   // The implementation of this overload makes it possible to pass any key, then get hinted the namespace(s) that include it.
-  <K extends keyof StringTranslationKeysWithNamespace>(
+  <K extends keyof StringTranslationKeysToNamespaceMap>(
     key: K,
     options: {
-      ns: StringTranslationKeysWithNamespace[K];
+      ns: StringTranslationKeysToNamespaceMap[K];
     },
-  ): ReturnTypeFromKey<K, StringTranslationKeysWithNamespace[K]>;
+  ): ReturnTypeFromKey<K, StringTranslationKeysToNamespaceMap[K]>;
 
   // Keys that lead to function translations; namespace in key
   <K extends FunctionTranslationKeys>(
@@ -77,13 +83,13 @@ interface StrictlyTypedTFunction {
 
   // Keys that lead to function translations; namespace in options
   // The implementation of this overload makes it possible to pass any key, then get hinted the namespace(s) that include it.
-  <K extends keyof FunctionTranslationKeysWithNamespace>(
+  <K extends keyof FunctionTranslationKeysToNamespaceMap>(
     key: K,
     options: {
-      ns: FunctionTranslationKeysWithNamespace[K];
-      arg: ArgFromKey<K, FunctionTranslationKeysWithNamespace[K]>;
+      ns: FunctionTranslationKeysToNamespaceMap[K];
+      arg: ArgFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
     },
-  ): ReturnTypeFromKey<K, FunctionTranslationKeysWithNamespace[K]>;
+  ): ReturnTypeFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
 
   // Edge case: key is empty string
   // It will match the actual implementation as the key's checked for falsiness,
@@ -206,16 +212,7 @@ const t: TFunction = function (
     if (!translations) continue;
 
     for (let i = 0; i < segments.length; i++) {
-      if (i === segments.length - 1) {
-        console.log(
-          "last segment",
-          segments[i],
-          translations,
-          translations?.[segments[i]],
-        );
-      }
-
-      const segment = segments[i];
+      const segment = segments[i]!;
       const value = translations?.[segment];
 
       if (isTranslation(value)) {
@@ -245,10 +242,8 @@ const t: TFunction = function (
     }
   } while (
     localeDefinition.fallback &&
-    (locale = localeDefinition.fallback[localeIndex++])
+    (locale = localeDefinition.fallback[localeIndex++]!)
   );
-
-  console.log(ns, segments, localeDefinition, locale);
 
   return notFoundKey(this, key) as any;
 } satisfies TFunction;

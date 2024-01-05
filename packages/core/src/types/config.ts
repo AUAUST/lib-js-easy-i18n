@@ -163,9 +163,12 @@ export type DefaultNamespace = UsesGenericTypes<
 export type RegisteredNamespaces = keyof RegisteredTranslations;
 
 /** The namespaces that provide explicit types. False for namespaces that allow any translation. */
-export type WellKnownNamespaces = {
-  [K in Namespace]: string extends keyof Translations[K] ? never : K;
-}[Namespace];
+export type WellKnownNamespaces = UsesExtendedTranslations<
+  {
+    [K in Namespace]: string extends keyof Translations[K] ? never : K;
+  }[Namespace],
+  string
+>;
 
 // SYNTAX-RELATED TYPES
 

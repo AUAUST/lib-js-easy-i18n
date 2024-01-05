@@ -150,7 +150,7 @@ export interface TranslationsInit {
    */
   loadNamespaces?: <Ns extends Namespace[]>(
     locale: Locale,
-    namespaces: Ns
+    namespaces: Ns,
   ) => Promise<
     | {
         [K in Ns[number]]?: Translations;
@@ -166,7 +166,7 @@ export interface TranslationsInit {
    */
   loadNamespace?: (
     locale: Locale,
-    namespace: Namespace
+    namespace: Namespace,
   ) => Promise<Translations | undefined>;
 }
 
@@ -225,7 +225,7 @@ export interface TranslationsOptions {
    */
   loadNamespaces: (
     locale: Locale,
-    namespaces: Namespace[]
+    namespaces: Namespace[],
   ) => Promise<{
     [K in Namespace]?: Translations;
   }>;
@@ -304,7 +304,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       return {
         defaultNamespace,
         requiredNamespaces: (nsInit.initial ?? [nsInit.default]).map((ns) =>
-          S.toLowerCase(ns)
+          S.toLowerCase(ns),
         ),
       };
     })(),
@@ -342,7 +342,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
       const tooShallowKeysInit = S.toLowerCase(invalidKeysInit.tooShallow!);
       const tooShallowKeys = tooShallowKeysOptions.includes(
-        tooShallowKeysInit as any
+        tooShallowKeysInit as any,
       )
         ? tooShallowKeysInit
         : "notfound";
@@ -360,12 +360,12 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       // If the user provides a function that supports loading multiple namespaces at once, use it.
       // We only ensure the return value is always an object.
       if (init.loadNamespaces) {
-        const fn = init.loadNamespaces;
+        const loaderFn = init.loadNamespaces;
 
         return async function (locale: Locale, namespaces: Namespace[]) {
-          const value = await fn(
+          const value = await loaderFn(
             locale,
-            Array.isArray(namespaces) ? namespaces : [namespaces] // Allow to pass a single namespace
+            Array.isArray(namespaces) ? namespaces : [namespaces], // Allow to pass a single namespace
           );
 
           if (!O.isStrict(value)) {
@@ -379,17 +379,18 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       // If the user provides a function that only supports loading a single namespace at once, use it.
       // To make the switch transparent, we wrap it in a function that loads all namespaces at once by using `Promise.all`.
       if (init.loadNamespace) {
-        const fn = init.loadNamespace;
+        const loaderFn = init.loadNamespace;
 
         return async function (locale: Locale, namespaces: Namespace[]) {
           if (S.is(namespaces)) namespaces = [namespaces] as any; // Allow to pass a single namespace
 
           if (namespaces.length === 1) {
-            const value = await fn(locale, namespaces[0]);
+            const ns = namespaces[0]!;
+            const value = await loaderFn(locale, ns);
 
             if (O.isStrict(value)) {
               return {
-                [namespaces[0]]: value,
+                [ns]: value,
               };
             }
 
@@ -400,12 +401,12 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
           await Promise.all(
             namespaces.map(async (ns) => {
-              const value = await fn(locale, ns);
+              const value = await loaderFn(locale, ns);
 
               if (O.isStrict(value)) {
                 translations[ns] = value;
               }
-            })
+            }),
           );
 
           return translations;
@@ -415,7 +416,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       // Only throw if ever executed.
       return () => {
         throw new Error(
-          "Translations: To allow for lazy loading translations, either `loadNamespaces` or `loadNamespace` must be set at initialization."
+          "Translations: To allow for lazy loading translations, either `loadNamespaces` or `loadNamespace` must be set at initialization.",
         );
       };
     })(),
@@ -426,7 +427,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
 function localeDefinition(
   init: LocaleDefinitionInit,
-  locales: Locale[] | false
+  locales: Locale[] | false,
 ): LocaleDefinition {
   if (S.is(init)) {
     const locale = S.toLowerCase(init);
@@ -459,7 +460,7 @@ function localeDefinition(
       if (S.is(init.fallback)) {
         if (init.fallback === init.locale) {
           console.warn(
-            `Translations: A locale cannot fallback to itself: "${init.locale}".`
+            `Translations: A locale cannot fallback to itself: "${init.locale}".`,
           );
 
           return false;

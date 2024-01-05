@@ -5,7 +5,7 @@ import {
   getOptions,
   type TranslationsOptions,
   type TranslationsInit,
-} from "./utils/Init";
+} from "./utils/TranslationsInit";
 import {
   on,
   off,
@@ -60,6 +60,27 @@ export class Translations {
       this.locale,
       await this.loadRequiredNamespaces(this.locale),
     );
+
+    this.updateTFunction();
+
+    callback && this.on("initialized", callback);
+    this.emit("initialized", [this]);
+
+    return this;
+  }
+
+  /**
+   * Initializes an instance of `Translations` with the configuration given in the constructor.
+   * Won't run any asynchronous logic, which means translations must be provided in the options directly to be available.
+   *
+   * If a callback is provided, it will be called right after the instance is initialized.
+   * It is the same as calling `on("initialized", callback)` before calling `initSync`.
+   */
+  initSync(callback?: TranslationsEventCallback<"initialized">) {
+    if (this._isInitialized) return this;
+
+    this._isInitialized = true;
+    this._options = getOptions(this._init);
 
     this.updateTFunction();
 
@@ -300,9 +321,12 @@ export class Translations {
       return; // Not worth throwing an error as it simply doesn't do anything.
     }
 
-    if (S.is(namespaceOrTranslations)) {
-      if (!translations) throw new Error("Translations: Missing translations");
-      namespaceOrTranslations;
+    if (S.isStrict(namespaceOrTranslations)) {
+      if (!translations)
+        throw new TypeError(
+          "Translations: No translations provided to registerTranslations",
+        );
+
       translations = {
         [namespaceOrTranslations]: translations,
       };

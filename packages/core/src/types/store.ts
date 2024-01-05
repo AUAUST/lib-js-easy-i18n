@@ -16,18 +16,22 @@ import type {
 
 /** A union of all the possible keys that can be passed to `t`. */
 export type NamespacedKeys = UsesGenericTypes<
-  string,
-  {
-    [N in Namespace]: N extends WellKnownNamespaces
-      ? KeysForNamespace<N, true>
-      : `${N}${NamespaceSeparator}${string}`;
-  }
->[Namespace];
+  string, // string if generic types are enabled
+  string extends WellKnownNamespaces // No well-known namespaces means we allow any string
+    ? string
+    : {
+        [N in Namespace]: string extends N // If there's no explicit namespace, we should allow any string.
+          ? string
+          : N extends WellKnownNamespaces
+            ? KeysForNamespace<N, true>
+            : `${N}${NamespaceSeparator}${string}`;
+      }[Namespace]
+>;
 
 /** A union of all the keys for the passed namespace. */
 export type KeysForNamespace<
   N extends Namespace,
-  IncludeNamespaces extends boolean = false
+  IncludeNamespaces extends boolean = false,
 > = UsesGenericTypes<
   string,
   N extends WellKnownNamespaces
@@ -35,8 +39,8 @@ export type KeysForNamespace<
       ? DeepEndValues<PickProperty<N, "namespacedKey">, string>
       : DeepEndValues<PickProperty<N, "key">, string>
     : IncludeNamespaces extends true
-    ? `${N}${NamespaceSeparator}${string}`
-    : string
+      ? `${N}${NamespaceSeparator}${string}`
+      : string
 >;
 
 /** A union of all the keys for the default namespace. */
@@ -102,15 +106,15 @@ type TranslationOrNested = Translation | NestedTranslationsRecord;
 /** Tries to find the passed key in the store and returns its definition. */
 export type LookupKey<
   N extends string,
-  K extends string
+  K extends string,
 > = N extends WellKnownNamespaces
   ? TheStore[N] extends {
       isFinal: true;
     }
     ? never
     : TheStore[N]["isFinal"] extends false
-    ? DeepGetStore<Split<K, KeysSeparator>, TheStore[N]>
-    : never
+      ? DeepGetStore<Split<K, KeysSeparator>, TheStore[N]>
+      : never
   : // If the namespace is not well-known, it means it's not typed. We return `isFinal: null` to indicate that.
     UnknownTranslationDefinition;
 
@@ -126,21 +130,23 @@ export type LookupKey<
  *  keyPart4: "namespace:keyPart4"
  * }
  * ```
+ *
+ * If there is no well-known namespace, it'll return unknown.
  */
 export type PickProperty<
   N extends WellKnownNamespaces,
-  P extends keyof GenericFinalTranslationDefinition
-> = GetProperty<TheStore[N], P>;
+  P extends keyof GenericFinalTranslationDefinition,
+> = N extends keyof TheStore ? GetProperty<TheStore[N], P> : unknown;
 
 /** Helper to get property P from either a final translation or a nested structure */
 type GetProperty<
   Node,
-  P extends keyof GenericFinalTranslationDefinition
+  P extends keyof GenericFinalTranslationDefinition,
 > = Node extends GenericFinalTranslationDefinition
   ? Node[P] // Extract property from final translation node
   : Node extends { children: Record<string, any> }
-  ? { [Key in keyof Node["children"]]: GetProperty<Node["children"][Key], P> }
-  : never;
+    ? { [Key in keyof Node["children"]]: GetProperty<Node["children"][Key], P> }
+    : never;
 
 interface StoreDefinition {
   isFinal: true;
@@ -159,16 +165,16 @@ interface NestedStoreDefinitions {
  */
 type DeepGetStore<
   Path extends unknown[],
-  Store extends StoreDefinition | NestedStoreDefinitions
+  Store extends StoreDefinition | NestedStoreDefinitions,
 > = Path extends []
   ? Store
   : Store extends { isFinal: false }
-  ? Path extends [infer Head, ...infer Rest]
-    ? Head extends keyof Store["children"]
-      ? DeepGetStore<Rest, Store["children"][Head]>
+    ? Path extends [infer Head, ...infer Rest]
+      ? Head extends keyof Store["children"]
+        ? DeepGetStore<Rest, Store["children"][Head]>
+        : never
       : never
-    : never
-  : never;
+    : never;
 
 /**
  * Parses a "step" while traversing the store.
@@ -177,23 +183,23 @@ type DeepGetStore<
 type ParseTranslations<
   T extends TranslationOrNested,
   N extends Namespace,
-  Path extends string[] = []
+  Path extends string[] = [],
 > = T extends Translation
   ? FinalTranslationDefinition<T, N, Path>
   : T extends NestedTranslationsRecord
-  ? NestedTranslationsDefinition<T, N, Path>
-  : never;
+    ? NestedTranslationsDefinition<T, N, Path>
+    : never;
 
 export type TranslationDefinition =
   | GenericFinalTranslationDefinition
-  | UnknownTranslationDefinition
-  | GenericNestedTranslationsDefinition;
+  | GenericNestedTranslationsDefinition
+  | UnknownTranslationDefinition;
 
 /** Describes a translation. */
 type FinalTranslationDefinition<
   T extends Translation,
   N extends Namespace,
-  Path extends string[]
+  Path extends string[],
 > = {
   isFinal: true;
 
@@ -222,13 +228,22 @@ export type GenericFinalTranslationDefinition = {
 
 type UnknownTranslationDefinition = {
   isFinal: null;
+
+  raw: Translation;
+  final: string;
+  generic: Translation;
+
+  namespace: string;
+  path: string[];
+  key: string;
+  namespacedKey: `${string}${NamespaceSeparator}${string}`;
 };
 
 /** Describes a nested object of translations. */
 type NestedTranslationsDefinition<
   R extends NestedTranslationsRecord,
   N extends Namespace,
-  Path extends string[]
+  Path extends string[],
 > = {
   isFinal: false;
   children: {
@@ -252,8 +267,8 @@ type GenericNestedTranslationsDefinition = {
 type GenericifyTranslation<T> = T extends (...args: any) => any
   ? ((args: Parameters<T>[0]) => string) | string
   : T extends string | number
-  ? string
-  : never;
+    ? string
+    : never;
 
 /**
  * It'll ensure the passed translation is valid and extract its final type.
@@ -266,22 +281,23 @@ type ExtractTranslation<T> = T extends (...args: any) => infer R
     ? `${R}`
     : never
   : T extends string | number
-  ? `${T}`
-  : never;
+    ? `${T}`
+    : never;
 
-/**
- * The following are used to generate the flattened union of all the translation definitions.
- */
-
-export type AllDefinitions = {
-  [N in WellKnownNamespaces]: FlattenDefinitions<TheStore[N]>;
-}[WellKnownNamespaces];
+/** Used to generate the flattened union of all the translation definitions. */
+export type AllDefinitions = string extends keyof TheStore // if the generic string type matches keyof TheStore, it means there is no known namespace, thus no definition either
+  ? UnknownTranslationDefinition
+  : {
+      [N in WellKnownNamespaces]: FlattenDefinitions<TheStore[N]>;
+    }[WellKnownNamespaces];
 
 type FlattenDefinitions<T> = T extends {
   isFinal: false;
   children: infer Children;
 }
-  ? FlattenDefinitions<Children[keyof Children]>
+  ? string extends keyof Children // if there's no literal key, it means we're likely facing a generic NestedTranslationsRecord, which is recursive
+    ? UnknownTranslationDefinition // in which case we return an unknown definition, as we don't know any explicit one
+    : FlattenDefinitions<Children[keyof Children]>
   : T;
 
 /** Picks the translation definitions where the `raw` property is a function. */
@@ -290,22 +306,27 @@ export type FunctionTranslationDefinitions = Extract<
   { raw: (...args: any) => any }
 >;
 /** The keys that lead to a function definition. */
-export type FunctionTranslationKeys =
+export type FunctionTranslationKeys = UsesExtendedTranslations<
   | FunctionTranslationDefinitions["namespacedKey"]
   | Extract<
       FunctionTranslationDefinitions,
       {
         namespace: DefaultNamespace;
       }
-    >["key"];
+    >["key"],
+  string
+>;
 
 /** Map of namespace-free keys and their corresponding namespace. Only for function translations. */
-export type FunctionTranslationKeysWithNamespace = {
-  [K in FunctionTranslationDefinitions["key"]]: Extract<
-    FunctionTranslationDefinitions,
-    { key: K }
-  >["namespace"];
-};
+export type FunctionTranslationKeysToNamespaceMap = UsesExtendedTranslations<
+  {
+    [K in FunctionTranslationDefinitions["key"]]: Extract<
+      FunctionTranslationDefinitions,
+      { key: K }
+    >["namespace"];
+  },
+  Record<string, string>
+>;
 
 /** Picks the translation definitions where the `raw` property is a string. */
 export type StringTranslationDefinitions = Extract<
@@ -314,19 +335,24 @@ export type StringTranslationDefinitions = Extract<
 >;
 
 /** The keys that lead to a string definition. */
-export type StringTranslationKeys =
+export type StringTranslationKeys = UsesExtendedTranslations<
   | StringTranslationDefinitions["namespacedKey"]
   | Extract<
       StringTranslationDefinitions,
       {
         namespace: DefaultNamespace;
       }
-    >["key"];
+    >["key"],
+  string
+>;
 
 /** Map of namespace-free keys and their corresponding namespace. Only for string translations. */
-export type StringTranslationKeysWithNamespace = {
-  [K in StringTranslationDefinitions["key"]]: Extract<
-    StringTranslationDefinitions,
-    { key: K }
-  >["namespace"];
-};
+export type StringTranslationKeysToNamespaceMap = UsesExtendedTranslations<
+  {
+    [K in StringTranslationDefinitions["key"]]: Extract<
+      StringTranslationDefinitions,
+      { key: K }
+    >["namespace"];
+  },
+  Record<string, string>
+>;
