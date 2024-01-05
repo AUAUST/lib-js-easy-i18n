@@ -4,7 +4,7 @@ import { O, S } from "@auaust/primitive-kit";
  * Handlers for keys that are not found.
  */
 const notfoundKeysHandlers = {
-  rawkey: (key) => key || "",
+  rawkey: (key) => S(key), // S will convert undefined to empty string
   prettykey: (key) =>
     S.toCustomCase(key, {
       firstWordCase: "capital",

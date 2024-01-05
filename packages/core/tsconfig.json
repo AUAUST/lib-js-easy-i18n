@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "~": ["./src/index"],
       "~/*": ["./src/*"]
     }
   }

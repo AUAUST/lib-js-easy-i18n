@@ -67,7 +67,7 @@ export interface TranslationsInit {
          *
          * @default ["translations"]
          */
-        initial: Namespace[];
+        initial?: Namespace[];
       };
 
   /**

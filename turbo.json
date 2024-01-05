@@ -5,8 +5,11 @@
     "build": {
       "dependsOn": ["^build"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
+    "coverage": {
+      "dependsOn": ["^coverage"]
     },
     "test": {
       "dependsOn": ["^test"]

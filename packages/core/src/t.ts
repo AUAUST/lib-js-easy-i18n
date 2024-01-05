@@ -17,6 +17,7 @@ import type {
   TranslationDefinition,
 } from "~/types/store";
 import type {
+  GenericNamespacedTranslations,
   Namespace,
   NestedTranslationsRecord,
   Translation,
@@ -49,8 +50,6 @@ interface LooselyTypedTFunction {
   (key: string): TFunctionReturnType;
   (key: string, options: { ns?: string; arg?: any }): TFunctionReturnType;
 }
-
-type t = keyof StringTranslationKeysToNamespaceMap;
 
 interface StrictlyTypedTFunction {
   // No key provided
@@ -180,15 +179,14 @@ const t: TFunction = function (
   },
 ) {
   if (!key) {
-    return this.tooShallowKeys === "object"
-      ? (this.translations as TFunctionReturnType)
-      : notFoundKey(this);
+    return tooShallowKey(this, this.translations?.[this.locale]!, key);
   }
 
-  const { ns, segments } = parseKey(this, key, options);
+  const { ns, segments, rawKey } = parseKey(this, key, options);
 
+  // The segments might be empty if the key is something like `t("namespace:")`.
   if (!segments || !segments.length) {
-    return notFoundKey(this);
+    return tooShallowKey(this, this.translations?.[this.locale]?.[ns], rawKey);
   }
 
   const localeDefinition = this.localesDefinitions[this.locale];
@@ -198,7 +196,7 @@ const t: TFunction = function (
       `Translations: Tried to access translations for a locale that is not allowed: "${this.locale}".`,
     );
 
-    return notFoundKey(this, key) as any;
+    return notFoundKey(this, rawKey) as any;
   }
 
   let localeIndex = 0;
@@ -212,13 +210,14 @@ const t: TFunction = function (
 
     for (let i = 0; i < segments.length; i++) {
       const segment = segments[i]!;
-      const value = translations?.[segment];
+      const value: NestedTranslationsRecord | Translation | undefined =
+        translations?.[segment];
 
       if (isTranslation(value)) {
         // If the value is a translation already but there are still segments left,
         // if means that the key is too deep.
         if (i < segments.length - 1 && this.tooDeepKeys === "notfound") {
-          return notFoundKey(this, key);
+          return notFoundKey(this, rawKey);
         }
 
         // Otherwise it's the last segment, so we can return the value.
@@ -237,6 +236,8 @@ const t: TFunction = function (
         // We don't do anything, allowing for the next locale in the fallback chain to be used.
       }
 
+      translations = value;
+
       // Otherwise it's an object, so we can continue.
     }
   } while (
@@ -244,7 +245,7 @@ const t: TFunction = function (
     (locale = localeDefinition.fallback[localeIndex++]!)
   );
 
-  return notFoundKey(this, key) as any;
+  return notFoundKey(this, rawKey) as any;
 } satisfies TFunction;
 
 function parseKey(
@@ -255,8 +256,20 @@ function parseKey(
   let ns: string;
   let rawKey: string | undefined = undefined;
 
-  if ((ns = S.beforeFirst(key, config.namespaceSeparator))) {
-    rawKey = S.afterFirst(key, config.namespaceSeparator);
+  const nsSep = config.namespaceSeparator;
+
+  // Extremely edgy case that must be handled;
+  // receiving only the namespace separator.e.g. `t(":")`)
+  if (key === nsSep) {
+    return {
+      ns: config.defaultNamespace,
+      rawKey: "",
+      segments: false as const,
+    };
+  }
+
+  if ((ns = S.beforeFirst(key, nsSep))) {
+    rawKey = S.afterFirst(key, nsSep);
   } else if (options?.ns) {
     ns = options.ns;
     rawKey = key;
@@ -268,7 +281,8 @@ function parseKey(
   }
 
   return {
-    ns,
+    ns, // namespace
+    rawKey, // key without the namespace
     segments: !!rawKey && rawKey.split(config.keysSeparator),
   };
 }
@@ -292,8 +306,31 @@ function isTranslation(value: any): value is Translation {
   }
 }
 
-function notFoundKey(config: TFunctionConfig, key?: string) {
+function notFoundKey(
+  config: TFunctionConfig,
+  key?: string,
+): TFunctionReturnType {
   return notfoundKeysHandlers[config.notFoundKeys](key)!;
+}
+
+function tooShallowKey(
+  config: TFunctionConfig,
+  object: GenericNamespacedTranslations | NestedTranslationsRecord | undefined,
+  key: string | undefined,
+): TFunctionReturnType {
+  if (!object) {
+    return notFoundKey(config, key);
+  }
+
+  if (config.tooShallowKeys === "object") {
+    // It's impossible to satisfy the type system here
+    // because an extension of the config interface will
+    // always change the value of`TFunctionReturnType`.
+    // The
+    return object as any;
+  }
+
+  return notFoundKey(config, key);
 }
 
 export { t };

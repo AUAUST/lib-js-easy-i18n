@@ -3,8 +3,9 @@
   "version": "0.0.3",
   "scripts": {
     "build": "yarn test && tsup src/index.ts --format cjs,esm --dts",
-    "lint": "tsc --noEmit",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "coverage": "yarn jest --coverage",
+    "typecheck": "tsc --noEmit"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -1,5 +1,6 @@
 import { Translations } from "~/Translations";
 import type { Namespace } from "~/types/translations";
+import type { TranslationsInit } from "~/utils/TranslationsInit";
 import type { TFunction, TFunctionReturnType } from "./t";
 import type {
   AllowedLocales,
@@ -21,6 +22,7 @@ export type {
   AllowedLocales,
   DefaultLocale,
   Namespace,
+  TranslationsInit,
   TranslationsSchema,
   KeysSeparator,
   NamespaceSeparator,
