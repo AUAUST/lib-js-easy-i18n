@@ -32,7 +32,7 @@ jobs:
 
       - name: Test
         run: |
-          yarn run lint
+          yarn run test
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
