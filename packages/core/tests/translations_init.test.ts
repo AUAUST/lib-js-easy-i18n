@@ -2,11 +2,7 @@
  * This suite tests the correct converting of a TranslationsInit object to a TranslationsConfig object.
  */
 import { describe, test, expect, jest } from "@jest/globals";
-import {
-  getOptions,
-  type TranslationsInit,
-  type TranslationsOptions,
-} from "~/utils/translations_init";
+import { getOptions } from "~/utils/translations_init";
 
 describe("The `getOptions` helper", () => {
   test("has correct config defaults when no options are provided", () => {

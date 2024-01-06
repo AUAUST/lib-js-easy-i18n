@@ -321,15 +321,9 @@ function tooShallowKey(
   object: GenericNamespacedTranslations | NestedTranslationsRecord | undefined,
   key: string | undefined,
 ): TFunctionReturnType {
-  if (!object) {
-    return notFoundKey(config, key);
-  }
-
-  if (config.tooShallowKeys === "object") {
-    // It's impossible to satisfy the type system here
-    // because an extension of the config interface will
-    // always change the value of`TFunctionReturnType`.
-    // The
+  if (object && config.tooShallowKeys === "object") {
+    // It's impossible to satisfy the type system here because an extension
+    // of the config interface will always change the value of `TFunctionReturnType`.
     return object as any;
   }
 

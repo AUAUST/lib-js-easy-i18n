@@ -29,8 +29,16 @@ export class Translations {
    * Creates an instance of `Translations` with the given configuration and initializes it.
    * Return a promise that resolves when the instance is initialized and returns it.
    */
-  static init(init: TranslationsInit) {
+  static create(init: TranslationsInit) {
     return new Translations(init).init();
+  }
+
+  /**
+   * Creates an instance of `Translations` with the given configuration and initializes it.
+   * Won't run any asynchronous logic, which means translations must be provided in the options directly to be available.
+   */
+  static createSync(init: TranslationsInit) {
+    return new Translations(init).initSync();
   }
 
   /** @internal */
