@@ -2,17 +2,13 @@
  * This file provides user-extensible interfaces that allows to make sure the type level matches the configuration.
  */
 
-import type {
-  GenericNamespacedTranslations,
-  Namespace,
-  NestedTranslationsRecord,
-} from "~/types/translations";
+import type { Namespace, NestedTranslationsRecord } from "~/types/translations";
 import type { IsInterfaceEmpty } from "~/types/utils";
 import type {
   NotFoundKeysOptions,
   TooDeepKeysOptions,
   TooShallowKeysOptions,
-} from "../utils/invalid_keys";
+} from "~/utils/invalid_keys";
 
 /**
  * An interface you can extend with the namespaces you want to use.

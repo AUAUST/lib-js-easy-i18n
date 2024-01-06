@@ -1,6 +1,6 @@
 import { O, S } from "@auaust/primitive-kit";
 
-import { t, type TFunction } from "~/t";
+import { t, type TFunction } from "~/utils/t";
 import type {
   Locale,
   TranslationsSchema as TTranslations,

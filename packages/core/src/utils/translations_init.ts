@@ -1,6 +1,6 @@
 // This file provides types used by the `Translations` class.
 
-import { O, S } from "@auaust/primitive-kit";
+import { A, O, S } from "@auaust/primitive-kit";
 
 import type { Locale, TranslationsSchema } from "~/types/config";
 import type {
@@ -25,26 +25,19 @@ import {
  */
 export interface TranslationsInit {
   /**
+   * If a single locale is used, serves to set its identifier.
+   * If the `locales` option is used, serves to set the initial locale.
+   */
+  locale?: Locale;
+  /**
    * The settings related to the locales.
    * If you only have a single locale, you can pass it as a string instead.
    */
   locales?:
-    | Locale
-    | {
-        /**
-         * The locale that's used on initialization.
-         */
-        default: Locale;
-
-        /**
-         * Describes all the locales that are available.
-         *
-         * The values and their handling are as follows:
-         * - `false`: No locales are available; useful if you use the `t` function as a strings helper but don't actually need different locales.
-         * - An array of locales, where each locale can be a string, or a `LocaleDefinition` for more control.
-         */
-        all?: false | (Locale | LocaleDefinitionInit)[];
-      };
+    | false // No locales; creates a single locale named "default"
+    | Locale // Value is the locale; no additional settings
+    | (LocaleDefinitionInit | Locale)[] // Each entry is a locale; no additional settings
+    | Record<Locale, string | LocaleDefinitionInit>; // Key as locale, value as name OR value as definition
 
   /**
    * The settings related to the namespaces.
@@ -238,9 +231,19 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
     // Locale-related
     ...(() => {
+      const localeInit = init.locale;
       const localesInit = init.locales;
 
       if (!localesInit) {
+        if (localeInit) {
+          return {
+            locale: localeInit,
+            localesDefinitions: {
+              [localeInit]: localeDefinition(localeInit, false),
+            },
+          };
+        }
+
         return {
           locale: "default",
           localesDefinitions: {
@@ -250,7 +253,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       }
 
       if (S.is(localesInit)) {
-        const locale = S.toLowerCase(localesInit);
+        const locale = localesInit.toLowerCase();
 
         return {
           locale,
@@ -261,32 +264,122 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
         };
       }
 
-      const toLocale = (l: LocaleDefinitionInit) => {
-        return S.toLowerCase(S.is(l) ? l : l.locale);
-      };
+      if (A.isArray(localesInit)) {
+        const definitionsInit = localesInit.map((l) => {
+          if (S.is(l)) {
+            return { locale: S.toLowerCase(l) };
+          }
 
-      const locale = S.toLowerCase(localesInit.default);
-      const locales = localesInit.all
-        ? localesInit.all.map((l) => toLocale(l))
-        : [locale];
+          l.locale = S.toLowerCase(l.locale);
+
+          return l;
+        });
+
+        const locale = localeInit
+          ? S.toLowerCase(localeInit)
+          : definitionsInit[0]!.locale!;
+
+        const locales = definitionsInit
+          .map((l) => S.toSnakeCase(l.locale ?? l.name))
+          .filter(Boolean);
+
+        return {
+          locale,
+          localesDefinitions: definitionsInit.reduce(
+            (acc, init) => {
+              const currentLocale = init.locale
+                ? S.toLowerCase(init.locale)
+                : S.toSnakeCase(init.name);
+
+              // If there's no locale nor name, locale will be an empty string. We can't have that as a key.
+              if (!currentLocale) {
+                throw new Error(
+                  `Translations: A locale definition must include either a locale or a name.`,
+                );
+              }
+
+              acc[currentLocale] = localeDefinition(
+                init,
+                locale !== currentLocale && locales, // will return `false` for the default locale (which can't fallback)
+              );
+
+              return acc;
+            },
+            {} as Record<Locale, LocaleDefinition>,
+          ),
+        };
+      }
+
+      const definitionsInit = O.entries(localesInit).map(([locale, init]) => {
+        if (S.is(init)) {
+          return { locale: S.toLowerCase(init) };
+        }
+
+        init.locale = S.toLowerCase(init.locale ?? locale); // Set the locale to the prop if present, otherwise use the key
+
+        return init;
+      });
+
+      const locale = localeInit
+        ? S.toLowerCase(localeInit)
+        : definitionsInit[0]!.locale!;
+
+      const locales = definitionsInit.map((l) => l.locale!);
 
       if (!locales.includes(locale)) {
         locales.unshift(locale);
       }
 
-      const localesDefinitions: Record<Locale, LocaleDefinition> = {} as any;
-      localesInit.all
-        ? localesInit.all.forEach((l) => {
-            localesDefinitions[toLocale(l)] = localeDefinition(l, locales);
-          })
-        : locales.forEach((l) => {
-            localesDefinitions[l] = localeDefinition(l, false);
-          });
-
       return {
         locale,
-        localesDefinitions,
+        localesDefinitions: definitionsInit.reduce(
+          (acc, init) => {
+            const locale = init.locale!;
+
+            acc[locale] = localeDefinition(locale, locales);
+
+            return acc;
+          },
+          {} as Record<Locale, LocaleDefinition>,
+        ),
       };
+
+      // const locales =
+      //   O.entries(localesInit).reduce(
+      //   (acc, [locale, init]) => {
+      //     acc[S.toLowerCase(locale)] = localeDefinition(init, false);
+
+      //     return acc;
+      //   },
+      //   {} as Record<Locale, LocaleDefinition>,
+      // );
+
+      // const toLocale = (l: LocaleDefinitionInit) => {
+      //   return S.toLowerCase(S.is(l) ? l : l.locale);
+      // };
+
+      // const locale = S.toLowerCase(localesInit.default);
+      // const locales = localesInit.all
+      //   ? localesInit.all.map((l) => toLocale(l))
+      //   : [locale];
+
+      // if (!locales.includes(locale)) {
+      //   locales.unshift(locale);
+      // }
+
+      // const localesDefinitions: Record<Locale, LocaleDefinition> = {} as any;
+      // localesInit.all
+      //   ? localesInit.all.forEach((l) => {
+      //       localesDefinitions[toLocale(l)] = localeDefinition(l, locales);
+      //     })
+      //   : locales.forEach((l) => {
+      //       localesDefinitions[l] = localeDefinition(l, false);
+      //     });
+
+      // return {
+      //   locale,
+      //   localesDefinitions,
+      // };
     })(),
 
     // Namespace-related
@@ -310,12 +403,16 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       }
 
       const defaultNamespace = S.toLowerCase(nsInit.default);
+      const requiredNamespaces = (nsInit.initial ?? [nsInit.default]).map(
+        (ns) => S.toLowerCase(ns),
+      );
+
+      requiredNamespaces.includes(defaultNamespace) ||
+        requiredNamespaces.unshift(defaultNamespace);
 
       return {
         defaultNamespace,
-        requiredNamespaces: (nsInit.initial ?? [nsInit.default]).map((ns) =>
-          S.toLowerCase(ns),
-        ),
+        requiredNamespaces,
       };
     })(),
 
@@ -436,7 +533,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 }
 
 function localeDefinition(
-  init: LocaleDefinitionInit,
+  init: LocaleDefinitionInit | Locale,
   locales: Locale[] | false,
 ): LocaleDefinition {
   if (S.is(init)) {

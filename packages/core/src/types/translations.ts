@@ -50,27 +50,25 @@ export interface LocaleDefinition {
   fallback: false | Locale[];
 }
 
-export type LocaleDefinitionInit =
-  | Locale
-  | {
-      /**
-       * The locale's identifier.
-       */
-      locale: Locale;
+export type LocaleDefinitionInit = {
+  /**
+   * The locale's identifier.
+   */
+  locale?: Locale;
 
-      /**
-       * The locale's name.
-       * Would likely be set to the locale's name in its own language.
-       */
-      name?: string;
+  /**
+   * The locale's name.
+   * Would likely be set to the locale's name in its own language.
+   */
+  name?: string;
 
-      /**
-       * The fallback locales used to lookup missing translations.
-       * If `Locale[]`, will lookup the passed locale in order.
-       * If `true`, will loop through all the locales and return the first value that's found.
-       * If `false`, no fallback logic will be applied.
-       *
-       * @default true
-       */
-      fallback?: boolean | Locale | Locale[];
-    };
+  /**
+   * The fallback locales used to lookup missing translations.
+   * If `Locale[]`, will lookup the passed locale in order.
+   * If `true`, will loop through all the locales and return the first value that's found.
+   * If `false`, no fallback logic will be applied.
+   *
+   * @default true
+   */
+  fallback?: boolean | Locale | Locale[];
+};
