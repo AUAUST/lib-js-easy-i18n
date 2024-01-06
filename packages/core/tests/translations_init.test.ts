@@ -140,6 +140,7 @@ describe("The `getOptions` helper", () => {
           fr: {
             name: "Français",
           },
+          es: {},
         },
       });
 
@@ -147,15 +148,20 @@ describe("The `getOptions` helper", () => {
         expect.objectContaining({
           locale: "fr",
           locales: {
-            en: {
-              name: "English",
-              locale: "en",
-              fallback: ["fr"],
-            },
             fr: {
               name: "Français",
               locale: "fr",
               fallback: false,
+            }, // By default, the default locale doesn't fallback
+            en: {
+              name: "English",
+              locale: "en",
+              fallback: ["fr", "es"],
+            },
+            es: {
+              name: "es",
+              locale: "es",
+              fallback: ["fr", "en"],
             },
           },
         }),

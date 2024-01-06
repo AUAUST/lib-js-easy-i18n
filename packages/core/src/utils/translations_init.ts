@@ -252,97 +252,104 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
         };
       }
 
-      if (S.is(localesInit)) {
-        const locale = localesInit.toLowerCase();
+      const { locale, locales, definitionsInit } = (() => {
+        // We only get a string, which means we only have a single locale with no additional settings.
+        if (S.is(localesInit)) {
+          const locale = localesInit.toLowerCase();
 
-        return {
-          locale,
-          locales: {
-            [locale]: localeDefinition(locale, false),
-          },
-        };
-      }
-
-      if (A.isArray(localesInit)) {
-        const definitionsInit = localesInit.map((l) => {
-          if (S.is(l)) {
-            return { locale: S.toLowerCase(l) };
-          }
-
-          l.locale = S.toLowerCase(l.locale);
-
-          return l;
-        });
-
-        const locale = localeInit
-          ? S.toLowerCase(localeInit)
-          : definitionsInit[0]!.locale!;
-
-        const locales = definitionsInit
-          .map((l) => S.toSnakeCase(l.locale ?? l.name))
-          .filter(Boolean);
-
-        return {
-          locale,
-          locales: definitionsInit.reduce(
-            (acc, init) => {
-              const currentLocale = init.locale
-                ? S.toLowerCase(init.locale)
-                : S.toSnakeCase(init.name);
-
-              // If there's no locale nor name, locale will be an empty string. We can't have that as a key.
-              if (!currentLocale) {
-                throw new Error(
-                  `Translations: A locale definition must include either a locale or a name.`,
-                );
-              }
-
-              acc[currentLocale] = localeDefinition(
-                init,
-                locale !== currentLocale && locales, // will return `false` for the default locale (which can't fallback)
-              );
-
-              return acc;
-            },
-            {} as Record<Locale, LocaleDefinition>,
-          ),
-        };
-      }
-
-      const definitionsInit = O.keys(localesInit).map((locale) => {
-        const init = localesInit[locale]!;
-
-        if (S.is(init)) {
           return {
-            locale: S.toLowerCase(locale),
-            name: init,
+            locale,
+            locales: [locale],
+            definitionsInit: [
+              {
+                locale,
+              },
+            ],
           };
         }
 
-        init.locale = S.toLowerCase(init.locale ?? locale); // Set the locale to the prop if present, otherwise use the key
+        let locale: Locale;
+        let locales: Locale[];
+        let definitionsInit: LocaleDefinitionInit[];
 
-        return init;
-      });
+        // If we get an array, each entry might be a string (locale) or an object (partial locale definition).
+        if (A.isArray(localesInit)) {
+          locale = localeInit
+            ? S.toLowerCase(localeInit) // If a locale is provided, use it
+            : S.is(localesInit[0]) // Otherwise, use the first locale in the array
+              ? localesInit[0].toLowerCase() // If it's a string, use it
+              : S.toLowerCase(localesInit[0]!.locale!); // Otherwise, use the locale in the definition object
 
-      const locale = localeInit
-        ? S.toLowerCase(localeInit)
-        : definitionsInit[0]!.locale!;
+          if (!locale) {
+            throw new Error(
+              `Translations: A locale definition must include either a locale or a name.`,
+            );
+          }
 
-      const locales = definitionsInit.map((l) => l.locale!);
+          definitionsInit = localesInit.map((l) =>
+            S.is(l) ? { locale: l } : l,
+          );
 
-      if (!locales.includes(locale)) {
-        locales.unshift(locale);
-      }
+          locales = definitionsInit.map((l) => l.locale!.toLowerCase());
+        } else {
+          const keys = O.keys(localesInit);
+
+          definitionsInit = keys.map((locale) => {
+            const init = localesInit[locale]!;
+
+            if (S.is(init)) {
+              return {
+                locale: S.toLowerCase(locale),
+                name: init,
+              };
+            }
+
+            init.locale = S.toLowerCase(init.locale ?? locale); // Set the locale to the prop if present, otherwise use the key
+
+            return init;
+          });
+
+          locale = localeInit
+            ? S.toLowerCase(localeInit) // If a locale is provided, use it
+            : S.is(keys[0]) // Otherwise, use the first locale in the object
+              ? keys[0].toLowerCase() // If it's a string, use it
+              : S.toLowerCase(localesInit[keys[0]!]); // Otherwise, use the locale in the definition object
+
+          locales = definitionsInit.map((l) => l.locale!.toLowerCase());
+        }
+
+        locales.unshift(locale); // Ensure the default locale is always first
+        locales = [...new Set(locales.filter(S.isStrict))]; // Remove duplicates and empty strings
+
+        return {
+          locale,
+          locales,
+          definitionsInit,
+        };
+      })() satisfies {
+        locale: Locale; // Default locale
+        locales: Locale[]; // Ordered allowlist of locales
+        definitionsInit: LocaleDefinitionInit[]; // Definitions for each locale yet not converted to `LocaleDefinition`
+      };
 
       return {
         locale,
         locales: definitionsInit.reduce(
           (acc, init) => {
-            const currentLocale = init.locale!;
+            const currentLocale = init.locale
+              ? S.toLowerCase(init.locale)
+              : S.toSnakeCase(init.name);
+
+            // If there's no locale nor name, locale will be an empty string. We can't have that as a key.
+            if (!currentLocale) {
+              throw new Error(
+                `Translations: A locale definition must include either a locale or a name.`,
+              );
+            }
 
             acc[currentLocale] = localeDefinition(
               init,
-              currentLocale !== locale && locales,
+              locale !== currentLocale && locales, // will return `false` for the default locale (which can't fallback)
             );
 
             return acc;
