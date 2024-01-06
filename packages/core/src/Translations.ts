@@ -166,7 +166,7 @@ export class Translations {
    * The locales that are allowed on the instance.
    */
   get locales(): Locale[] {
-    return O.keys(this.options.localesDefinitions);
+    return O.keys(this.options.locales);
   }
 
   /**

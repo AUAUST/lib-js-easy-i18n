@@ -15,7 +15,7 @@ describe("The `getOptions` helper", () => {
     expect(options).toEqual(
       expect.objectContaining({
         locale: "default",
-        localesDefinitions: {
+        locales: {
           default: {
             name: "default",
             locale: "default",
@@ -57,7 +57,7 @@ describe("The `getOptions` helper", () => {
     expect(options).toEqual(
       expect.objectContaining({
         locale: "en",
-        localesDefinitions: {
+        locales: {
           en: {
             name: "en",
             locale: "en",
@@ -78,13 +78,13 @@ describe("The `getOptions` helper", () => {
     );
   });
 
-  describe("generates correct `localesDefinitions`", () => {
+  describe("generates correct `locales`", () => {
     test("when `locales` is a string", () => {
       const optionsA = getOptions({
         locales: "en",
       });
 
-      expect(optionsA.localesDefinitions).toEqual({
+      expect(optionsA.locales).toEqual({
         en: {
           name: "en",
           locale: "en",
@@ -98,7 +98,7 @@ describe("The `getOptions` helper", () => {
         locale: "en",
       });
 
-      expect(optionsB.localesDefinitions).toEqual(optionsA.localesDefinitions);
+      expect(optionsB.locales).toEqual(optionsA.locales);
 
       // If present, `locales` takes precedence over `locale`
       const optionsC = getOptions({
@@ -106,7 +106,7 @@ describe("The `getOptions` helper", () => {
         locales: "en",
       });
 
-      expect(optionsC.localesDefinitions).toEqual(optionsA.localesDefinitions);
+      expect(optionsC.locales).toEqual(optionsA.locales);
     });
 
     test("when `locales` is an array", () => {
@@ -122,7 +122,7 @@ describe("The `getOptions` helper", () => {
       });
 
       expect(options.locale).toBe("en"); // because it's the first one
-      expect(options.localesDefinitions).toEqual({
+      expect(options.locales).toEqual({
         en: {
           name: "en",
           locale: "en",
@@ -138,6 +138,7 @@ describe("The `getOptions` helper", () => {
 
     test("when `locales` is an object", () => {
       const options = getOptions({
+        locale: "fr",
         locales: {
           en: "English",
           fr: {
@@ -145,6 +146,24 @@ describe("The `getOptions` helper", () => {
           },
         },
       });
+
+      expect(options).toEqual(
+        expect.objectContaining({
+          locale: "fr",
+          locales: {
+            en: {
+              name: "English",
+              locale: "en",
+              fallback: ["fr"],
+            },
+            fr: {
+              name: "Français",
+              locale: "fr",
+              fallback: false,
+            },
+          },
+        }),
+      );
     });
   });
 });

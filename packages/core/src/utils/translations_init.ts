@@ -176,7 +176,7 @@ export interface TranslationsOptions {
   /**
    * The configuration for each locale.
    */
-  localesDefinitions: Record<Locale, LocaleDefinition>;
+  locales: Record<Locale, LocaleDefinition>;
 
   /**
    * The default namespace.
@@ -238,7 +238,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
         if (localeInit) {
           return {
             locale: localeInit,
-            localesDefinitions: {
+            locales: {
               [localeInit]: localeDefinition(localeInit, false),
             },
           };
@@ -246,7 +246,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
         return {
           locale: "default",
-          localesDefinitions: {
+          locales: {
             default: localeDefinition("default", false),
           },
         };
@@ -257,8 +257,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
         return {
           locale,
-          locales: [locale],
-          localesDefinitions: {
+          locales: {
             [locale]: localeDefinition(locale, false),
           },
         };
@@ -285,7 +284,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
         return {
           locale,
-          localesDefinitions: definitionsInit.reduce(
+          locales: definitionsInit.reduce(
             (acc, init) => {
               const currentLocale = init.locale
                 ? S.toLowerCase(init.locale)
@@ -310,9 +309,14 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
         };
       }
 
-      const definitionsInit = O.entries(localesInit).map(([locale, init]) => {
+      const definitionsInit = O.keys(localesInit).map((locale) => {
+        const init = localesInit[locale]!;
+
         if (S.is(init)) {
-          return { locale: S.toLowerCase(init) };
+          return {
+            locale: S.toLowerCase(locale),
+            name: init,
+          };
         }
 
         init.locale = S.toLowerCase(init.locale ?? locale); // Set the locale to the prop if present, otherwise use the key
@@ -332,54 +336,20 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
 
       return {
         locale,
-        localesDefinitions: definitionsInit.reduce(
+        locales: definitionsInit.reduce(
           (acc, init) => {
-            const locale = init.locale!;
+            const currentLocale = init.locale!;
 
-            acc[locale] = localeDefinition(locale, locales);
+            acc[currentLocale] = localeDefinition(
+              init,
+              currentLocale !== locale && locales,
+            );
 
             return acc;
           },
           {} as Record<Locale, LocaleDefinition>,
         ),
       };
-
-      // const locales =
-      //   O.entries(localesInit).reduce(
-      //   (acc, [locale, init]) => {
-      //     acc[S.toLowerCase(locale)] = localeDefinition(init, false);
-
-      //     return acc;
-      //   },
-      //   {} as Record<Locale, LocaleDefinition>,
-      // );
-
-      // const toLocale = (l: LocaleDefinitionInit) => {
-      //   return S.toLowerCase(S.is(l) ? l : l.locale);
-      // };
-
-      // const locale = S.toLowerCase(localesInit.default);
-      // const locales = localesInit.all
-      //   ? localesInit.all.map((l) => toLocale(l))
-      //   : [locale];
-
-      // if (!locales.includes(locale)) {
-      //   locales.unshift(locale);
-      // }
-
-      // const localesDefinitions: Record<Locale, LocaleDefinition> = {} as any;
-      // localesInit.all
-      //   ? localesInit.all.forEach((l) => {
-      //       localesDefinitions[toLocale(l)] = localeDefinition(l, locales);
-      //     })
-      //   : locales.forEach((l) => {
-      //       localesDefinitions[l] = localeDefinition(l, false);
-      //     });
-
-      // return {
-      //   locale,
-      //   localesDefinitions,
-      // };
     })(),
 
     // Namespace-related

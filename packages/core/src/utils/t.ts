@@ -145,7 +145,7 @@ type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
 type TFunctionConfig = Pick<
   TranslationsOptions,
   | "locale"
-  | "localesDefinitions"
+  | "locales"
   | "translations"
   | "defaultNamespace"
   | "notFoundKeys"
@@ -189,7 +189,7 @@ const t: TFunction = function (
     return tooShallowKey(this, this.translations?.[this.locale]?.[ns], rawKey);
   }
 
-  const localeDefinition = this.localesDefinitions[this.locale];
+  const localeDefinition = this.locales[this.locale];
 
   if (!localeDefinition) {
     console.error(

@@ -21,9 +21,7 @@ const translations = {
 } satisfies GenericNamespacedTranslations;
 
 const init: TranslationsInit = {
-  locales: {
-    default: "en",
-  },
+  locale: "en",
   namespaces: {
     default: "namespace",
   },
