@@ -1,7 +1,7 @@
 /**
  * This suite tests the correct converting of a TranslationsInit object to a TranslationsConfig object.
  */
-import { describe, test, expect, jest } from "@jest/globals";
+import { describe, test, expect } from "@jest/globals";
 import { getOptions } from "~/utils/translations_init";
 
 describe("The `getOptions` helper", () => {

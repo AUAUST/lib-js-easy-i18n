@@ -2,7 +2,7 @@
 
 import { A, O, S } from "@auaust/primitive-kit";
 
-import type { Locale, TranslationsSchema } from "~/types/config";
+import type { Locale } from "~/types/config";
 import type {
   GenericNamespacedTranslations,
   LocaleDefinition,

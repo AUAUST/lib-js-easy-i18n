@@ -1,6 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
 import { Translations } from "~/index";
-import { NestedRecord } from "~/types/utils";
 
 describe("We can initialize a Translations instance", () => {
   test("without any options", () => {
@@ -22,8 +21,6 @@ describe("We can initialize a Translations instance", () => {
         hello: "Hi!",
       },
     });
-
-    console.log(T.translations);
 
     expect(T.t("hello")).toBe("Ciao!");
     expect(T.t("ns1:hello")).toBe("Hello!");
@@ -76,12 +73,9 @@ describe("We can initialize a Translations instance", () => {
             hello: "Hello",
           },
         },
-      } as Record<string, Record<string, NestedRecord<string, string>>>;
+      };
 
-      // Ensure a minimal delay
-      await new Promise((resolve) => setTimeout(resolve, 1));
-
-      return translations[locale]?.[namespace];
+      return (translations as any)[locale]?.[namespace];
     };
 
     test("with the static `create` method", async () => {
