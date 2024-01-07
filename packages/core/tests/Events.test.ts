@@ -1,6 +1,6 @@
 import { describe, test, expect, jest } from "@jest/globals";
-
 import { on, off, emit } from "~/utils/events";
+import { Translations } from "~/index";
 
 describe("Events registry", () => {
   test("exports the required functions", () => {
@@ -166,5 +166,48 @@ describe("Events registry", () => {
 
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(callback2).toHaveBeenCalledTimes(1);
+  });
+
+  test("Translations registers and emits events", async () => {
+    {
+      const callback1 = jest.fn();
+      const callback2 = jest.fn();
+
+      const T = new Translations({
+        locales: ["en", "fr"],
+      });
+      T.on("localeChanged", callback1);
+      T.initSync(callback2);
+
+      expect(callback1).not.toHaveBeenCalled();
+      expect(callback2).toHaveBeenCalledWith(T);
+
+      T.switchLocaleSync("fr");
+
+      expect(callback1).toHaveBeenCalledWith(T, "fr", "en");
+    }
+
+    {
+      const callback1 = jest.fn();
+      const callback2 = jest.fn();
+
+      const T = new Translations({
+        locales: ["en", "fr"],
+        translations: {
+          en: { translations: { hello: "Hello" } },
+          fr: { translations: { hello: "Bonjour" } },
+        },
+      });
+
+      T.on("localeChanged", callback1);
+      await T.init(callback2);
+
+      expect(callback1).not.toHaveBeenCalled();
+      expect(callback2).toHaveBeenCalledWith(T);
+
+      await T.switchLocale("fr");
+
+      expect(callback1).toHaveBeenCalledWith(T, "fr", "en");
+    }
   });
 });

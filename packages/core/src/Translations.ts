@@ -308,8 +308,8 @@ export class Translations {
       this.addTranslations(newLocale, translations);
     }
 
-    // this.emit("localeSwitched", [locale, prevLocale]);
     this.updateTFunction();
+    this.emit("localeChanged", [this, newLocale, oldLocale]);
 
     return true;
   }
@@ -338,6 +338,7 @@ export class Translations {
     this.options.locale = newLocale;
 
     this.updateTFunction();
+    this.emit("localeChanged", [this, newLocale, oldLocale]);
 
     return true;
   }
