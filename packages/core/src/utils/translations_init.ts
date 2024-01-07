@@ -561,9 +561,13 @@ function localeDefinition(
     name: init.name ?? init.locale,
     fallback: (() => {
       if (Array.isArray(init.fallback)) {
-        return init.fallback
-          .map(S.toLowerCase)
-          .filter((l) => l !== init.locale);
+        const fallback = [
+          ...new Set(
+            init.fallback.map(S.toLowerCase).filter((l) => l !== init.locale),
+          ),
+        ];
+
+        return fallback.length ? fallback : false;
       }
 
       if (init.fallback === undefined || init.fallback === true) {

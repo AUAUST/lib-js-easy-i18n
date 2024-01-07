@@ -193,6 +193,19 @@ export class Translations {
   }
 
   /**
+   * Returns the configuration for the given locale.
+   * It's an object with the following properties:
+   * - `locale`: The locale code.
+   * - `name`: The name of the locale. (display purposes)
+   * - `fallback`: The locales to which this locale will fallback to or false if disabled.
+   *
+   * If the locale is invalid, it will return `undefined`.
+   */
+  getLocaleConfig(locale: Locale) {
+    return this.options.locales[locale];
+  }
+
+  /**
    * A function based on the `loadNamespace` or `loadNamespaces` init options.
    * It can be called to request the loading of new namespaces using the provided logic.
    */
