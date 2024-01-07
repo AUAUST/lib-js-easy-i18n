@@ -19,6 +19,7 @@ import {
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
 } from "~/utils/invalid_keys";
+import { lowerCasedKeys } from "./lowercased_keys";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.
@@ -230,30 +231,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
     translations: (() => {
       if (!init.translations) return {};
 
-      // Case-insensitify namespaces and locale keys
-      for (const rawLocale of O.keys(init.translations)) {
-        const locale = S.toLowerCase(rawLocale);
-
-        if (locale !== rawLocale) {
-          init.translations[locale] = init.translations[rawLocale]!;
-          delete init.translations[rawLocale];
-        }
-
-        const localeTs = init.translations[
-          locale
-        ]! as Partial<NamespacedTranslations>;
-
-        for (const rawNs of O.keys(localeTs)) {
-          const ns = S.toLowerCase(rawNs);
-
-          if (ns === rawNs) continue; // No need to convert if it's already lowercase
-
-          localeTs[ns] = localeTs[rawNs];
-          delete localeTs[rawNs];
-        }
-      }
-
-      return init.translations;
+      return lowerCasedKeys(init.translations, 2); // depth 2 to convert both locale and namespace keys
     })(),
 
     // Locale-related

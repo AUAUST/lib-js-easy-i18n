@@ -382,13 +382,13 @@ export class Translations {
         );
 
       namespacedTranslations = {
-        [namespaceOrTranslations]: translations,
+        [S.toLowerCase(namespaceOrTranslations)]: translations,
       };
     } else {
       namespacedTranslations = namespaceOrTranslations;
     }
 
-    this.addTranslations(locale, translations as GenericNamespacedTranslations);
+    this.addTranslations(locale, namespacedTranslations);
 
     this.updateTFunction();
   }
