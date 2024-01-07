@@ -313,7 +313,7 @@ function notFoundKey(
   config: TFunctionConfig,
   key?: string,
 ): TFunctionReturnType {
-  return notfoundKeysHandlers[config.notFoundKeys](key)!;
+  return notFoundKeysHandlers[config.notFoundKeys](key)!;
 }
 
 function tooShallowKey(

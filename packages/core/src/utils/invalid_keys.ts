@@ -36,7 +36,7 @@ type TooShallowKeysOptions = (typeof tooShallowKeysOptions)[number];
 
 export {
   notFoundKeysOptions,
-  notFoundKeysHandlers as notfoundKeysHandlers,
+  notFoundKeysHandlers,
   tooDeepKeysOptions,
   tooShallowKeysOptions,
 };

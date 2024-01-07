@@ -300,6 +300,34 @@ export class Translations {
   }
 
   /**
+   * Switches the locale to the given locale.
+   * Won't run any asynchronous logic, which means translations must be already passed to the instance to be available.
+   *
+   * If the locale was successfully switched, it will return `true`.
+   * If the locale is not allowed, it will ignore the request and return `false`.
+   * If the locale is already active, it will ignore the request and return `null`.
+   */
+  switchLocaleSync(newLocale: Locale) {
+    newLocale = S.toLowerCase(newLocale);
+    const oldLocale = this.locale;
+
+    if (newLocale === oldLocale) return null;
+
+    if (!this.locales.includes(newLocale)) {
+      console.error(
+        `Translations: Tried to switch to an invalid locale "${newLocale}"`,
+      );
+      return false;
+    }
+
+    this.options.locale = newLocale;
+
+    this.updateTFunction();
+
+    return true;
+  }
+
+  /**
    * Provides a way to directly pass translations to the instance.
    * This is useful if you didn't set `loadNamespaces` or `loadNamespace` but still have translations to pass.
    *
