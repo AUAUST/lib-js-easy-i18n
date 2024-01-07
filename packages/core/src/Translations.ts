@@ -1,10 +1,7 @@
 import { O, S } from "@auaust/primitive-kit";
 
 import { t, type TFunction } from "~/utils/t";
-import type {
-  Locale,
-  TranslationsSchema as TTranslations,
-} from "~/types/config";
+import type { Locale, TranslationsSchema } from "~/types/config";
 import type {
   GenericNamespacedTranslations,
   Namespace,
@@ -251,7 +248,10 @@ export class Translations {
         // If the value is an object, we need to merge it recursively only if the original value is also an object.
         if (O.is(value)) {
           if (O.is(original[key])) {
-            merge(original[key] as TTranslations, value as TTranslations);
+            merge(
+              original[key] as TranslationsSchema,
+              value as TranslationsSchema,
+            );
           } else if (!original[key]) {
             original[key] = value;
           }
@@ -353,7 +353,7 @@ export class Translations {
   registerTranslations(
     locale: Locale,
     namespace: Namespace,
-    translations: TTranslations,
+    translations: TranslationsSchema,
   ): void;
   registerTranslations(
     locale: Locale,
