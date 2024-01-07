@@ -24,7 +24,7 @@ import type {
 } from "~/types/translations";
 import type { TranslationsOptions } from "~/utils/translations_init";
 
-import { notfoundKeysHandlers } from "~/utils/invalid_keys";
+import { notFoundKeysHandlers } from "~/utils/invalid_keys";
 
 // T-FUNCTION RETURN TYPE
 
@@ -89,10 +89,10 @@ interface StrictlyTypedTFunction {
     },
   ): ReturnTypeFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
 
-  // Edge case: key is empty string
-  // It will match the actual implementation as the key's checked for falsiness,
-  // but it's before mainly useful to hint the namespaces available.
-  // This way the user can start typing`t("", { ns: })`, get hinted the namespaces, then select one and get back to typing the key.
+  // Edge case: key is an empty string
+  // It will match the actual implementation as the key is checked for falsiness,
+  // but it's mainly useful to hint the available namespaces.
+  // This way the user can start typing`t("", { ns: })`, get hinted the namespaces, then select one and get back to filling the key.
   // Without this overload, a user writing the options first wouldn't get any hint on the namespaces.
   (
     key: "" | undefined,
@@ -284,7 +284,7 @@ function parseKey(
   }
 
   return {
-    ns, // namespace
+    ns: ns.toLowerCase(), // namespace
     rawKey, // key without the namespace
     segments: !!rawKey && rawKey.split(config.keysSeparator),
   };

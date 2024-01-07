@@ -253,7 +253,9 @@ export class Translations {
 
     const currentTranslations = (this.translations[locale] ??= {});
 
-    for (const [ns, ts] of O.entries(translations)) {
+    for (const [rawNs, ts] of O.entries(translations)) {
+      const ns = S.toLowerCase(rawNs);
+
       if (!currentTranslations[ns]) {
         currentTranslations[ns] = ts;
         continue;

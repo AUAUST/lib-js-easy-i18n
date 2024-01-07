@@ -227,7 +227,34 @@ export interface TranslationsOptions {
 
 export function getOptions(init: TranslationsInit): TranslationsOptions {
   const options: TranslationsOptions = {
-    translations: init.translations ?? ({} as any),
+    translations: (() => {
+      if (!init.translations) return {};
+
+      // Case-insensitify namespaces and locale keys
+      for (const rawLocale of O.keys(init.translations)) {
+        const locale = S.toLowerCase(rawLocale);
+
+        if (locale !== rawLocale) {
+          init.translations[locale] = init.translations[rawLocale]!;
+          delete init.translations[rawLocale];
+        }
+
+        const localeTs = init.translations[
+          locale
+        ]! as Partial<NamespacedTranslations>;
+
+        for (const rawNs of O.keys(localeTs)) {
+          const ns = S.toLowerCase(rawNs);
+
+          if (ns === rawNs) continue; // No need to convert if it's already lowercase
+
+          localeTs[ns] = localeTs[rawNs];
+          delete localeTs[rawNs];
+        }
+      }
+
+      return init.translations;
+    })(),
 
     // Locale-related
     ...(() => {
@@ -278,7 +305,9 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
             ? S.toLowerCase(localeInit) // If a locale is provided, use it
             : S.is(localesInit[0]) // Otherwise, use the first locale in the array
               ? localesInit[0].toLowerCase() // If it's a string, use it
-              : S.toLowerCase(localesInit[0]!.locale!); // Otherwise, use the locale in the definition object
+              : S.is(localesInit[0]!.locale) // Otherwise check for the `locale` prop
+                ? S.toLowerCase(localesInit[0]!.locale!)
+                : S.toSnakeCase(localesInit[0]!.name); // If there's no `locale` prop, use the `name` prop
 
           if (!locale) {
             throw new Error(
