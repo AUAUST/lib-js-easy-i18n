@@ -1,5 +1,5 @@
 import { describe, test, expect, jest } from "@jest/globals";
-import { Translations } from "~/index";
+import { Translations } from "~";
 
 describe("Switching locale", () => {
   test("works synchronously", () => {

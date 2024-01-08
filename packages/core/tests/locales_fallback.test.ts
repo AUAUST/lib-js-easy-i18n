@@ -1,5 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
-import { Translations, type TranslationsInit } from "~/index";
+import { Translations, type TranslationsInit } from "~";
 
 const translations: TranslationsInit["translations"] = {
   // Default locale; all keys present

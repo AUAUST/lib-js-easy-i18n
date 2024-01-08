@@ -1,5 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
-import { parseKey } from "~/utils/t";
+import { parseKey } from "~/utils/t.ts";
 
 describe("The `t` function's key parser", () => {
   const config = {

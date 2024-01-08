@@ -1,6 +1,6 @@
 import { describe, test, expect, jest } from "@jest/globals";
-import { on, off, emit } from "~/utils/events";
-import { Translations } from "~/index";
+import { on, off, emit } from "~/utils/events.ts";
+import { Translations } from "~";
 
 describe("Events registry", () => {
   test("exports the required functions", () => {

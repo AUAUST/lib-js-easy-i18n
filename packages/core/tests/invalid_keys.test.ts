@@ -1,7 +1,7 @@
 import { describe, test, expect, jest } from "@jest/globals";
-import { Translations } from "~/index";
-import type { GenericNamespacedTranslations } from "~/types/translations";
-import type { TranslationsInit } from "~/utils/translations_init";
+import { Translations } from "~";
+import type { GenericNamespacedTranslations } from "~/types/translations.ts";
+import type { TranslationsInit } from "~/utils/translations_init.ts";
 
 // function translation
 const fnT = jest.fn(({ name }: { name: string }) => {
