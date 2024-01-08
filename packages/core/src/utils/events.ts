@@ -1,7 +1,7 @@
-import type { Translations as TranslationsClass } from "~/Translations";
-import type { TFunction } from "~/utils/t";
-import type { Locale, TranslationsSchema } from "~/types/config";
-import type { Namespace } from "~/types/translations";
+import type { Translations as TranslationsClass } from "~/Translations.js";
+import type { TFunction } from "~/utils/t.js";
+import type { Locale, TranslationsSchema } from "~/types/config.js";
+import type { Namespace } from "~/types/translations.js";
 
 import { S } from "@auaust/primitive-kit";
 

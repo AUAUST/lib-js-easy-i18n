@@ -1,5 +1,5 @@
-import type { Locale, TranslationsSchema } from "~/types/config";
-import type { NestedRecord } from "~/types/utils";
+import type { Locale, TranslationsSchema } from "~/types/config.js";
+import type { NestedRecord } from "~/types/utils.js";
 
 // TRANSLATION OBJECTS-RELATED TYPES
 

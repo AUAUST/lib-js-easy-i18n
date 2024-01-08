@@ -1,6 +1,9 @@
-import type { WellKnownNamespaces } from "~/types/config";
-import type { PickProperty } from "~/types/store";
-import type { Namespace, NestedTranslationsRecord } from "~/types/translations";
+import type { WellKnownNamespaces } from "~/types/config.js";
+import type { PickProperty } from "~/types/store.js";
+import type {
+  Namespace,
+  NestedTranslationsRecord,
+} from "~/types/translations.js";
 
 /**
  * A generic object of translations you should use to validate your default locale's translations.
