@@ -1,5 +1,15 @@
 # @auaust/easy-i18n
 
+## 0.1.0
+
+### Minor Changes
+
+- c06745a: Initial Release
+
+### Patch Changes
+
+- 5bd319c: Initial Solid Adapter Release
+
 ## 0.0.3
 
 ### Patch Changes
