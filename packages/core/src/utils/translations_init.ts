@@ -2,7 +2,7 @@
 
 import { A, O, S } from "@auaust/primitive-kit";
 
-import type { Locale } from "~/types/config.ts";
+import type { Locale } from "~/types/config";
 import type {
   GenericNamespacedTranslations,
   LocaleDefinition,
@@ -10,7 +10,7 @@ import type {
   Namespace,
   NamespacedTranslations,
   NestedTranslationsRecord,
-} from "~/types/translations.ts";
+} from "~/types/translations.js";
 import {
   notFoundKeysOptions,
   tooDeepKeysOptions,
@@ -18,8 +18,8 @@ import {
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
-} from "~/utils/invalid_keys.ts";
-import { lowerCasedKeys } from "./lowercased_keys.ts";
+} from "~/utils/invalid_keys.js";
+import { lowerCasedKeys } from "./lowercased_keys.js";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.

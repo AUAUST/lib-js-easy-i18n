@@ -1,12 +1,12 @@
-import { Translations } from "~/Translations.ts";
-import type { Namespace } from "~/types/translations.ts";
-import type { TranslationsInit } from "~/utils/translations_init.ts";
+import { Translations } from "~/Translations";
+import type { Namespace } from "~/types/translations";
+import type { TranslationsInit } from "~/utils/translations_init";
 import type {
   TFunction,
   TFunctionReturnType,
   LooselyTypedTFunction,
   StrictlyTypedTFunction,
-} from "~/utils/t.ts";
+} from "~/utils/t";
 import type {
   AllowedLocales,
   DefaultLocale,
@@ -14,7 +14,7 @@ import type {
   Locale,
   NamespaceSeparator,
   TranslationsSchema,
-} from "~/types/config.ts";
+} from "~/types/config";
 
 /**
  * Note we don't want to export the raw `t` function here since it must be initialized with a `Translations` instance to work.

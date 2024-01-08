@@ -5,8 +5,7 @@
     "baseUrl": "./",
     "paths": {
       "~": ["./src/index.ts"],
-      "~/*": ["./src/*"],
-      "@auaust/easy-i18n": ["./src/index.ts"]
+      "~/*": ["./src/*"]
     }
   }
 }

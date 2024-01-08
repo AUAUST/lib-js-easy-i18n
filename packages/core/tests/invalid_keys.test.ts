@@ -1,10 +1,10 @@
-import { describe, test, expect, jest } from "@jest/globals";
-import { Translations } from "~/index.ts";
-import type { GenericNamespacedTranslations } from "~/types/translations.ts";
-import type { TranslationsInit } from "~/utils/translations_init.ts";
+import { describe, test, expect, vi } from "vitest";
+import { Translations } from "~/index";
+import type { GenericNamespacedTranslations } from "~/types/translations";
+import type { TranslationsInit } from "~/utils/translations_init";
 
 // function translation
-const fnT = jest.fn(({ name }: { name: string }) => {
+const fnT = vi.fn(({ name }: { name: string }) => {
   return `Hello ${name}`;
 });
 

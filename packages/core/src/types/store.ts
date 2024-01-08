@@ -6,13 +6,13 @@ import type {
   UsesExtendedTranslations,
   UsesGenericTypes,
   WellKnownNamespaces,
-} from "~/types/config.ts";
+} from "~/types/config";
 import type {
   Namespace,
   NestedTranslationsRecord,
   Translation,
-} from "~/types/translations.ts";
-import { DeepEndValues, Join, Split } from "~/types/utils.ts";
+} from "~/types/translations";
+import { DeepEndValues, Join, Split } from "~/types/utils";
 
 /** A union of all the possible keys that can be passed to `t`. */
 export type NamespacedKeys = UsesGenericTypes<

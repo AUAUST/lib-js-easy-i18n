@@ -1,5 +1,5 @@
-import { describe, test, expect } from "@jest/globals";
-import { lowerCasedKeys } from "~/utils/lowercased_keys.ts";
+import { describe, test, expect } from "vitest";
+import { lowerCasedKeys } from "~/utils/lowercased_keys";
 
 describe("The `lowerCasedKeys` function", () => {
   test("lowercases keys at the first level by default", () => {

@@ -1,5 +1,5 @@
-import type { Locale, TranslationsSchema } from "~/types/config.ts";
-import type { NestedRecord } from "~/types/utils.ts";
+import type { Locale, TranslationsSchema } from "~/types/config";
+import type { NestedRecord } from "~/types/utils";
 
 // TRANSLATION OBJECTS-RELATED TYPES
 

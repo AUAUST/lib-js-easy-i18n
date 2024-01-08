@@ -1,6 +1,6 @@
-import { describe, test, expect, jest } from "@jest/globals";
-import { on, off, emit } from "~/utils/events.ts";
-import { Translations } from "~/index.ts";
+import { describe, test, expect, vi } from "vitest";
+import { on, off, emit } from "~/utils/events";
+import { Translations } from "~/index";
 
 describe("Events registry", () => {
   test("exports the required functions", () => {
@@ -121,8 +121,8 @@ describe("Events registry", () => {
 
   test("emit() calls all callbacks for the given event", () => {
     const store = {};
-    const callback1 = jest.fn();
-    const callback2 = jest.fn();
+    const callback1 = vi.fn();
+    const callback2 = vi.fn();
 
     on(store, "test", callback1);
 
@@ -140,8 +140,8 @@ describe("Events registry", () => {
 
   test("on(), off() and emit() are case insensitive", () => {
     const store = {};
-    const callback1 = jest.fn();
-    const callback2 = jest.fn();
+    const callback1 = vi.fn();
+    const callback2 = vi.fn();
 
     on(store, "test", callback1);
 
@@ -170,8 +170,8 @@ describe("Events registry", () => {
 
   test("Translations registers and emits events", async () => {
     {
-      const callback1 = jest.fn();
-      const callback2 = jest.fn();
+      const callback1 = vi.fn();
+      const callback2 = vi.fn();
 
       const T = new Translations({
         locales: ["en", "fr"],
@@ -188,8 +188,8 @@ describe("Events registry", () => {
     }
 
     {
-      const callback1 = jest.fn();
-      const callback2 = jest.fn();
+      const callback1 = vi.fn();
+      const callback2 = vi.fn();
 
       const T = new Translations({
         locales: ["en", "fr"],

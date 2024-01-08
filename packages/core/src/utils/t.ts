@@ -6,7 +6,7 @@ import type {
   TooShallowKeysReturnType,
   UsesExtendedTranslations,
   UsesGenericTypes,
-} from "~/types/config.ts";
+} from "~/types/config";
 import type {
   FunctionTranslationKeys,
   FunctionTranslationKeysToNamespaceMap,
@@ -15,16 +15,16 @@ import type {
   StringTranslationKeys,
   StringTranslationKeysToNamespaceMap,
   TranslationDefinition,
-} from "~/types/store.ts";
+} from "~/types/store";
 import type {
   GenericNamespacedTranslations,
   Namespace,
   NestedTranslationsRecord,
   Translation,
-} from "~/types/translations.ts";
-import type { TranslationsOptions } from "~/utils/translations_init.ts";
+} from "~/types/translations";
+import type { TranslationsOptions } from "~/utils/translations_init";
 
-import { notFoundKeysHandlers } from "~/utils/invalid_keys.ts";
+import { notFoundKeysHandlers } from "~/utils/invalid_keys";
 
 // T-FUNCTION RETURN TYPE
 

@@ -1,5 +1,5 @@
-import { describe, test, expect, jest } from "@jest/globals";
-import { Translations } from "~/index.ts";
+import { describe, test, expect, vi } from "vitest";
+import { Translations } from "~/index";
 
 describe("Switching locale", () => {
   test("works synchronously", () => {
@@ -30,7 +30,7 @@ describe("Switching locale", () => {
   });
 
   test("works asynchronously", async () => {
-    const loadNamespace = jest.fn(async (locale: string, namespace: string) => {
+    const loadNamespace = vi.fn(async (locale: string, namespace: string) => {
       const translations = {
         en: {
           ns: {

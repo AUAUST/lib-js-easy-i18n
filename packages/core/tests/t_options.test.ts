@@ -1,13 +1,13 @@
-import { describe, test, expect, jest } from "@jest/globals";
-import { Translations, type TranslationsInit } from "~/index.ts";
+import { describe, test, expect, vi } from "vitest";
+import { Translations, type TranslationsInit } from "~/index";
 
 const namespaceA = {
   string: "Hello",
 
-  functionNoArgs: jest.fn(() => {
+  functionNoArgs: vi.fn(() => {
     return "FnA";
   }),
-  functionArgs: jest.fn(({ name, age }: { name: string; age: number }) => {
+  functionArgs: vi.fn(({ name, age }: { name: string; age: number }) => {
     return `${name} is ${age}`;
   }),
 
@@ -19,10 +19,10 @@ const namespaceA = {
 const namespaceB = {
   string: "Hi",
 
-  functionNoArgs: jest.fn(() => {
+  functionNoArgs: vi.fn(() => {
     return "FnB";
   }),
-  functionArgs: jest.fn(
+  functionArgs: vi.fn(
     ({ city, country }: { city: string; country: string }) => {
       return `${city} is in ${country}`;
     },

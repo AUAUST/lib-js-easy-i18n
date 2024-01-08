@@ -1,12 +1,12 @@
 import { O, S } from "@auaust/primitive-kit";
 
-import { t, type TFunction } from "~/utils/t.ts";
-import type { Locale, TranslationsSchema } from "~/types/config.ts";
+import { t, type TFunction } from "~/utils/t";
+import type { Locale, TranslationsSchema } from "~/types/config";
 import type {
   GenericNamespacedTranslations,
   Namespace,
   NestedTranslationsRecord,
-} from "~/types/translations.ts";
+} from "~/types/translations";
 import {
   emit,
   off,
@@ -14,12 +14,12 @@ import {
   type CallbacksStore,
   type TranslationsEvent,
   type TranslationsEventCallback,
-} from "~/utils/events.ts";
+} from "~/utils/events";
 import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "~/utils/translations_init.ts";
+} from "~/utils/translations_init";
 
 export class Translations {
   /**

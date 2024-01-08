@@ -1,9 +1,6 @@
-import type { WellKnownNamespaces } from "~/types/config.ts";
-import type { PickProperty } from "~/types/store.ts";
-import type {
-  Namespace,
-  NestedTranslationsRecord,
-} from "~/types/translations.ts";
+import type { WellKnownNamespaces } from "~/types/config";
+import type { PickProperty } from "~/types/store";
+import type { Namespace, NestedTranslationsRecord } from "~/types/translations";
 
 /**
  * A generic object of translations you should use to validate your default locale's translations.

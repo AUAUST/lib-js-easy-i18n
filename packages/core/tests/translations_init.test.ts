@@ -1,8 +1,8 @@
 /**
  * This suite tests the correct converting of a TranslationsInit object to a TranslationsConfig object.
  */
-import { describe, test, expect } from "@jest/globals";
-import { getOptions } from "~/utils/translations_init.ts";
+import { describe, test, expect } from "vitest";
+import { getOptions } from "~/utils/translations_init.js";
 
 describe("The `getOptions` helper", () => {
   test("has correct config defaults when no options are provided", () => {

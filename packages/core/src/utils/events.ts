@@ -1,7 +1,7 @@
-import type { Translations as TranslationsClass } from "~/Translations.ts";
-import type { TFunction } from "~/utils/t.ts";
-import type { Locale, TranslationsSchema } from "~/types/config.ts";
-import type { Namespace } from "~/types/translations.ts";
+import type { Translations as TranslationsClass } from "~/Translations";
+import type { TFunction } from "~/utils/t";
+import type { Locale, TranslationsSchema } from "~/types/config";
+import type { Namespace } from "~/types/translations";
 
 import { S } from "@auaust/primitive-kit";
 
