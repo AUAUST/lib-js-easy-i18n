@@ -1,5 +1,5 @@
 import { describe, test, expect, jest } from "@jest/globals";
-import { Translations } from "~";
+import { Translations } from "~/index.ts";
 import type { GenericNamespacedTranslations } from "~/types/translations.ts";
 import type { TranslationsInit } from "~/utils/translations_init.ts";
 

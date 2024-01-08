@@ -1,5 +1,5 @@
 import { describe, test, expect, jest } from "@jest/globals";
-import { Translations, type TranslationsInit } from "~";
+import { Translations, type TranslationsInit } from "~/index.ts";
 
 const namespaceA = {
   string: "Hello",

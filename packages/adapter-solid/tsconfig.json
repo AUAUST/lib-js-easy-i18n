@@ -2,11 +2,13 @@
   "extends": "../../configs/tsconfig.json",
 
   "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "baseUrl": "./",
     "paths": {
       "~": ["./src/index.ts"],
-      "~/*": ["./src/*"],
-      "@auaust/easy-i18n": ["./src/index.ts"]
-    }
+      "~/*": ["./src/*"]
+    },
+    "types": ["vite/client"]
   }
 }

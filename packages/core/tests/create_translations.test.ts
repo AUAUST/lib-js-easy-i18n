@@ -1,5 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
-import { Translations } from "~";
+import { Translations } from "~/index.ts";
 
 describe("We can initialize a Translations instance", () => {
   test("without any options", () => {
