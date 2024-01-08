@@ -505,10 +505,12 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
       }
 
       // Only throw if ever executed.
-      return () => {
-        throw new Error(
+      return async () => {
+        console.error(
           "Translations: To allow for lazy loading translations, either `loadNamespaces` or `loadNamespace` must be set at initialization.",
         );
+
+        return {};
       };
     })(),
   };

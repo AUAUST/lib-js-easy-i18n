@@ -134,12 +134,6 @@ export type UsesGenericTypes<True, False> =
 /** A generic type that would be valid as a locale, but is not necessarily one of the allowed locales. */
 export type GenericLocale = string;
 
-/** Any locale on the instance. */
-export type Locale = UsesGenericTypes<
-  GenericLocale,
-  GetConfig<"allowedLocales">[number]
->;
-
 /** The default locale. */
 export type DefaultLocale = UsesGenericTypes<
   GenericLocale,
@@ -151,6 +145,9 @@ export type AllowedLocales = UsesGenericTypes<
   GenericLocale[],
   GetConfig<"allowedLocales">
 >;
+
+/** Any locale on the instance. */
+export type Locale = UsesGenericTypes<GenericLocale, AllowedLocales[number]>;
 
 // NAMESPACES-RELATED TYPES
 
