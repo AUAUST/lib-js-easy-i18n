@@ -1,5 +1,11 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.1
+
+### Patch Changes
+
+- 788bfb8: Fixed entry points
+
 ## 0.2.0
 
 ### Minor Changes
