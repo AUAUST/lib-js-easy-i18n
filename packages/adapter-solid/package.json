@@ -2,6 +2,7 @@
   "name": "@auaust/easy-i18n-adapter-solid",
   "version": "0.1.0",
   "description": "The adapter that makes easy-i18n work with Solid smoothly.",
+  "license": "GPL-3.0-only",
   "scripts": {
     "build": "yarn test && tsup src/index.tsx --format cjs,esm --dts",
     "test": "echo \"No test implemented yet.\"",
@@ -9,7 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "type": "module",
-  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "devDependencies": {
     "@auaust/easy-i18n": "workspace:^",
     "tsup": "^8.0.1",

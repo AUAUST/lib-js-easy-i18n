@@ -1,6 +1,8 @@
 {
   "name": "@auaust/easy-i18n",
   "version": "0.1.0",
+  "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
+  "license": "GPL-3.0-only",
   "scripts": {
     "build": "yarn test && tsup src/index.ts --format cjs,esm --dts",
     "test": "yarn jest",
