@@ -10,6 +10,8 @@
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true
   }
 }
