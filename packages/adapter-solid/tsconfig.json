@@ -1,13 +1,14 @@
 {
   "extends": "../../configs/tsconfig.json",
-
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "baseUrl": "./",
     "paths": {
       "~": ["./src/index.tsx"],
       "~/*": ["./src/*"]
-    }
-  }
+    },
+    "types": ["solid-js"]
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist"]
 }

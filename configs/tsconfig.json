@@ -6,12 +6,11 @@
     "forceConsistentCasingInFileNames": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "noEmit": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
     "target": "ESNext",
-    "isolatedModules": true,
-    "allowImportingTsExtensions": true
+    "isolatedModules": true
   }
 }
