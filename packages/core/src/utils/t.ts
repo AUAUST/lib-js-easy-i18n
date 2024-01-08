@@ -331,4 +331,9 @@ function tooShallowKey(
 }
 
 export { t, parseKey };
-export type { TFunction };
+export type {
+  TFunction,
+  // Exporting them is required for the `TFunction` type to be usable outside of this file.
+  LooselyTypedTFunction,
+  StrictlyTypedTFunction,
+};
