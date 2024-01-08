@@ -1,6 +1,6 @@
 {
   "name": "@auaust/easy-i18n",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
   "license": "GPL-3.0-only",
   "scripts": {
