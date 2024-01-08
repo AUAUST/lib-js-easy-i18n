@@ -6,9 +6,8 @@
     "jsxImportSource": "solid-js",
     "baseUrl": "./",
     "paths": {
-      "~": ["./src/index.ts"],
+      "~": ["./src/index.tsx"],
       "~/*": ["./src/*"]
-    },
-    "types": ["vite/client"]
+    }
   }
 }
