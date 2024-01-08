@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.2
+
+### Patch Changes
+
+- 788bfb8: Fixed entry points
+
 ## 0.1.1
 
 ### Patch Changes
