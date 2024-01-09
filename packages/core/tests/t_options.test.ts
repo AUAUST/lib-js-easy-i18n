@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from "vitest";
-import { Translations, type TranslationsInit } from "~/index";
+import { Translations, type TranslationsInit } from "../src/index.js";
 
 const namespaceA = {
   string: "Hello",

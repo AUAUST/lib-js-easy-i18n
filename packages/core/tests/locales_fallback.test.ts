@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { Translations, type TranslationsInit } from "~/index";
+import { Translations, type TranslationsInit } from "../src/index.js";
 
 const translations: TranslationsInit["translations"] = {
   // Default locale; all keys present

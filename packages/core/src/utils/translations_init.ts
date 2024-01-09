@@ -2,7 +2,7 @@
 
 import { A, O, S } from "@auaust/primitive-kit";
 
-import type { Locale } from "~/types/config.js";
+import type { Locale } from "../types/config.js";
 import type {
   GenericNamespacedTranslations,
   LocaleDefinition,
@@ -10,7 +10,7 @@ import type {
   Namespace,
   NamespacedTranslations,
   NestedTranslationsRecord,
-} from "~/types/translations.js";
+} from "../types/translations.js";
 import {
   notFoundKeysOptions,
   tooDeepKeysOptions,
@@ -18,7 +18,7 @@ import {
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
-} from "~/utils/invalid_keys.js";
+} from "../utils/invalid_keys.js";
 import { lowerCasedKeys } from "./lowercased_keys.js";
 
 /**

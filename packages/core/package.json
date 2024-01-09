@@ -4,7 +4,7 @@
   "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
   "license": "GPL-3.0-only",
   "scripts": {
-    "build": "yarn test && rollup -c rollup.config.js",
+    "build": "yarn test && tsc && rollup -c rollup.config.js",
     "test": "vitest run --config vitest.config.ts --",
     "watch": "vitest --config vitest.config.ts --",
     "coverage": "vitest run --coverage",
@@ -22,6 +22,8 @@
     "@types/node": "^20.5.2",
     "@vitest/coverage-v8": "^1.1.3",
     "rollup": "^4.9.4",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-esbuild": "^6.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vitest": "^1.1.3"

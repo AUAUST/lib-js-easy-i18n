@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { lowerCasedKeys } from "~/utils/lowercased_keys";
+import { lowerCasedKeys } from "../src/utils/lowercased_keys.js";
 
 describe("The `lowerCasedKeys` function", () => {
   test("lowercases keys at the first level by default", () => {

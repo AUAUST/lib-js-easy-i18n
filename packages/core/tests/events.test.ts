@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
-import { on, off, emit } from "~/utils/events";
-import { Translations } from "~/index";
+import { on, off, emit } from "../src/utils/events.js";
+import { Translations } from "../src/index.js";
 
 describe("Events registry", () => {
   test("exports the required functions", () => {

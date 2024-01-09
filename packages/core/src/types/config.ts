@@ -5,13 +5,13 @@
 import type {
   Namespace,
   NestedTranslationsRecord,
-} from "~/types/translations.js";
-import type { IsInterfaceEmpty } from "~/types/utils.js";
+} from "../types/translations.js";
+import type { IsInterfaceEmpty } from "../types/utils.js";
 import type {
   NotFoundKeysOptions,
   TooDeepKeysOptions,
   TooShallowKeysOptions,
-} from "~/utils/invalid_keys.js";
+} from "../utils/invalid_keys.js";
 
 /**
  * An interface you can extend with the namespaces you want to use.
