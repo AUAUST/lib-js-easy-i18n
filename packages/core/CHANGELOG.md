@@ -1,5 +1,12 @@
 # @auaust/easy-i18n
 
+## 0.1.3
+
+### Patch Changes
+
+- b5c0e52: Switch to Vitest
+- 0f55646: Build with Rollup + Test App
+
 ## 0.1.2
 
 ### Patch Changes
