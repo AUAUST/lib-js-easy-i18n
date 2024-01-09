@@ -1,44 +1,20 @@
-import { Translations } from "@auaust/easy-i18n";
-import {
-  TranslationsProvider,
-  useTranslations,
-} from "@auaust/easy-i18n-adapter-solid";
+// @refresh reload
+import { MetaProvider, Title } from "@solidjs/meta";
+import { Router } from "@solidjs/router";
+import { FileRoutes } from "@solidjs/start";
+import { Suspense } from "solid-js";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <TranslationsProvider
-        init={Translations.createSync({
-          locale: "en",
-          translations: {
-            en: {
-              translations: {
-                hello: "Hello World!",
-              },
-            },
-          },
-        })}
-      >
-        {useTranslations().t("hello")}
-      </TranslationsProvider>
-      <hr />
-      <TranslationsProvider
-        init={{
-          locale: "en",
-          namespaces: { default: "ns" },
-          translations: {
-            en: {
-              ns: {
-                hello: "Greetings!",
-              },
-            },
-          },
-        }}
-      >
-        {useTranslations().t("hello")}
-      </TranslationsProvider>
-    </>
+    <Router
+      root={(props) => (
+        <MetaProvider>
+          <Title>easy-i18n | Solid Adapter Test App</Title>
+          <Suspense>{props.children}</Suspense>
+        </MetaProvider>
+      )}
+    >
+      <FileRoutes />
+    </Router>
   );
 }
-
-export default App;

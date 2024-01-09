@@ -1,19 +1,19 @@
 {
-  "name": "test-adapter-solid",
-  "private": true,
-  "version": "0.0.0",
+  "name": "tmp",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
   },
   "dependencies": {
-    "solid-js": "^1.8.7"
+    "@solidjs/meta": "^0.29.2",
+    "@solidjs/router": "^0.10.7",
+    "@solidjs/start": "^0.4.5",
+    "solid-js": "^1.8.9",
+    "vinxi": "0.1.1"
   },
-  "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8",
-    "vite-plugin-solid": "^2.8.0"
+  "engines": {
+    "node": ">=18"
   }
 }
