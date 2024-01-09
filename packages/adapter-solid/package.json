@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "test": "echo \"No test implemented yet.\"",
-    "coverage": "yarn jest --coverage",
+    "coverage": "yarn vitest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "type": "module",
