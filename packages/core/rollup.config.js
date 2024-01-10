@@ -1,11 +1,27 @@
-import { resolve } from "path";
+import { resolve, dirname } from "path";
 import { cwd } from "process";
-import { rmSync } from "fs";
+import { rmSync, readFileSync } from "fs";
 
 import ts from "rollup-plugin-ts";
 import { terser } from "rollup-plugin-terser";
 
-const outDir = resolve(cwd(), "dist");
+const currDir = cwd();
+
+const pkg = (() => {
+  function findPkg(start = currDir, level = 0) {
+    try {
+      const path = resolve(start, "package.json");
+      const content = readFileSync(path, { encoding: "utf8" });
+      return JSON.parse(content);
+    } catch {
+      return level >= 10 ? {} : findPkg(dirname(start), level + 1);
+    }
+  }
+
+  return findPkg();
+})();
+
+const outDir = resolve(currDir, "dist");
 
 rmSync(outDir, { recursive: true, force: true });
 
@@ -23,7 +39,10 @@ export default {
       sourcemap: true,
     },
   ],
-  // ...
+  external: [
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.peerDependencies || {}),
+  ],
   plugins: [
     ts({
       transpiler: {
