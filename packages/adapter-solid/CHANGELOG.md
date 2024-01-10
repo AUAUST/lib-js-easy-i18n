@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.3
+
+### Patch Changes
+
+- 30e2f25: Reconfigured CI pipeline for core package
+- Updated dependencies [30e2f25]
+  - @auaust/easy-i18n@0.1.4
+
 ## 0.2.2
 
 ### Patch Changes
