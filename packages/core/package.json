@@ -4,7 +4,7 @@
   "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
   "license": "GPL-3.0-only",
   "scripts": {
-    "build": "yarn test && tsc && rollup -c rollup.config.js",
+    "build": "yarn test && rollup -c",
     "test": "vitest run --config vitest.config.ts --",
     "watch": "vitest --config vitest.config.ts --",
     "coverage": "vitest run --coverage",
@@ -12,19 +12,14 @@
   },
   "type": "module",
   "source": "src/index.ts",
-  "main": "dist/index/index.common.js",
-  "module": "dist/index/index.module.js",
-  "types": "dist/index/index.d.ts",
   "devDependencies": {
-    "@rollup/plugin-alias": "^5.1.0",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@babel/plugin-transform-runtime": "^7.23.7",
+    "@types/babel__plugin-transform-runtime": "^7",
     "@types/node": "^20.5.2",
     "@vitest/coverage-v8": "^1.1.3",
     "rollup": "^4.9.4",
-    "rollup-plugin-dts": "^6.1.0",
-    "rollup-plugin-esbuild": "^6.1.0",
-    "ts-node": "^10.9.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-ts": "^3.4.5",
     "typescript": "^5.2.2",
     "vitest": "^1.1.3"
   },
@@ -34,5 +29,13 @@
   ],
   "dependencies": {
     "@auaust/primitive-kit": "^0.9.4"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   }
 }
