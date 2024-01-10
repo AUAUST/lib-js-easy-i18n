@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vinxi dev",
-    "build": "vinxi build",
+    "vinxi-build": "vinxi build",
     "start": "vinxi start"
   },
   "engines": {
