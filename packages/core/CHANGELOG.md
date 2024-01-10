@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.5
+
+### Patch Changes
+
+- 8875e43: Internal restructuration
+
 ## 0.1.4
 
 ### Patch Changes
