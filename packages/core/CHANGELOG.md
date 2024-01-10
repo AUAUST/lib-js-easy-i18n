@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.4
+
+### Patch Changes
+
+- 30e2f25: Reconfigured CI pipeline for core package
+
 ## 0.1.3
 
 ### Patch Changes
