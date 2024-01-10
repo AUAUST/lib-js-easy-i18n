@@ -6,7 +6,7 @@ import type {
   TooShallowKeysReturnType,
   UsesExtendedTranslations,
   UsesGenericTypes,
-} from "../types/config.js";
+} from "~/types/config.js";
 import type {
   FunctionTranslationKeys,
   FunctionTranslationKeysToNamespaceMap,
@@ -15,16 +15,16 @@ import type {
   StringTranslationKeys,
   StringTranslationKeysToNamespaceMap,
   TranslationDefinition,
-} from "../types/store.js";
+} from "~/types/store.js";
 import type {
   GenericNamespacedTranslations,
   Namespace,
   NestedTranslationsRecord,
   Translation,
-} from "../types/translations.js";
-import type { TranslationsOptions } from "../utils/translations_init.js";
+} from "~/types/translations.js";
+import type { TranslationsOptions } from "~/utils/translations_init.js";
 
-import { notFoundKeysHandlers } from "../utils/invalid_keys.js";
+import { notFoundKeysHandlers } from "~/utils/invalid_keys.js";
 
 // T-FUNCTION RETURN TYPE
 

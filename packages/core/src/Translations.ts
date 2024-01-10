@@ -1,12 +1,12 @@
 import { O, S } from "@auaust/primitive-kit";
 
-import { t, type TFunction } from "./utils/t.js";
-import type { Locale, TranslationsSchema } from "./types/config.js";
+import { t, type TFunction } from "~/utils/t.js";
+import type { Locale, TranslationsSchema } from "~/types/config.js";
 import type {
   GenericNamespacedTranslations,
   Namespace,
   NestedTranslationsRecord,
-} from "./types/translations.js";
+} from "~/types/translations.js";
 import {
   emit,
   off,
@@ -14,12 +14,12 @@ import {
   type CallbacksStore,
   type TranslationsEvent,
   type TranslationsEventCallback,
-} from "./utils/events.js";
+} from "~/utils/events.js";
 import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "./utils/translations_init.js";
+} from "~/utils/translations_init.js";
 
 export class Translations {
   /**
@@ -231,7 +231,7 @@ export class Translations {
 
     if (!this.locales.includes(locale)) {
       console.error(
-        `Translations: Tried to add translations for a locale that is not allowed: "${locale}".`,
+        `Translations: Tried to add translations for a locale that is not allowed: "${locale}"~`,
       );
       return false; // Not worth throwing an error.
     }
@@ -371,7 +371,7 @@ export class Translations {
 
     if (!this.locales.includes(locale)) {
       console.error(
-        `Translations: Provided translations for a locale that is not allowed: "${locale}".`,
+        `Translations: Provided translations for a locale that is not allowed: "${locale}"~`,
       );
       return; // Not worth throwing an error as it simply doesn't do anything.
     }
