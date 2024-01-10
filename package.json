@@ -30,6 +30,7 @@
   },
   "packageManager": "yarn@4.0.2",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "dev/*"
   ]
 }

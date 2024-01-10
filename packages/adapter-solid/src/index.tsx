@@ -37,10 +37,15 @@ function createTranslations(init: TranslationsInit | Translations) {
   const [tFunction, setTFunction] = createSignal<TFunction>(
     instance.isInitialized ? instance.t : () => "",
   );
+  const [locale, setLocale] = createSignal<string>(
+    instance.isInitialized ? instance.locale : undefined!,
+  );
 
   instance.on("tChanged", (_, newT) => {
     setTFunction(() => newT);
   });
+
+  instance.on("localeChanged", (_, newLocale) => setLocale(newLocale));
 
   if (!instance.isInitialized) {
     instance.init();
@@ -48,6 +53,7 @@ function createTranslations(init: TranslationsInit | Translations) {
 
   return {
     instance,
+    locale,
     t: ((...args: Parameters<TFunction>) => tFunction()(...args)) as TFunction,
   };
 }
