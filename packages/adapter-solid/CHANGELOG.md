@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.6
+
+### Patch Changes
+
+- b1d6df6: Build before publishing
+- Updated dependencies [b1d6df6]
+  - @auaust/easy-i18n@0.1.7
+
 ## 0.2.5
 
 ### Patch Changes

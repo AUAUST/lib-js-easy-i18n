@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.7
+
+### Patch Changes
+
+- b1d6df6: Build before publishing
+
 ## 0.1.6
 
 ### Patch Changes
