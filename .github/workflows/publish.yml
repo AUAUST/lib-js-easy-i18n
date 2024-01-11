@@ -34,6 +34,13 @@ jobs:
         run: |
           yarn run test
 
+      - name: Include npm credentials for Yarn
+        run: |
+          cat << EOF > ~/.yarnrc.yml
+          npmAuthToken: ${{ secrets.NPM_TOKEN }}
+          npmPublishAccess: public
+          EOF
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -41,4 +48,3 @@ jobs:
           publish: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
