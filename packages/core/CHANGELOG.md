@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.6
+
+### Patch Changes
+
+- 1d00ba2: Should fix `workspace:` protocol issues on publishing, which should fix lib installation.
+
 ## 0.1.5
 
 ### Patch Changes
