@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.4
+
+### Patch Changes
+
+- 8875e43: Internal restructuration
+- Updated dependencies [8875e43]
+  - @auaust/easy-i18n@0.1.5
+
 ## 0.2.3
 
 ### Patch Changes
