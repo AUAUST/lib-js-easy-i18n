@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.5
+
+### Patch Changes
+
+- 1d00ba2: Should fix `workspace:` protocol issues on publishing, which should fix lib installation.
+- Updated dependencies [1d00ba2]
+  - @auaust/easy-i18n@0.1.6
+
 ## 0.2.4
 
 ### Patch Changes
