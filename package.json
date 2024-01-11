@@ -16,7 +16,7 @@
     "coverage": "turbo coverage",
     "typecheck": "turbo typecheck",
     "publish": "yarn build && yarn changeset publish",
-    "release": "yarn workspaces foreach --no-private --all npm publish --access public && changeset tag"
+    "release": "yarn build && yarn workspaces foreach --no-private --all npm publish --access public && changeset tag"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
