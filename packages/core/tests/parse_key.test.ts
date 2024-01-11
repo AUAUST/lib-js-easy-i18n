@@ -48,7 +48,7 @@ describe("The `t` function's key parser", () => {
     });
 
     test("keys and namespaces with spaces", () => {
-      // Keeps intact spaces next to separators (weird design choice to use this, but )
+      // Keeps intact spaces next to separators (weird design choice to use this, but it costs nothing to support)
       const { ns, rawKey, segments } = parseKey(config, " : foo . bar ", {
         ns: "any",
       });
@@ -91,7 +91,7 @@ describe("The `t` function's key parser", () => {
     test("receiving multiple namespace separators", () => {
       // Multiple namespace separators
       // The first one only is used as namespace and later ones ignored
-      // Not an invalid usage per se, but definitely something that's be surprising
+      // Not an invalid usage per se, but definitely something that'd be surprising
       // This also means a key containing a namespace separator MUST include the namespace directly
       // (otherwise, the whole key before the first separator would be used as namespace)
       const { ns, rawKey, segments } = parseKey(
@@ -110,7 +110,7 @@ describe("The `t` function's key parser", () => {
       // Tho brings a bunch of edge cases, i.e. it's impossible to have a "single-segment" key
       // as it'd add the default namespace to it
 
-      // TODO: Maybe make an check on the config init handler to enable a "no namespaces" mode ?
+      // TODO: Maybe make a check on the config init handler to enable a "no namespaces" mode ?
       // It'd need to be considered on the key parser and the t function while looking for the key
       const { ns, rawKey, segments } = parseKey(
         {
