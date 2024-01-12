@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.8
+
+### Patch Changes
+
+- 41c28eb: Try fixing Changesets
+
 ## 0.1.7
 
 ### Patch Changes
