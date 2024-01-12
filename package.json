@@ -17,12 +17,12 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "coverage": "turbo coverage",
     "typecheck": "turbo typecheck",
-    "publish": "pnpm build && pnpm publish -r"
+    "publish": "pnpm build && pnpm publish -r --access public"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@types/node": "^20.5.2",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "turbo": "^1.11.3",
     "typescript": "^5.3.3"
   },
