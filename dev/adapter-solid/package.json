@@ -4,6 +4,7 @@
   "private": true,
   "version": "0.0.5",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "vinxi dev",
     "vinxi-build": "vinxi build",
     "start": "vinxi start"

@@ -4,9 +4,10 @@
   "description": "The adapter that makes easy-i18n work with Solid smoothly.",
   "license": "GPL-3.0-only",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "build": "rollup -c rollup.config.js",
     "test": "echo \"No test implemented yet.\"",
-    "coverage": "yarn vitest --coverage",
+    "coverage": "pnpm vitest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "type": "module",

@@ -20,22 +20,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Setup Yarn
+      - name: Setup pnpm
         run: |
           corepack enable
-          yarn set version stable
+          npm i pnpm@latest -g
 
       - name: Install dependencies
         run: |
-          yarn install --immutable
+          pnpm install --frozen-lockfile
 
       - name: Build & Test
         run: |
-          yarn run test
-          yarn run build
+          pnpm run test
+          pnpm run build
