@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.10
+
+### Patch Changes
+
+- 6e258aa: Trigger publish action
+
 ## 0.1.9
 
 ### Patch Changes
