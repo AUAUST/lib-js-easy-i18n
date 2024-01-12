@@ -9,7 +9,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
   publish:
@@ -19,18 +18,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
 
-      - name: Use Node.js 21.x
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: 21.x
-          cache: 'pnpm'
-
-      - name: Setup pnpm config
-        run: |
-          mkdir -p $PNPM_CACHE_FOLDER
-          pnpm config set store-dir $PNPM_CACHE_FOLDER
+          node-version: 20
 
       - name: Install dependencies
         run: |
