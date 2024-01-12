@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.9
+
+### Patch Changes
+
+- 6e258aa: Trigger publish action
+- Updated dependencies [6e258aa]
+  - @auaust/easy-i18n@0.1.10
+
 ## 0.2.8
 
 ### Patch Changes
