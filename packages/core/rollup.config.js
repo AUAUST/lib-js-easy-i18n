@@ -3,7 +3,7 @@ import { cwd } from "process";
 import { rmSync, readFileSync } from "fs";
 
 import ts from "rollup-plugin-ts";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 
 const currDir = cwd();
 
