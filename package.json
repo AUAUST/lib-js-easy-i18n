@@ -1,5 +1,6 @@
 {
   "name": "easy-i18n",
+  "private": true,
   "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
   "license": "GPL-3.0-only",
   "author": {
