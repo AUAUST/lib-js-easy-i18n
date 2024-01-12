@@ -17,7 +17,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "coverage": "turbo coverage",
     "typecheck": "turbo typecheck",
-    "publish": "pnpm build && pnpm publish -r --no-git-checks"
+    "publish": "pnpm build && pnpm publish -r"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
