@@ -27,6 +27,7 @@ __metadata:
   resolution: "@auaust/easy-i18n-adapter-solid@workspace:packages/adapter-solid"
   dependencies:
     "@auaust/easy-i18n": "workspace:^"
+    "@babel/preset-typescript": "npm:^7.23.3"
     babel-preset-solid: "npm:^1.8.9"
     esbuild: "npm:^0.19.11"
     esbuild-plugin-solid: "npm:^0.5.0"
