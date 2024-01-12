@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.10
+
+### Patch Changes
+
+- 1952433: Trigger CI action
+- Updated dependencies [1952433]
+  - @auaust/easy-i18n@0.1.11
+
 ## 0.2.9
 
 ### Patch Changes
