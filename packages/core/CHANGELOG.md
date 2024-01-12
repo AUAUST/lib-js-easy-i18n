@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.12
+
+### Patch Changes
+
+- fa9383f: Trigger CI action
+
 ## 0.1.11
 
 ### Patch Changes
