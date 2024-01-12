@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.8
+
+### Patch Changes
+
+- 121d62d: Check automatic versionning works
+- Updated dependencies [121d62d]
+  - @auaust/easy-i18n@0.1.9
+
 ## 0.2.7
 
 ### Patch Changes

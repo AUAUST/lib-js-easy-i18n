@@ -1,5 +1,13 @@
 # dev-adapter-solid
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [121d62d]
+  - @auaust/easy-i18n-adapter-solid@0.2.8
+  - @auaust/easy-i18n@0.1.9
+
 ## 0.0.4
 
 ### Patch Changes

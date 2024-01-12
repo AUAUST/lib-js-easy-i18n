@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.9
+
+### Patch Changes
+
+- 121d62d: Check automatic versionning works
+
 ## 0.1.8
 
 ### Patch Changes
