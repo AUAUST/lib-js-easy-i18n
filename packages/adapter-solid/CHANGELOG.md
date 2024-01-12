@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.7
+
+### Patch Changes
+
+- 41c28eb: Try fixing Changesets
+- Updated dependencies [41c28eb]
+  - @auaust/easy-i18n@0.1.8
+
 ## 0.2.6
 
 ### Patch Changes
