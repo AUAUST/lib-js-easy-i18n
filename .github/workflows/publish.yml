@@ -28,7 +28,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+        run: |
+          mkdir -p $PNPM_CACHE_FOLDER
+          pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies
         run: |
