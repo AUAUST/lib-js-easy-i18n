@@ -15,11 +15,11 @@
   "dependencies": {
     "@auaust/easy-i18n": "workspace:^",
     "@auaust/easy-i18n-adapter-solid": "workspace:^",
-    "@solidjs/meta": "^0.29.2",
-    "@solidjs/router": "^0.10.7",
-    "@solidjs/start": "^0.4.5",
+    "@solidjs/meta": "^0.29.3",
+    "@solidjs/router": "^0.10.9",
+    "@solidjs/start": "^0.4.9",
     "h3": "^1.10.0",
-    "solid-js": "^1.8.9",
-    "vinxi": "^0.1.1"
+    "solid-js": "^1.8.11",
+    "vinxi": "^0.1.3"
   }
 }

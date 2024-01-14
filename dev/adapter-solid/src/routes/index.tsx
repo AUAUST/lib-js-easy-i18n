@@ -1,9 +1,23 @@
-import { Translations } from "@auaust/easy-i18n";
+import { Translations, type Translation, Namespace } from "@auaust/easy-i18n";
 import {
   TranslationsProvider,
   useTranslations,
 } from "@auaust/easy-i18n-adapter-solid";
 import { isServer } from "solid-js/web";
+
+declare module "@auaust/easy-i18n" {
+  interface TranslationsConfig {
+    defaultNamespace: "translations";
+  }
+  interface RegisteredTranslations {
+    translations: {
+      hello: Translation;
+    };
+    ns: {
+      hello: Translation;
+    };
+  }
+}
 
 export default function Home() {
   return (
@@ -85,20 +99,18 @@ export default function Home() {
           },
         })}
       >
-        <TestTranslations />
+        <ReactiveTranslations />
       </TranslationsProvider>
     </main>
   );
 }
 
-function TestTranslations() {
+function ReactiveTranslations() {
   const { t, instance, locale } = useTranslations();
 
   const locales = instance.locales;
   const max = locales.length - 1;
   let index = 0;
-
-  isServer || ((window as any).t = t);
 
   setInterval(() => {
     index = index === max ? 0 : index + 1;
@@ -107,7 +119,7 @@ function TestTranslations() {
 
   return (
     <div>
-      {locale()}: {t("hello")}
+      {locale().toUpperCase()}: {t("hello")}
     </div>
   );
 }

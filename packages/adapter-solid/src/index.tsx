@@ -54,7 +54,11 @@ function createTranslations(init: TranslationsInit | Translations) {
   return {
     instance,
     locale,
-    t: ((...args: Parameters<TFunction>) => tFunction()(...args)) as TFunction,
+    t: (...args: Parameters<TFunction>) => tFunction()(...args),
+  } as {
+    instance: Translations;
+    locale: () => string;
+    t: TFunction;
   };
 }
 

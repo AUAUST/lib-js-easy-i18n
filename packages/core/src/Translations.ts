@@ -4,6 +4,7 @@ import { t, type TFunction } from "~/utils/t.js";
 import type { Locale, TranslationsSchema } from "~/types/config.js";
 import type {
   GenericNamespacedTranslations,
+  LocaleDefinition,
   Namespace,
   NestedTranslationsRecord,
 } from "~/types/translations.js";
@@ -124,7 +125,7 @@ export class Translations {
 
   private _t: TFunction | undefined;
 
-  get t() {
+  get t(): TFunction {
     if (!this._t)
       throw new Error(
         "Translations: You must call `init` before being able to use `t`",
@@ -135,6 +136,7 @@ export class Translations {
 
   /**
    * Updates the `t` function to use the new state of the instance.
+
    *
    * @internal
    */
@@ -177,7 +179,7 @@ export class Translations {
   /**
    * The default namespace. It is used by `t` if no namespace is specified.
    */
-  get defaultNamespace() {
+  get defaultNamespace(): Namespace {
     return this.options.defaultNamespace;
   }
 
@@ -198,7 +200,7 @@ export class Translations {
    *
    * If the locale is invalid, it will return `undefined`.
    */
-  getLocaleConfig(locale: Locale) {
+  getLocaleConfig(locale: Locale): LocaleDefinition | undefined {
     return this.options.locales[locale];
   }
 
