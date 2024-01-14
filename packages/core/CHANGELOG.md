@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.13
+
+### Patch Changes
+
+- 5d01f48: Fix typings and export require interfaces to ensure interface extension works
+
 ## 0.1.12
 
 ### Patch Changes
