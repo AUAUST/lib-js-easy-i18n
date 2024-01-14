@@ -1,5 +1,13 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 0.2.12
+
+### Patch Changes
+
+- 5d01f48: Fix typings and export require interfaces to ensure interface extension works
+- Updated dependencies [5d01f48]
+  - @auaust/easy-i18n@0.1.13
+
 ## 0.2.11
 
 ### Patch Changes
