@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.14
+
+### Patch Changes
+
+- ec6dab7: Fix t() when loosely typed namespaces are allowed
+
 ## 0.1.13
 
 ### Patch Changes
