@@ -173,6 +173,13 @@ export type WellKnownNamespaces = UsesExtendedTranslations<
   }[Namespace],
   string
 >;
+/** The namespaces that allow any translation. They come from namespaces set to `true` in the `RegisteredTranslations` interface. */
+export type UnknownNamespaces = UsesExtendedTranslations<
+  {
+    [K in Namespace]: string extends keyof TranslationsSchema[K] ? K : never;
+  }[Namespace],
+  never
+>;
 
 // SYNTAX-RELATED TYPES
 

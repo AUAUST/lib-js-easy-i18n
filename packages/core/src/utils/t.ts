@@ -4,6 +4,7 @@ import type {
   NotFoundKeysReturnType,
   TooDeepKeysReturnType,
   TooShallowKeysReturnType,
+  UnknownNamespaces,
   UsesExtendedTranslations,
   UsesGenericTypes,
 } from "~/types/config.js";
@@ -85,9 +86,21 @@ interface StrictlyTypedTFunction {
     key: K,
     options: {
       ns: FunctionTranslationKeysToNamespaceMap[K];
-      arg: ArgFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
+      arg?: ArgFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
     },
   ): ReturnTypeFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
+
+  // Namespaces that have no strong types, which means we allow any `${namespace}:${string}` format.
+  // Since we can't know the type of the key, we can't know whether it's a function or a string.
+  // This means the `arg` option is always available as an optional unknown.
+  (
+    key: `${UnknownNamespaces}${NamespaceSeparator}${string}`,
+    options?: { arg?: any },
+  ): TFunctionReturnType;
+  (
+    key: string,
+    option: { ns: UnknownNamespaces; arg?: any },
+  ): TFunctionReturnType;
 
   // Edge case: key is an empty string
   // It will match the actual implementation as the key is checked for falsiness,
