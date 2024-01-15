@@ -1,9 +1,8 @@
-import { Translations, type Translation, Namespace } from "@auaust/easy-i18n";
+import { Translations, type Translation } from "@auaust/easy-i18n";
 import {
   TranslationsProvider,
   useTranslations,
 } from "@auaust/easy-i18n-adapter-solid";
-import { isServer } from "solid-js/web";
 
 declare module "@auaust/easy-i18n" {
   interface TranslationsConfig {
