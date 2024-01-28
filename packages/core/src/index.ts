@@ -1,5 +1,9 @@
 import { Translations } from "~/Translations.js";
-import type { Namespace, Translation } from "~/types/translations.js";
+import type {
+  Namespace,
+  NestedTranslationsRecord,
+  Translation,
+} from "~/types/translations.js";
 import type { TranslationsInit } from "~/utils/translations_init.js";
 import type {
   TFunction,
@@ -32,6 +36,7 @@ export type {
   Namespace,
   TranslationsInit,
   TranslationsSchema,
+  NestedTranslationsRecord,
   KeysSeparator,
   NamespaceSeparator,
   TFunction,
