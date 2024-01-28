@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.1.15
+
+### Patch Changes
+
+- 1543a9d: Export `NestedTranslationsRecord` type to type the default locale
+
 ## 0.1.14
 
 ### Patch Changes
