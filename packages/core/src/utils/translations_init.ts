@@ -52,7 +52,7 @@ export interface TranslationsInit {
          *
          * @default "translations"
          */
-        default: Namespace;
+        default?: Namespace;
 
         /**
          * A list of required namespaces.

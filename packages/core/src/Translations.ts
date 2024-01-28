@@ -419,4 +419,46 @@ export class Translations {
 
     return loadedTranslations;
   }
+
+  /**
+   * A function that can be called to require the loading of new namespaces.
+   * It's a declarative way to ensure the required namespaces are loaded at a given time.
+   *
+   * It returns a promise that resolves when the namespaces are loaded. The promise always resolves to `true`.
+   * It can be used to await the loading of the namespaces.
+   */
+  async requireNamespaces(...ns: (Namespace | Namespace[])[]): Promise<true> {
+    const locale = this.locale;
+
+    const namespaces = ns.flat(Infinity).map(S.toLowerCase);
+    this.options.requiredNamespaces.push(...namespaces); // Ensures later calls to `loadRequiredNamespaces` will load the new namespaces.
+
+    const translations = await this.loadNamespaces(locale, namespaces);
+    this.addTranslations(locale, translations);
+
+    this.updateTFunction();
+
+    return true;
+  }
+
+  /**
+   * A function that can be called to no longer require the passed namespaces.
+   *
+   * It won't unload or remove the existing translations for the namespaces,
+   * but will prevent them from being loaded again from a locale switch for example.
+   *
+   * This is useful if you need to scope certain namespaces to a specific part of your application.
+   * This way, you can call `requireNamespaces` when you enter the scope and `dropNamespaces` when you leave it.
+   */
+  dropNamespaces(...ns: (Namespace | Namespace[])[]): true {
+    const namespaces = ns.flat(Infinity).map(S.toLowerCase);
+    const requiredNamespaces = this.options.requiredNamespaces;
+
+    for (const n of namespaces) {
+      const index = requiredNamespaces.indexOf(n);
+      if (index >= 0) requiredNamespaces.splice(index, 1);
+    }
+
+    return true;
+  }
 }
