@@ -284,7 +284,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
             : S.is(localesInit[0]) // Otherwise, use the first locale in the array
               ? localesInit[0].toLowerCase() // If it's a string, use it
               : S.is(localesInit[0]!.locale) // Otherwise check for the `locale` prop
-                ? S.toLowerCase(localesInit[0]!.locale!)
+                ? S.toLowerCase(localesInit[0]!.locale)
                 : S.toSnakeCase(localesInit[0]!.name); // If there's no `locale` prop, use the `name` prop
 
           if (!locale) {
