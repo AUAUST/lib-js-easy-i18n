@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "pnpm test && rollup -c",
+    "build": "pnpm test && pnpm run build:clean && pnpm run build:js",
+    "build:clean": "rimraf dist",
+    "build:js": "rollup -c",
     "test": "vitest run --config vitest.config.ts --",
     "watch": "vitest --config vitest.config.ts --",
     "coverage": "vitest run --coverage",
@@ -23,6 +25,7 @@
     "@types/babel__preset-env": "^7.9.6",
     "@types/node": "^20.11.0",
     "@vitest/coverage-v8": "^1.1.3",
+    "rimraf": "^5.0.5",
     "rollup": "^4.9.5",
     "rollup-plugin-ts": "^3.4.5",
     "typescript": "^5.3.3",
