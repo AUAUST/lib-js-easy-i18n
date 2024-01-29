@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.2.0
+
+### Minor Changes
+
+- 90b00cf: `requireNamespaces` and `dropNamespaces` to ensure translations are loaded regardless of locale switching
+
 ## 0.1.15
 
 ### Patch Changes
