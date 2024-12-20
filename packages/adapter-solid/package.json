@@ -4,12 +4,20 @@
   "description": "The adapter that makes easy-i18n work with Solid smoothly.",
   "license": "GPL-3.0-only",
   "type": "module",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "rollup -c rollup.config.js",
+    "build": "pnpm build:clean && pnpm build:js",
+    "build:clean": "rimraf dist",
+    "build:js": "tsup",
+    "dev": "pnpm build:clean && pnpm dev:js",
+    "dev:js": "tsup --watch",
     "test": "echo \"No test implemented yet.\"",
     "coverage": "pnpm vitest --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "echo 'Typechecking...' && tsc --noEmit && echo 'All good!'"
   },
   "peerDependencies": {
     "@auaust/easy-i18n": "workspace:^",
@@ -17,34 +25,53 @@
   },
   "devDependencies": {
     "@auaust/easy-i18n": "workspace:^",
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.8",
-    "@babel/preset-typescript": "^7.23.3",
-    "@babel/runtime": "^7.23.8",
-    "@types/babel__core": "^7",
-    "@types/babel__preset-env": "^7",
-    "babel-preset-solid": "^1.8.9",
-    "esbuild": "^0.19.11",
-    "esbuild-plugin-solid": "^0.5.0",
-    "rollup": "^4.4.1",
-    "rollup-preset-solid": "^2.0.1",
-    "solid-js": "^1.8.8",
-    "typescript": "^5.2.2",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
+    "esbuild-plugin-solid": "^0.6.0",
+    "esbuild": "^0.24.0",
+    "jsdom": "^25.0.1",
+    "rimraf": "^6.0.1",
+    "solid-js": "^1.9.3",
+    "tsup-preset-solid": "^2.2.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vite-plugin-solid": "^2.11.0",
+    "vite": "^6.0.3",
     "vitest": "^1.1.3"
   },
   "files": [
     "dist",
     "src"
   ],
-  "main": "dist/index/index.common.js",
-  "module": "dist/index/index.module.js",
-  "types": "dist/index/index.d.ts",
+  "packageManager": "pnpm@9.15.0",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index/index.module.js",
-      "require": "./dist/index/index.common.js",
-      "types": "./dist/index/index.d.ts",
-      "default": "./dist/index/index.common.js"
+    "solid": {
+      "development": "./dist/dev.jsx",
+      "import": "./dist/index.jsx"
+    },
+    "development": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/dev.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/dev.cjs"
+      }
+    },
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
     }
-  }
+  },
+  "browser": {},
+  "typesVersions": {}
 }

@@ -7,6 +7,6 @@
       "~": ["./src/index.tsx"],
       "~/*": ["./src/*"]
     },
-    "types": ["solid-js"]
+    "types": ["node", "solid-js"]
   }
 }
