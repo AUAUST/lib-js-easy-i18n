@@ -1,26 +1,26 @@
 import { Translations } from "~/Translations.js";
 import type {
-  Namespace,
-  NestedTranslationsRecord,
-  Translation,
-} from "~/types/translations.js";
-import type { TranslationsInit } from "~/utils/translations_init.js";
-import type {
-  TFunction,
-  TFunctionReturnType,
-  LooselyTypedTFunction,
-  StrictlyTypedTFunction,
-} from "~/utils/t.js";
-import type {
   AllowedLocales,
   DefaultLocale,
   KeysSeparator,
   Locale,
   NamespaceSeparator,
-  TranslationsSchema,
   RegisteredTranslations,
   TranslationsConfig,
+  TranslationsSchema,
 } from "~/types/config.js";
+import type {
+  Namespace,
+  NestedTranslationsRecord,
+  Translation,
+} from "~/types/translations.js";
+import type {
+  LooselyTypedTFunction,
+  StrictlyTypedTFunction,
+  TFunction,
+  TFunctionReturnType,
+} from "~/utils/t.js";
+import type { TranslationsInit } from "~/utils/translations_init.js";
 
 /**
  * Note we don't want to export the raw `t` function here since it must be initialized with a `Translations` instance to work.
@@ -30,20 +30,20 @@ import type {
 
 export { Translations };
 export type {
-  Locale,
   AllowedLocales,
   DefaultLocale,
-  Namespace,
-  TranslationsInit,
-  TranslationsSchema,
-  NestedTranslationsRecord,
   KeysSeparator,
+  Locale,
+  LooselyTypedTFunction,
+  Namespace,
   NamespaceSeparator,
+  NestedTranslationsRecord,
+  RegisteredTranslations,
+  StrictlyTypedTFunction,
   TFunction,
   TFunctionReturnType,
-  LooselyTypedTFunction,
-  StrictlyTypedTFunction,
   Translation,
-  RegisteredTranslations,
   TranslationsConfig,
+  TranslationsInit,
+  TranslationsSchema,
 };

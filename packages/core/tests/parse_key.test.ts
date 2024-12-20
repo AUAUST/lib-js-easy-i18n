@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { parseKey } from "../src/utils/t.js";
 
 describe("The `t` function's key parser", () => {

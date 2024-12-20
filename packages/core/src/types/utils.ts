@@ -12,14 +12,12 @@ export type Flatten<T extends any[]> = T extends [infer Head, ...infer Rest]
     : [Head, ...Flatten<Rest>]
   : T;
 
-export type Join<
-  T extends any[],
-  S extends Stringifiable,
-> = Flatten<T> extends [infer First, ...infer Rest]
-  ? Rest extends Stringifiable[]
-    ? `${First & Stringifiable}${Rest extends [] ? "" : `${S}${Join<Rest, S>}`}`
-    : never
-  : "";
+export type Join<T extends any[], S extends Stringifiable> =
+  Flatten<T> extends [infer First, ...infer Rest]
+    ? Rest extends Stringifiable[]
+      ? `${First & Stringifiable}${Rest extends [] ? "" : `${S}${Join<Rest, S>}`}`
+      : never
+    : "";
 
 export type Split<
   Target extends string,

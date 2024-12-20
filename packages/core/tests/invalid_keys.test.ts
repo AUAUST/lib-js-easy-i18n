@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { Translations } from "../src/index.js";
 import type { GenericNamespacedTranslations } from "../src/types/translations.js";
 import type { TranslationsInit } from "../src/utils/translations_init.js";

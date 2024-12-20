@@ -1,9 +1,9 @@
-import { createSignal, createContext, useContext, type JSX } from "solid-js";
 import {
   Translations,
-  type TranslationsInit,
   type TFunction,
+  type TranslationsInit,
 } from "@auaust/easy-i18n";
+import { createContext, createSignal, useContext, type JSX } from "solid-js";
 
 const TranslationsContext =
   createContext<ReturnType<typeof createTranslations>>();
@@ -62,4 +62,4 @@ function createTranslations(init: TranslationsInit | Translations) {
   };
 }
 
-export { useTranslations, TranslationsProvider };
+export { TranslationsProvider, useTranslations };

@@ -114,16 +114,14 @@ interface StrictlyTypedTFunction {
 }
 
 /** Extracts the first argument's type for a function translation. */
-type ArgFromKey<
-  K extends string,
-  N extends Namespace | undefined = undefined,
-> = DefinitionFromKey<K, N> extends infer D
-  ? D extends GenericFinalTranslationDefinition
-    ? D["raw"] extends (...args: any) => any
-      ? Parameters<D["raw"]>[0]
+type ArgFromKey<K extends string, N extends Namespace | undefined = undefined> =
+  DefinitionFromKey<K, N> extends infer D
+    ? D extends GenericFinalTranslationDefinition
+      ? D["raw"] extends (...args: any) => any
+        ? Parameters<D["raw"]>[0]
+        : unknown
       : unknown
-    : unknown
-  : unknown;
+    : unknown;
 
 /** Returns a definition type from a key and namespace. */
 type DefinitionFromKey<
@@ -140,11 +138,12 @@ type DefinitionFromKey<
 type ReturnTypeFromKey<
   K extends string,
   N extends Namespace | undefined = undefined,
-> = DefinitionFromKey<K, N> extends infer D
-  ? D extends TranslationDefinition
-    ? HandleKeyDefinition<D>
-    : NotFoundKeysReturnType
-  : never;
+> =
+  DefinitionFromKey<K, N> extends infer D
+    ? D extends TranslationDefinition
+      ? HandleKeyDefinition<D>
+      : NotFoundKeysReturnType
+    : never;
 
 type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
   isFinal: true;
@@ -343,10 +342,10 @@ function tooShallowKey(
   return notFoundKey(config, key);
 }
 
-export { t, parseKey };
+export { parseKey, t };
 export type {
-  TFunction,
   // Exporting them is required for the `TFunction` type to be usable outside of this file.
   LooselyTypedTFunction,
   StrictlyTypedTFunction,
+  TFunction,
 };

@@ -1,10 +1,10 @@
-import { describe, test, expect, vi, afterEach } from "vitest";
-import { Translations } from "../src/Translations.js";
+import { describe, expect, test, vi } from "vitest";
 import {
-  type NestedTranslationsRecord,
   type Locale,
   type Namespace,
+  type NestedTranslationsRecord,
 } from "~/index.js";
+import { Translations } from "../src/Translations.js";
 
 describe("Translations instances", () => {
   const _loadNamespace = async (locale: Locale, namespace: Namespace) => {

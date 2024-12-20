@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { Translations, type TranslationsInit } from "../src/index.js";
 
 const translations: TranslationsInit["translations"] = {

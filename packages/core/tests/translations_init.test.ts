@@ -1,7 +1,7 @@
 /**
  * This suite tests the correct converting of a TranslationsInit object to a TranslationsConfig object.
  */
-import { describe, test, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { getOptions } from "../src/utils/translations_init.js";
 
 describe("The `getOptions` helper", () => {

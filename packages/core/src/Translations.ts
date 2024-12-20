@@ -1,6 +1,5 @@
 import { O, S } from "@auaust/primitive-kit";
 
-import { t, type TFunction } from "~/utils/t.js";
 import type { Locale, TranslationsSchema } from "~/types/config.js";
 import type {
   GenericNamespacedTranslations,
@@ -16,6 +15,7 @@ import {
   type TranslationsEvent,
   type TranslationsEventCallback,
 } from "~/utils/events.js";
+import { t, type TFunction } from "~/utils/t.js";
 import {
   getOptions,
   type TranslationsInit,

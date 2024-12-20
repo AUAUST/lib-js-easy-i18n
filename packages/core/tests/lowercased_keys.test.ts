@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { lowerCasedKeys } from "../src/utils/lowercased_keys.js";
 
 describe("The `lowerCasedKeys` function", () => {
