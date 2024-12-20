@@ -15,7 +15,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "test": "turbo test",
-    "pack-all": "turbo run ci:pack",
+    "pack-all": "turbo run build ci:pack",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "coverage": "turbo coverage",
     "typecheck": "turbo typecheck",

@@ -15,7 +15,7 @@
       "dependsOn": ["^test"]
     },
     "ci:pack": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "^ci:pack"]
     },
     "dev": {
       "cache": false,
