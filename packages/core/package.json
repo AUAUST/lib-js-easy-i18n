@@ -4,6 +4,10 @@
   "description": "The only i18n library you'll ever need. Easy, flexible, lightweight, powerful, type-safe.",
   "license": "GPL-3.0-only",
   "type": "module",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "pnpm test && pnpm run build:clean && pnpm run build:js",
@@ -29,6 +33,7 @@
     "dist",
     "src"
   ],
+  "packageManager": "pnpm@9.15.0",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
