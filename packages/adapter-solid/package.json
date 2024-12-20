@@ -17,7 +17,8 @@
     "dev:js": "tsup --watch",
     "test": "echo \"No test implemented yet.\"",
     "coverage": "pnpm vitest --coverage",
-    "typecheck": "echo 'Typechecking...' && tsc --noEmit && echo 'All good!'"
+    "typecheck": "echo 'Typechecking...' && tsc --noEmit && echo 'All good!'",
+    "ci:pack": "pnpm pack"
   },
   "peerDependencies": {
     "@auaust/easy-i18n": "workspace:^",
