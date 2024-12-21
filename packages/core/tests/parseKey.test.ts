@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { parseKey } from "../src/utils/t.js";
+import { parseKey } from "~/utils/t";
 
 describe("The `t` function's key parser", () => {
   const config = {

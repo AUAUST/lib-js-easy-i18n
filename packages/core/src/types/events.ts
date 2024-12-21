@@ -1,7 +1,7 @@
-import type { Translations } from "~/classes/Translations.js";
-import type { Locale, TranslationsSchema } from "~/types/config.js";
-import type { Namespace } from "~/types/translations.js";
-import type { TFunction } from "~/utils/t.js";
+import type { Translations } from "~/classes/Translations";
+import type { Locale, TranslationsSchema } from "~/types/config";
+import type { Namespace } from "~/types/translations";
+import type { TFunction } from "~/utils/t";
 
 /**
  * A set of events that are emitted by the `Translations` class instance.

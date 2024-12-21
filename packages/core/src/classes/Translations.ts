@@ -1,19 +1,19 @@
 import { O, S } from "@auaust/primitive-kit";
-import type { Locale, TranslationsSchema } from "~/types/config.js";
-import type { TranslationsEvents } from "~/types/events.js";
+import { HasEvents } from "~/classes/HasEvents";
+import type { Locale, TranslationsSchema } from "~/types/config";
+import type { TranslationsEvents } from "~/types/events";
 import type {
   GenericNamespacedTranslations,
   LocaleDefinition,
   Namespace,
   NestedTranslationsRecord,
-} from "~/types/translations.js";
+} from "~/types/translations";
 import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "~/utils/options/index.js";
-import { t, type TFunction } from "~/utils/t.js";
-import { HasEvents } from "./HasEvents";
+} from "~/utils/options/index";
+import { t, type TFunction } from "~/utils/t";
 
 export class Translations extends HasEvents<TranslationsEvents> {
   /**

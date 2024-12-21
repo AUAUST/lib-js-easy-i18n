@@ -7,7 +7,7 @@ import type {
   UnknownNamespaces,
   UsesExtendedTranslations,
   UsesGenericTypes,
-} from "~/types/config.js";
+} from "~/types/config";
 import type {
   FunctionTranslationKeys,
   FunctionTranslationKeysToNamespaceMap,
@@ -16,16 +16,16 @@ import type {
   StringTranslationKeys,
   StringTranslationKeysToNamespaceMap,
   TranslationDefinition,
-} from "~/types/store.js";
+} from "~/types/store";
 import type {
   GenericNamespacedTranslations,
   Namespace,
   NestedTranslationsRecord,
   Translation,
-} from "~/types/translations.js";
-import type { TranslationsOptions } from "~/utils/options/index.js";
+} from "~/types/translations";
+import type { TranslationsOptions } from "~/utils/options/index";
 
-import { notFoundKeysHandlers } from "~/utils/invalidKeys.js";
+import { notFoundKeysHandlers } from "~/utils/invalidKeys";
 
 // T-FUNCTION RETURN TYPE
 

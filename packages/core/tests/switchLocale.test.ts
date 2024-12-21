@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { Translations } from "../src/index.js";
+import { Translations } from "~/index";
 
 describe("Switching locale", () => {
   test("works synchronously", () => {

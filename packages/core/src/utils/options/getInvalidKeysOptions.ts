@@ -4,7 +4,7 @@ import {
   tooDeepKeysOptions,
   tooShallowKeysOptions,
 } from "~/utils/invalidKeys";
-import type { TranslationsInit, TranslationsOptions } from ".";
+import type { TranslationsInit, TranslationsOptions } from "~/utils/options";
 
 /**
  * Returns the current locale and a array of locale definitions.
