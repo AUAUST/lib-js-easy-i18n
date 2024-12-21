@@ -13,9 +13,11 @@ export function getTranslationsMap(): TranslationsMap {
 export function registerTranslations(
   map: TranslationsMap,
   namespace: Namespace,
-  translations: NestedTranslationsRecord,
+  translations: NestedTranslationsRecord | undefined,
   config: TranslationsOptions,
 ): TranslationsMap {
+  if (!translations) return map;
+
   const keysSeparator = config.keysSeparator,
     namespaceSeparator = config.namespaceSeparator;
 

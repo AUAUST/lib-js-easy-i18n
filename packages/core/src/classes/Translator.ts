@@ -64,9 +64,10 @@ export class Translator {
     return translation;
   }
 
-  /** @internal - Responsible for the fallback mechanism. */
+  /** @internal Responsible for the fallback mechanism. */
   private findTranslation(key: string, keysSeparator: KeysSeparator) {
-    const translations = this.translations.translations;
+    const parent = this.translations,
+      translations = parent.translations;
 
     do {
       for (const locale of this.getLocalesOrder()) {
@@ -76,12 +77,15 @@ export class Translator {
           return translation;
         }
       }
-    } while ((key = S.beforeLast(key, keysSeparator)));
+    } while (
+      parent.options.tooDeepKeys === "lastvalue" &&
+      (key = S.beforeLast(key, keysSeparator))
+    );
 
     return undefined;
   }
 
-  /** @internal - Returns the ordered list of locales to look for translations, starting from the current locale. */
+  /** @internal Returns the ordered list of locales to look for translations, starting from the current locale. */
   private getLocalesOrder() {
     const parent = this.translations,
       locale = parent.locale,
@@ -94,8 +98,11 @@ export class Translator {
     return [locale, ...fallback];
   }
 
-  /** @internal - Generates the fallback value for a missing translation. */
+  /** @internal Generates the fallback value for a missing translation. */
   private getFallbackValue(key: string) {
-    return notFoundKeysHandlers[this.translations.options.notFoundKeys](key)!;
+    return notFoundKeysHandlers[this.translations.options.notFoundKeys](
+      key,
+      this.translations,
+    )!;
   }
 }

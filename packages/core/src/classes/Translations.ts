@@ -13,7 +13,7 @@ import {
   type TranslationsInit,
   type TranslationsOptions,
 } from "~/utils/options/index";
-import { t } from "~/utils/t";
+import { registerTranslations } from "~/utils/translations/translationsMap";
 
 export class Translations extends HasEvents<TranslationsEvents> {
   /**
@@ -32,13 +32,17 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return new Translations(init).initSync();
   }
 
-  /** @internal */
-  private _isInitialized = false;
-  /** @internal */
+  /** @internal Holds the rew config until the instance is initialized. */
   private _init?: TranslationsInit;
-  /** @internal */
-  private _options: TranslationsOptions | undefined;
-  /** @internal - The `Translator` instance in charge of the translation mechanism. */
+
+  /** @internal Whether the instance has been initialized. */
+  private initialized = false;
+
+  /** @internal The parsed configuration. */
+  // @ts-expect-error - We don't want to initialize the options in the constructor, but having `undefined` in the type is annoying.
+  public options: TranslationsOptions;
+
+  /** @internal The `Translator` instance in charge of the translation mechanism. */
   private translator: Translator | undefined;
 
   constructor(init?: TranslationsInit) {
@@ -46,12 +50,12 @@ export class Translations extends HasEvents<TranslationsEvents> {
     this._init = O.is(init) ? init : {};
   }
 
-  /** @internal - Parses the options, initializes the instance and returns it. Contains the logic shared between `init` and `initSync`. */
+  /** @internal Parses the options, initializes the instance and returns it. Contains the logic shared between `init` and `initSync`. */
   private beforeInit(callback?: TranslationsEvents["initialized"]) {
-    if (this._isInitialized) return this;
+    if (this.initialized) return this;
 
-    this._isInitialized = true;
-    this._options = getOptions(this._init ?? {});
+    this.initialized = true;
+    this.options = getOptions(this._init ?? {});
     this.translator = new Translator(this);
 
     callback && this.on("initialized", callback);
@@ -69,7 +73,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * It is the same as calling `on("initialized", callback)` before calling `init`.
    */
   public async init(callback?: TranslationsEvents["initialized"]) {
-    if (this._isInitialized) return this;
+    if (this.initialized) return this;
 
     this.beforeInit(callback);
     this.addTranslations(
@@ -89,7 +93,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * It is the same as calling `on("initialized", callback)` before calling `initSync`.
    */
   public initSync(callback?: TranslationsEvents["initialized"]) {
-    if (this._isInitialized) return this;
+    if (this.initialized) return this;
 
     this.beforeInit(callback);
     this.emit("initialized", this);
@@ -107,36 +111,9 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return this.translator.translate(key, options);
   }
 
-  // private _t: TFunction | undefined;
-
-  // get t(): TFunction {
-  //   if (!this._t)
-  //     throw new Error(
-  //       "Translations: You must call `init` before being able to use `t`",
-  //     );
-
-  //   return this._t;
-  // }
-
-  /** @internal - Updates the `t` function to use the new state of the instance. */
-  private updateTFunction() {
-    this._t = t.bind({ ...this.options });
-    this.emit("tChanged", this, this._t);
-  }
-
-  /** @internal */
-  public get options() {
-    if (!this._options)
-      throw new Error(
-        "Translations: Tried using Translations before calling `init`",
-      );
-
-    return this._options;
-  }
-
   /** A boolean whether the instance is initialized or not. */
   public get isInitialized() {
-    return this._isInitialized;
+    return this.initialized;
   }
 
   /** The locale that's currently active on the instance. */
@@ -193,45 +170,15 @@ export class Translations extends HasEvents<TranslationsEvents> {
       return false; // Not worth throwing an error.
     }
 
-    /**
-     * Merges the new translations into the current translations recursively.
-     * A key already present in the current translations will have precedence.
-     */
-    function merge(
-      original: NestedTranslationsRecord,
-      extension: NestedTranslationsRecord,
-    ) {
-      for (const [key, value] of O.entries(extension)) {
-        // If the value is an object, we need to merge it recursively only if the original value is also an object.
-        if (O.is(value)) {
-          if (O.is(original[key])) {
-            merge(
-              original[key] as TranslationsSchema,
-              value as TranslationsSchema,
-            );
-          } else if (!original[key]) {
-            original[key] = value;
-          }
-        }
+    const currentTranslations = (this.translations[locale] ??= new Map());
 
-        // Otherwise it's a translation, which we can set if it's not already there.
-        else if (!original[key]) {
-          original[key] = value;
-        }
-      }
-    }
-
-    const currentTranslations = (this.translations[locale] ??= {});
-
-    for (const [rawNs, ts] of O.entries(translations)) {
-      const ns = S.toLowerCase(rawNs);
-
-      if (!currentTranslations[ns]) {
-        currentTranslations[ns] = ts;
-        continue;
-      }
-
-      merge(currentTranslations[ns]!, ts!);
+    for (const [namespace, namespaceTranslations] of O.entries(translations)) {
+      registerTranslations(
+        currentTranslations,
+        namespace,
+        namespaceTranslations,
+        this.options,
+      );
     }
   }
 
@@ -265,7 +212,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
       this.addTranslations(newLocale, translations);
     }
 
-    this.updateTFunction();
     this.emit("localeChanged", this, newLocale, oldLocale);
 
     return true;
@@ -294,7 +240,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
 
     this.options.locale = newLocale;
 
-    this.updateTFunction();
     this.emit("localeChanged", this, newLocale, oldLocale);
 
     return true;
@@ -347,8 +292,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
     }
 
     this.addTranslations(locale, namespacedTranslations);
-
-    this.updateTFunction();
   }
 
   /** @internal */
@@ -392,8 +335,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
 
     const translations = await this.loadNamespaces(locale, namespaces);
     this.addTranslations(locale, translations);
-
-    this.updateTFunction();
 
     return true;
   }

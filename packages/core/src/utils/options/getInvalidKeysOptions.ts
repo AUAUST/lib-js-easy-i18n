@@ -1,18 +1,30 @@
 import { O, S } from "@auaust/primitive-kit";
+import { Translations } from "~/classes/Translations";
 import type { TranslationsInit, TranslationsOptions } from "~/utils/options";
 
 /** Handlers for keys that are not found. */
 const notFoundKeysHandlers = {
   rawkey: (key) => S(key), // S will convert undefined to empty string
-  prettykey: (key) =>
-    S.toCustomCase(key, {
+  prettykey: (key, translations) => {
+    if (!key) return "";
+
+    const { namespaceSeparator, keysSeparator } = translations.options;
+
+    key = S.afterFirst(key, namespaceSeparator);
+    key = S.beforeLast(key, keysSeparator) || key;
+
+    return S.toCustomCase(key, {
       firstWordCase: "capital",
       wordCase: "lower",
       separator: " ",
-    }),
+    });
+  },
   empty: () => "",
   undefined: () => undefined,
-} as const satisfies Record<string, (key?: string) => string | undefined>;
+} as const satisfies Record<
+  string,
+  (key: string | undefined, translations: Translations) => string | undefined
+>;
 
 type InvalidKeysTypes = keyof typeof notFoundKeysHandlers;
 
