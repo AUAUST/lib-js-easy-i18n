@@ -10,7 +10,7 @@ describe("Events registry", () => {
       const T = new Translations({
         locales: ["en", "fr"],
       });
-      T.on("localeChanged", callback1);
+      T.on("locale_updated", callback1);
       T.initSync(callback2);
 
       expect(callback1).not.toHaveBeenCalled();
@@ -33,7 +33,7 @@ describe("Events registry", () => {
         },
       });
 
-      T.on("localeChanged", callback1);
+      T.on("locale_updated", callback1);
       await T.init(callback2);
 
       expect(callback1).not.toHaveBeenCalled();
@@ -54,8 +54,8 @@ describe("Events registry", () => {
       locales: ["en", "fr"],
     });
 
-    T.on("localeChanged", callback1);
-    T.on("localeChanged", callback2);
+    T.on("locale_updated", callback1);
+    T.on("locale_updated", callback2);
 
     T.initSync();
 
@@ -67,7 +67,7 @@ describe("Events registry", () => {
     expect(callback1).toHaveBeenCalledWith(T, "fr", "en");
     expect(callback2).toHaveBeenCalledWith(T, "fr", "en");
 
-    T.off("localeChanged", callback1);
+    T.off("locale_updated", callback1);
 
     T.switchLocaleSync("en");
 

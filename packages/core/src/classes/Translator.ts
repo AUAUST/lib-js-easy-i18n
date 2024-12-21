@@ -9,7 +9,7 @@ import { getKey } from "~/utils/translations/keys";
  * This class is only responsible for the translation mechanism,
  * but not for the storage or loading of translations nor configuration.
  *
- * It keeps track of its parent `Translations` instance, which is responsible for these tasks.
+ * It keeps track of its parent `Translations` instance, which is the configuration provider.
  */
 export class Translator {
   constructor(private translations: Translations) {}

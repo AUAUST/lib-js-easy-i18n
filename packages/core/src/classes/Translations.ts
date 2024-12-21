@@ -212,7 +212,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
       this.addTranslations(newLocale, translations);
     }
 
-    this.emit("localeChanged", this, newLocale, oldLocale);
+    this.emit("locale_updated", this, newLocale, oldLocale);
 
     return true;
   }
@@ -240,7 +240,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
 
     this.options.locale = newLocale;
 
-    this.emit("localeChanged", this, newLocale, oldLocale);
+    this.emit("locale_updated", this, newLocale, oldLocale);
 
     return true;
   }
