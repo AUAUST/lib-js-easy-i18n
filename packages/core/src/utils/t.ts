@@ -23,9 +23,9 @@ import type {
   NestedTranslationsRecord,
   Translation,
 } from "~/types/translations.js";
-import type { TranslationsOptions } from "~/utils/translations_init.js";
+import type { TranslationsOptions } from "~/utils/translationsInit.js";
 
-import { notFoundKeysHandlers } from "~/utils/invalid_keys.js";
+import { notFoundKeysHandlers } from "~/utils/invalidKeys.js";
 
 // T-FUNCTION RETURN TYPE
 

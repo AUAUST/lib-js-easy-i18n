@@ -20,7 +20,7 @@ import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "~/utils/translations_init.js";
+} from "~/utils/translationsInit.js";
 
 export class Translations {
   /**

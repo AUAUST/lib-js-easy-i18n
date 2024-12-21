@@ -16,7 +16,7 @@
     "test": "vitest run --config vitest.config.ts -- && pnpm typecheck",
     "watch": "vitest --config vitest.config.ts --",
     "coverage": "vitest run --coverage",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "echo 'Typechecking...' && tsc --noEmit && echo 'All good!'",
     "ci:pack": "pnpm pack"
   },
   "devDependencies": {

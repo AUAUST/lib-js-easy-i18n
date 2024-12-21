@@ -13,13 +13,14 @@ export function lowerCasedKeys<T extends Record<string, unknown>>(
     const key = (rawKey as string).toLowerCase();
 
     if (key !== rawKey) {
-      (obj as any)[key] = obj[rawKey];
+      // @ts-expect-error
+      obj[key] = obj[rawKey];
       delete obj[rawKey];
     }
 
     // If the depth's greater than 1 and the value is an object, recurse
     if (depth > 1 && O.isStrict(obj[key])) {
-      lowerCasedKeys(obj[key] as any, depth - 1);
+      lowerCasedKeys(obj[key], depth - 1);
     }
   }
 

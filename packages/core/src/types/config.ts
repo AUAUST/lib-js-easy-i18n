@@ -11,7 +11,7 @@ import type {
   NotFoundKeysOptions,
   TooDeepKeysOptions,
   TooShallowKeysOptions,
-} from "~/utils/invalid_keys.js";
+} from "~/utils/invalidKeys.js";
 
 /**
  * An interface you can extend with the namespaces you want to use.

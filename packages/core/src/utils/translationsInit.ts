@@ -18,8 +18,8 @@ import {
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
-} from "~/utils/invalid_keys.js";
-import { lowerCasedKeys } from "~/utils/lowercased_keys.js";
+} from "~/utils/invalidKeys.js";
+import { lowerCasedKeys } from "~/utils/lowerCasedKeys.js";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.
