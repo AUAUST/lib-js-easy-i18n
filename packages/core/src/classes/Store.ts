@@ -37,13 +37,13 @@ export class Store {
     );
   }
 
-  /** @internal Registers the translations into the store under the given locale and namespace. */
-  private addTranslations(
+  /** Registers the translations into the store under the given locale and namespace. */
+  public addTranslations(
     locale: Locale,
     namespace: Namespace,
     translations: NestedTranslationsRecord | undefined,
   ) {
-    if (!translations) return;
+    if (!O.is(translations)) return;
 
     if (!this.hasLocale(locale)) {
       this.store[locale] = {};
@@ -53,12 +53,12 @@ export class Store {
       this.store[locale]![namespace] = new Map();
     }
 
-    const { keysSeparator } = this.translations.options;
+    const { keysSeparator, namespaceSeparator } = this.translations.options;
 
     this.addTranslationsRecursively(
       this.store[locale]![namespace]!,
       translations,
-      namespace,
+      `${namespace}${namespaceSeparator}`,
       keysSeparator,
     );
   }

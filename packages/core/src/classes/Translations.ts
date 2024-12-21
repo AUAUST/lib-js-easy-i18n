@@ -14,7 +14,6 @@ import {
   type TranslationsInit,
   type TranslationsOptions,
 } from "~/utils/options/index";
-import { registerTranslations } from "~/utils/translations/translationsMap";
 
 export class Translations extends HasEvents<TranslationsEvents> {
   /**
@@ -107,16 +106,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return this;
   }
 
-  public t(key: string, options: { ns?: Namespace }) {
-    if (!this.translator) {
-      throw new Error(
-        "Translations: You must call `init` before being able to use `t`",
-      );
-    }
-
-    return this.translator.translate(key, options);
-  }
-
   /** A boolean whether the instance is initialized or not. */
   public get isInitialized() {
     return this.initialized;
@@ -135,6 +124,16 @@ export class Translations extends HasEvents<TranslationsEvents> {
   /** The default namespace. It is used by `t` if no namespace is specified. */
   public get defaultNamespace(): Namespace {
     return this.options.defaultNamespace;
+  }
+
+  public t(key: string, options: { ns?: Namespace }) {
+    if (!this.translator) {
+      throw new Error(
+        "Translations: You must call `init` before being able to use `t`",
+      );
+    }
+
+    return this.translator.translate(key, options);
   }
 
   /**
@@ -169,17 +168,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
         `Translations: Tried to add translations for a locale that is not allowed: "${locale}"~`,
       );
       return false; // Not worth throwing an error.
-    }
-
-    const currentTranslations = (this.translations[locale] ??= new Map());
-
-    for (const [namespace, namespaceTranslations] of O.entries(translations)) {
-      registerTranslations(
-        currentTranslations,
-        namespace,
-        namespaceTranslations,
-        this.options,
-      );
     }
   }
 
