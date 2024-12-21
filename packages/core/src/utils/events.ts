@@ -3,7 +3,7 @@ import type { Locale, TranslationsSchema } from "~/types/config.js";
 import type { Namespace } from "~/types/translations.js";
 import type { TFunction } from "~/utils/t.js";
 
-import { S } from "@auaust/primitive-kit";
+import { F, S } from "@auaust/primitive-kit";
 
 export type CallbacksStore = {
   [K: string]: NonNullable<Set<(...args: unknown[]) => void>>;
@@ -68,19 +68,17 @@ export function on(
   store: CallbacksStore,
   event: string,
   callback: (...args: any[]) => void,
-) {
+): () => boolean {
   event = S.toLowerCase(event);
 
   if (!store[event]) {
     store[event] = new Set();
   }
 
-  if (typeof callback === "function") {
+  if (F.is(callback)) {
     store[event]!.add(callback);
 
-    return () => {
-      return off(store, event, callback);
-    };
+    return () => off(store, event, callback);
   }
 
   return () => false;
@@ -90,7 +88,7 @@ export function off(
   store: CallbacksStore,
   event: string,
   callback?: (...args: any[]) => void,
-) {
+): boolean {
   event = S.toLowerCase(event);
 
   // If no callback is passed, clear the entire event store.
@@ -98,9 +96,7 @@ export function off(
     return delete store[event];
   }
 
-  const eventStore = store[event];
-
-  return eventStore ? eventStore.delete(callback) : false;
+  return store[event]?.delete(callback) ?? false;
 }
 
 export function emit(store: CallbacksStore, event: string, args: any[]) {
@@ -108,7 +104,7 @@ export function emit(store: CallbacksStore, event: string, args: any[]) {
 
   if (store[event]) {
     for (const callback of store[event]!) {
-      callback(...args);
+      F.call(callback, null, ...args);
     }
   }
 }

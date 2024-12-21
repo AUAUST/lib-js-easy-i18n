@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { Translations } from "../src/index.js";
 import type { GenericNamespacedTranslations } from "../src/types/translations.js";
-import type { TranslationsInit } from "../src/utils/translationsInit.js";
+import type { TranslationsInit } from "../src/utils/translationsInit/index.js";
 
 // function translation
 const fnT = vi.fn(({ name }: { name: string }) => {

@@ -20,14 +20,14 @@ import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "~/utils/translationsInit.js";
+} from "~/utils/translationsInit/index.js";
 
 export class Translations {
   /**
    * Creates an instance of `Translations` with the given configuration and initializes it.
    * Return a promise that resolves when the instance is initialized and returns it.
    */
-  static create(init: TranslationsInit) {
+  static create(init: TranslationsInit): Promise<Translations> {
     return new Translations(init).init();
   }
 
@@ -35,7 +35,7 @@ export class Translations {
    * Creates an instance of `Translations` with the given configuration and initializes it.
    * Won't run any asynchronous logic, which means translations must be provided in the options directly to be available.
    */
-  static createSync(init: TranslationsInit) {
+  static createSync(init: TranslationsInit): Translations {
     return new Translations(init).initSync();
   }
 
@@ -47,8 +47,7 @@ export class Translations {
   private _options: TranslationsOptions | undefined;
 
   constructor(init?: TranslationsInit) {
-    if (init) this._init = init;
-    else this._init = {} as TranslationsInit;
+    this._init = O.is(init) ? init : {};
   }
 
   /**
@@ -135,10 +134,9 @@ export class Translations {
   }
 
   /**
-   * Updates the `t` function to use the new state of the instance.
-
-   *
    * @internal
+   *
+   * Updates the `t` function to use the new state of the instance.
    */
   private updateTFunction() {
     this._t = t.bind({ ...this.options });
