@@ -1,4 +1,4 @@
-import { Translations } from "~/Translations.js";
+import { Translations } from "~/classes/Translations.js";
 import type {
   AllowedLocales,
   DefaultLocale,

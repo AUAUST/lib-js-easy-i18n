@@ -4,7 +4,7 @@ import {
   type Namespace,
   type NestedTranslationsRecord,
 } from "~/index.js";
-import { Translations } from "../src/Translations.js";
+import { Translations } from "../src/classes/Translations.js";
 
 describe("Translations instances", () => {
   const _loadNamespace = async (locale: Locale, namespace: Namespace) => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Translations } from "../src/Translations.js";
+import { Translations } from "../src/classes/Translations.js";
 
 describe("We can initialize a Translations instance", () => {
   test("without any options", () => {

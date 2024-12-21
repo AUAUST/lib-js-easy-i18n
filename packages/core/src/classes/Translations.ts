@@ -1,28 +1,21 @@
 import { O, S } from "@auaust/primitive-kit";
-
 import type { Locale, TranslationsSchema } from "~/types/config.js";
+import type { TranslationsEvents } from "~/types/events.js";
 import type {
   GenericNamespacedTranslations,
   LocaleDefinition,
   Namespace,
   NestedTranslationsRecord,
 } from "~/types/translations.js";
-import {
-  emit,
-  off,
-  on,
-  type CallbacksStore,
-  type TranslationsEvent,
-  type TranslationsEventCallback,
-} from "~/utils/events.js";
 import { t, type TFunction } from "~/utils/t.js";
 import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
 } from "~/utils/translationsInit/index.js";
+import { HasEvents } from "./HasEvents";
 
-export class Translations {
+export class Translations extends HasEvents<TranslationsEvents> {
   /**
    * Creates an instance of `Translations` with the given configuration and initializes it.
    * Return a promise that resolves when the instance is initialized and returns it.
@@ -47,6 +40,7 @@ export class Translations {
   private _options: TranslationsOptions | undefined;
 
   constructor(init?: TranslationsInit) {
+    super();
     this._init = O.is(init) ? init : {};
   }
 
@@ -57,7 +51,7 @@ export class Translations {
    * If a callback is provided, it will be called when the instance is initialized.
    * It is the same as calling `on("initialized", callback)` before calling `init`.
    */
-  async init(callback?: TranslationsEventCallback<"initialized">) {
+  async init(callback?: TranslationsEvents["initialized"]) {
     if (this._isInitialized) return this;
 
     this._isInitialized = true;
@@ -71,7 +65,7 @@ export class Translations {
     this.updateTFunction();
 
     callback && this.on("initialized", callback);
-    this.emit("initialized", [this]);
+    this.emit("initialized", this);
 
     return this;
   }
@@ -83,7 +77,7 @@ export class Translations {
    * If a callback is provided, it will be called right after the instance is initialized.
    * It is the same as calling `on("initialized", callback)` before calling `initSync`.
    */
-  initSync(callback?: TranslationsEventCallback<"initialized">) {
+  initSync(callback?: TranslationsEvents["initialized"]) {
     if (this._isInitialized) return this;
 
     this._isInitialized = true;
@@ -92,35 +86,10 @@ export class Translations {
     this.updateTFunction();
 
     callback && this.on("initialized", callback);
-    this.emit("initialized", [this]);
+    this.emit("initialized", this);
 
     return this;
   }
-
-  /** @internal */
-  private _eventCallbacks: CallbacksStore = {};
-
-  /**
-   * Adds a listener for the given event.
-   * Returns a function that can be called to remove the listener.
-   */
-  on = <Event extends TranslationsEvent>(
-    event: Event,
-    callback: TranslationsEventCallback<Event>,
-  ) => on(this._eventCallbacks, event, callback);
-
-  /**
-   * Removes a listener for the given event.
-   * If no callback is provided, all listeners for the given event are removed.
-   */
-  off = (event: TranslationsEvent, callback?: (...args: unknown[]) => void) =>
-    off(this._eventCallbacks, event, callback);
-
-  /** @internal */
-  private emit = <Event extends TranslationsEvent>(
-    event: Event,
-    args: Parameters<TranslationsEventCallback<Event>>,
-  ) => emit(this._eventCallbacks, event, args);
 
   private _t: TFunction | undefined;
 
@@ -140,7 +109,7 @@ export class Translations {
    */
   private updateTFunction() {
     this._t = t.bind({ ...this.options });
-    this.emit("tChanged", [this, this._t]);
+    this.emit("tChanged", this, this._t);
   }
 
   /** @internal */
@@ -309,7 +278,7 @@ export class Translations {
     }
 
     this.updateTFunction();
-    this.emit("localeChanged", [this, newLocale, oldLocale]);
+    this.emit("localeChanged", this, newLocale, oldLocale);
 
     return true;
   }
@@ -338,7 +307,7 @@ export class Translations {
     this.options.locale = newLocale;
 
     this.updateTFunction();
-    this.emit("localeChanged", [this, newLocale, oldLocale]);
+    this.emit("localeChanged", this, newLocale, oldLocale);
 
     return true;
   }
