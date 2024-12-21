@@ -1,8 +1,6 @@
 import type { Locale, TranslationsSchema } from "~/types/config";
 import type { Namespace, Translation } from "~/types/translations";
 import type { NestedRecord } from "~/types/utils";
-import { lowerCasedKeys } from "~/utils/lowerCasedKeys";
-import type { TranslationsInit, TranslationsOptions } from "~/utils/options";
 
 /** A generic translation object. It is unaware of the user-provided namespaces. */
 export type NestedTranslationsRecord = NestedRecord<string, Translation>;
@@ -26,20 +24,15 @@ export type GenericNamespacedTranslations = Record<
 >;
 
 /** The global translation object. It's a record of locales to their namespaced translations. */
-export type TranslationsStore = Record<Locale, TranslationsMap>;
+export type TranslationsStore = Record<
+  Locale,
+  Record<Namespace, TranslationsMap>
+>;
 
-/** The map of flattened translations keys to their values. One is created for each locale. */
+/** The map of flattened translations keys to their values. One is created for each namespace. */
 export type TranslationsMap = Map<string, Translation>;
 
 /** A partial global translation object. */
 export type PartialTranslationsStore = Partial<
   Record<Locale, PartialNamespacedTranslations>
 >;
-
-export function getTranslationsStore(
-  init: TranslationsInit,
-): TranslationsOptions["translations"] {
-  if (!init.translations) return {};
-
-  return lowerCasedKeys(init.translations, 2); // depth 2 to convert both locale and namespace keys
-}

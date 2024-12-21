@@ -5,7 +5,6 @@ import type {
   Namespace,
   NamespacedTranslations,
   NestedTranslationsRecord,
-  TranslationsStore,
 } from "~/types/translations";
 import { getNamespacesLoader } from "~/utils/loadNamespaces";
 import {
@@ -21,7 +20,6 @@ import {
 } from "~/utils/options/getLocalesOptions";
 import { getNamespacesOptions } from "~/utils/options/getNamespacesOptions";
 import { getSyntaxOptions } from "~/utils/options/getSyntaxOptions";
-import { getTranslationsStore } from "~/utils/translations";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.
@@ -185,6 +183,7 @@ export type TranslationsOptions = {
    * The default namespace.
    */
   defaultNamespace: Namespace;
+
   /**
    * The initial namespaces and any other namespace that has been loaded.
    */
@@ -194,6 +193,7 @@ export type TranslationsOptions = {
    * The separator used to separate the namespace from the key.
    */
   namespaceSeparator: NamespaceSeparator;
+
   /**
    * The separator used to separate the key's segments.
    */
@@ -203,19 +203,16 @@ export type TranslationsOptions = {
    * The way a key that's not found at all is handled.
    */
   notFoundKeys: Lowercase<NotFoundKeysOptions>; // Lowercase to case-insensitify
+
   /**
    * The way a key that tries to access a translation that's "too deep" is handled.
    */
   tooDeepKeys: Lowercase<TooDeepKeysOptions>; // Lowercase to case-insensitify
+
   /**
    * The way a key that doesn't lead to a final translation is handled.
    */
   tooShallowKeys: Lowercase<TooShallowKeysOptions>; // Lowercase to case-insensitify
-
-  /**
-   * The translations store.
-   */
-  translations: TranslationsStore;
 
   /**
    * An async function that lazily loads namespaces of translations for a locale.
@@ -236,7 +233,6 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
     ...getInvalidKeysOptions(init),
 
     loadNamespaces: getNamespacesLoader(init),
-    translations: getTranslationsStore(init),
   };
 
   return options;

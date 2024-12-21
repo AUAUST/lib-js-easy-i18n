@@ -1,5 +1,6 @@
 import { O, S } from "@auaust/primitive-kit";
 import { HasEvents } from "~/classes/HasEvents";
+import { Store } from "~/classes/Store";
 import { Translator } from "~/classes/Translator";
 import type { Locale, TranslationsSchema } from "~/types/config";
 import type { TranslationsEvents } from "~/types/events";
@@ -43,7 +44,10 @@ export class Translations extends HasEvents<TranslationsEvents> {
   public options: TranslationsOptions;
 
   /** @internal The `Translator` instance in charge of the translation mechanism. */
-  private translator: Translator | undefined;
+  public translator: Translator | undefined;
+
+  /** @internal The `Store` instance in charge of holding the data. */
+  public store: Store | undefined;
 
   constructor(init?: TranslationsInit) {
     super();
@@ -54,13 +58,15 @@ export class Translations extends HasEvents<TranslationsEvents> {
   private beforeInit(callback?: TranslationsEvents["initialized"]) {
     if (this.initialized) return this;
 
-    this.initialized = true;
     this.options = getOptions(this._init ?? {});
+    this.store = new Store(this);
     this.translator = new Translator(this);
 
     callback && this.on("initialized", callback);
 
     delete this._init;
+
+    this.initialized = true;
 
     return this;
   }
@@ -129,11 +135,6 @@ export class Translations extends HasEvents<TranslationsEvents> {
   /** The default namespace. It is used by `t` if no namespace is specified. */
   public get defaultNamespace(): Namespace {
     return this.options.defaultNamespace;
-  }
-
-  /** All the translations that have been loaded. Includes all locales and namespaces. */
-  public get translations() {
-    return this.options.translations;
   }
 
   /**

@@ -3,7 +3,6 @@ import { Translations } from "~/classes/Translations";
 import type { KeysSeparator, NamespaceSeparator } from "~/types/config";
 import type { Namespace } from "~/types/translations";
 import { notFoundKeysHandlers } from "~/utils/options/getInvalidKeysOptions";
-import { getKey } from "~/utils/translations/keys";
 
 /**
  * This class is only responsible for the translation mechanism,
@@ -35,43 +34,34 @@ export class Translator {
     options: {
       ns?: Namespace;
       namespace?: Namespace;
-      namespaceSeparator?: NamespaceSeparator;
-      keysSeparator?: KeysSeparator;
     },
   ) {
     const parent = this.translations;
 
-    const keysSeparator =
-      options?.keysSeparator ?? parent.options.keysSeparator;
-
-    const accessor = getKey(
+    const [namespace, k] = this.getNamespaceAndKey(
       key,
       options?.ns ?? options?.namespace ?? parent.options.defaultNamespace,
-      options?.namespaceSeparator ?? parent.options.namespaceSeparator,
-      keysSeparator,
     );
 
-    if (!accessor) {
-      return this.getFallbackValue(key);
-    }
-
-    const translation = this.findTranslation(accessor, keysSeparator);
+    const translation = this.findTranslation(k, namespace);
 
     if (translation === undefined) {
-      return this.getFallbackValue(accessor);
+      return this.getFallbackValue(k);
     }
 
     return translation;
   }
 
   /** @internal Responsible for the fallback mechanism. */
-  private findTranslation(key: string, keysSeparator: KeysSeparator) {
+  private findTranslation(key: string, namespace: Namespace) {
+    // TODO: expose a getTranslation method from the Translations class; each component should be contained except for the parent Translations, which itself serves as an API
+
     const parent = this.translations,
-      translations = parent.translations;
+      store = parent.store;
 
     do {
       for (const locale of this.getLocalesOrder()) {
-        const translation = translations[locale]?.get(key);
+        const translation = store?.getTranslation(key, namespace, locale);
 
         if (translation !== undefined) {
           return translation;
@@ -79,7 +69,7 @@ export class Translator {
       }
     } while (
       parent.options.tooDeepKeys === "lastvalue" &&
-      (key = S.beforeLast(key, keysSeparator))
+      (key = S.beforeLast(key, parent.options.keysSeparator))
     );
 
     return undefined;
@@ -104,5 +94,22 @@ export class Translator {
       key,
       this.translations,
     )!;
+  }
+
+  /** @internal Returns the namespace-less key and the namespace as a tuple. */
+  private getNamespaceAndKey(
+    key: string,
+    namespace: Namespace,
+  ): [Namespace, string] {
+    const [beforeSeparator, afterSeparator] = S.splitFirst(
+      key,
+      this.translations.options.namespaceSeparator,
+    );
+
+    if (afterSeparator === "") {
+      return [namespace, beforeSeparator];
+    }
+
+    return [beforeSeparator, afterSeparator];
   }
 }
