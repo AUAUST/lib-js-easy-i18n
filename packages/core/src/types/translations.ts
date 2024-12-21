@@ -1,5 +1,5 @@
-import type { Locale, TranslationsSchema } from "~/types/config.js";
-import type { NestedRecord } from "~/types/utils.js";
+import type { Locale, TranslationsSchema } from "~/types/config";
+import type { NestedRecord } from "~/types/utils";
 
 // TRANSLATION OBJECTS-RELATED TYPES
 
@@ -44,11 +44,11 @@ export type Translation = string | ((args: any) => string);
 
 // LOCALES-RELATED TYPES
 
-export interface LocaleDefinition {
+export type LocaleDefinition = {
   locale: Locale;
   name: string;
-  fallback: false | Locale[];
-}
+  fallback: undefined | Locale[];
+};
 
 export type LocaleDefinitionInit = {
   /**

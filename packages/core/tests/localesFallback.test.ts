@@ -243,7 +243,7 @@ describe("Custom fallbacks", () => {
     const T = Translations.createSync(init);
 
     expect(T.getLocaleConfig("en")!.fallback).toEqual(["fr", "es", "de"]); // "fr" deduplicated, "en" ignored
-    expect(T.getLocaleConfig("fr")!.fallback).toBe(false);
+    expect(T.getLocaleConfig("fr")!.fallback).toBe(undefined);
     expect(T.getLocaleConfig("es")!.fallback).toEqual(["de"]); // valid in the first place
   });
 
@@ -257,7 +257,7 @@ describe("Custom fallbacks", () => {
       },
     });
 
-    expect(T.getLocaleConfig("en")!.fallback).toBe(false);
+    expect(T.getLocaleConfig("en")!.fallback).toBe(undefined);
   });
 
   test("do no prevent fallbacks from being generated on other locales", () => {

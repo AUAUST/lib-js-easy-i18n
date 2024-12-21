@@ -23,7 +23,7 @@ import type {
   NestedTranslationsRecord,
   Translation,
 } from "~/types/translations.js";
-import type { TranslationsOptions } from "~/utils/translationsInit/index.js";
+import type { TranslationsOptions } from "~/utils/options/index.js";
 
 import { notFoundKeysHandlers } from "~/utils/invalidKeys.js";
 

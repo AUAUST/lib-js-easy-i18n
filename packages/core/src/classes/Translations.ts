@@ -7,12 +7,12 @@ import type {
   Namespace,
   NestedTranslationsRecord,
 } from "~/types/translations.js";
-import { t, type TFunction } from "~/utils/t.js";
 import {
   getOptions,
   type TranslationsInit,
   type TranslationsOptions,
-} from "~/utils/translationsInit/index.js";
+} from "~/utils/options/index.js";
+import { t, type TFunction } from "~/utils/t.js";
 import { HasEvents } from "./HasEvents";
 
 export class Translations extends HasEvents<TranslationsEvents> {

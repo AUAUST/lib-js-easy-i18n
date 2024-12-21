@@ -2,7 +2,7 @@
  * This suite tests the correct converting of a TranslationsInit object to a TranslationsConfig object.
  */
 import { describe, expect, test } from "vitest";
-import { getOptions } from "../src/utils/translationsInit/index.js";
+import { getOptions } from "../src/utils/options/index.js";
 
 describe("The `getOptions` helper", () => {
   test("has correct config defaults when no options are provided", () => {
@@ -15,7 +15,7 @@ describe("The `getOptions` helper", () => {
           default: {
             name: "default",
             locale: "default",
-            fallback: false,
+            fallback: undefined,
           },
         },
 
@@ -57,7 +57,7 @@ describe("The `getOptions` helper", () => {
           en: {
             name: "en",
             locale: "en",
-            fallback: false,
+            fallback: undefined,
           },
         },
 
@@ -84,7 +84,7 @@ describe("The `getOptions` helper", () => {
         en: {
           name: "en",
           locale: "en",
-          fallback: false,
+          fallback: undefined,
         },
       });
 
@@ -122,7 +122,7 @@ describe("The `getOptions` helper", () => {
         en: {
           name: "en",
           locale: "en",
-          fallback: false,
+          fallback: undefined,
         },
         fr: {
           name: "Français",
@@ -151,7 +151,7 @@ describe("The `getOptions` helper", () => {
             fr: {
               name: "Français",
               locale: "fr",
-              fallback: false,
+              fallback: undefined,
             }, // By default, the default locale doesn't fallback
             en: {
               name: "English",
