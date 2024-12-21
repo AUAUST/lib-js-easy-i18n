@@ -6,7 +6,6 @@ import type {
   NamespacedTranslations,
   NestedTranslationsRecord,
 } from "~/types/translations";
-import { getNamespacesLoader } from "~/utils/loadNamespaces";
 import {
   getInvalidKeysOptions,
   type NotFoundKeysOptions,
@@ -20,6 +19,7 @@ import {
 } from "~/utils/options/getLocalesOptions";
 import { getNamespacesOptions } from "~/utils/options/getNamespacesOptions";
 import { getSyntaxOptions } from "~/utils/options/getSyntaxOptions";
+import { getLoadersOptions } from "./getLoadersOptions";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.
@@ -73,14 +73,14 @@ export type TranslationsInit = {
      *
      * @default ":"
      */
-    namespaceSeparator?: string;
+    namespaceSeparator?: NamespaceSeparator;
 
     /**
      * The separator used to separate the key's segments.
      *
      * @default "."
      */
-    keysSeparator?: string;
+    keysSeparator?: KeysSeparator;
   };
 
   /**
@@ -165,64 +165,55 @@ export type TranslationsInit = {
   ) => Promise<NestedTranslationsRecord | undefined>;
 };
 
-/**
- * The options restructured and filled with defaults based on a `TranslationsInit` object.
- */
+/** The options restructured and filled with defaults based on a `TranslationsInit` object. */
 export type TranslationsOptions = {
-  /**
-   * The current locale.
-   */
+  /** The current locale. */
   locale: Locale;
 
-  /**
-   * The configuration for each locale.
-   */
+  /** A configuration for each locale. */
   locales: Record<Locale, LocaleDefinition>;
 
-  /**
-   * The default namespace.
-   */
+  /** The default namespace. */
   defaultNamespace: Namespace;
 
-  /**
-   * The initial namespaces and any other namespace that has been loaded.
-   */
+  /** Required namespaces for the initial load and after locale changes. */
   requiredNamespaces: Namespace[];
 
-  /**
-   * The separator used to separate the namespace from the key.
-   */
+  /** The separator used to separate the namespace from the key. */
   namespaceSeparator: NamespaceSeparator;
 
-  /**
-   * The separator used to separate the key's segments.
-   */
+  /** The separator used to separate the key's segments. */
   keysSeparator: KeysSeparator;
 
-  /**
-   * The way a key that's not found at all is handled.
-   */
+  /** The way a key that's not found at all is handled. */
   notFoundKeys: Lowercase<NotFoundKeysOptions>; // Lowercase to case-insensitify
 
-  /**
-   * The way a key that tries to access a translation that's "too deep" is handled.
-   */
+  /** The way a key that tries to access a translation that's "too deep" is handled. */
   tooDeepKeys: Lowercase<TooDeepKeysOptions>; // Lowercase to case-insensitify
 
-  /**
-   * The way a key that doesn't lead to a final translation is handled.
-   */
+  /** The way a key that doesn't lead to a final translation is handled. */
   tooShallowKeys: Lowercase<TooShallowKeysOptions>; // Lowercase to case-insensitify
 
-  /**
-   * An async function that lazily loads namespaces of translations for a locale.
-   */
-  loadNamespaces: (
-    locale: Locale,
-    namespaces: Namespace[],
-  ) => Promise<{
-    [K in Namespace]?: NestedTranslationsRecord;
-  }>;
+  /** An async function that lazily loads namespaces of translations for a locale. */
+  loadNamespaces:
+    | ((
+        locale: Locale,
+        namespaces: Namespace[],
+      ) => Promise<
+        | {
+            [K in Namespace]?: NestedTranslationsRecord | undefined;
+          }
+        | undefined
+      >)
+    | undefined;
+
+  /** An async function that lazily loads a single namespace of translations for a locale. */
+  loadNamespace:
+    | ((
+        locale: Locale,
+        namespace: Namespace,
+      ) => Promise<NestedTranslationsRecord | undefined>)
+    | undefined;
 };
 
 export function getOptions(init: TranslationsInit): TranslationsOptions {
@@ -231,8 +222,7 @@ export function getOptions(init: TranslationsInit): TranslationsOptions {
     ...getNamespacesOptions(init),
     ...getSyntaxOptions(init),
     ...getInvalidKeysOptions(init),
-
-    loadNamespaces: getNamespacesLoader(init),
+    ...getLoadersOptions(init),
   };
 
   return options;

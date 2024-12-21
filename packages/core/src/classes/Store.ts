@@ -1,4 +1,5 @@
 import { O } from "@auaust/primitive-kit";
+import { Loader } from "~/classes/Loader";
 import type { Translations } from "~/classes/Translations";
 import type { Locale } from "~/types/config";
 import type {
@@ -18,7 +19,12 @@ export class Store {
   /** @internal A record of locales to records of namespaces to translations. */
   private store: TranslationsStore = {};
 
-  constructor(private translations: Translations) {}
+  /** @internal A `Loader` instance that holds the logic to load translations into the store. */
+  private loader: Loader;
+
+  constructor(private translations: Translations) {
+    this.loader = new Loader(this.translations, this);
+  }
 
   /** Returns whether the store has any translations for the given locale. */
   public hasLocale(locale: Locale) {
@@ -86,5 +92,29 @@ export class Store {
           break;
       }
     }
+  }
+
+  public getRequiredNamespaces() {
+    return this.loader.getRequiredNamespaces();
+  }
+
+  public requireNamespace(namespace: Namespace) {
+    return this.loader.requireNamespace(namespace);
+  }
+
+  public dropNamespace(namespace: Namespace) {
+    return this.loader.dropNamespace(namespace);
+  }
+
+  public async loadRequiredNamespaces(locale?: Locale) {
+    return await this.loader.loadRequiredNamespaces(locale);
+  }
+
+  public async loadNamespaces(namespaces: Namespace[], locale: Locale) {
+    return await this.loader.loadNamespaces(namespaces, locale);
+  }
+
+  public async loadNamespace(namespace: Namespace, locale: Locale) {
+    return await this.loader.loadNamespaces([namespace], locale);
   }
 }
