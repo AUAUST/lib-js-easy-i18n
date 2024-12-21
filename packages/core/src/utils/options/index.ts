@@ -2,21 +2,23 @@
 
 import type { Locale } from "~/types/config";
 import type {
-  GenericNamespacedTranslations,
-  LocaleDefinition,
-  LocaleDefinitionInit,
   Namespace,
   NamespacedTranslations,
   NestedTranslationsRecord,
+  TranslationsStore,
 } from "~/types/translations";
+import { getNamespacesLoader } from "~/utils/loadNamespaces";
 import {
+  getInvalidKeysOptions,
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
   type TooShallowKeysOptions,
-} from "~/utils/invalidKeys";
-import { getNamespacesLoader } from "~/utils/loadNamespaces";
-import { getInvalidKeysOptions } from "~/utils/options/getInvalidKeysOptions";
-import { getLocalesOptions } from "~/utils/options/getLocalesOptions";
+} from "~/utils/options/getInvalidKeysOptions";
+import {
+  getLocalesOptions,
+  type LocaleDefinition,
+  type LocaleDefinitionInit,
+} from "~/utils/options/getLocalesOptions";
 import { getNamespacesOptions } from "~/utils/options/getNamespacesOptions";
 import { getSyntaxOptions } from "~/utils/options/getSyntaxOptions";
 import { getTranslationsStore } from "~/utils/translationsStore";
@@ -213,7 +215,7 @@ export type TranslationsOptions = {
   /**
    * The translations store.
    */
-  translations: Partial<Record<Locale, GenericNamespacedTranslations>>;
+  translations: TranslationsStore;
 
   /**
    * An async function that lazily loads namespaces of translations for a locale.

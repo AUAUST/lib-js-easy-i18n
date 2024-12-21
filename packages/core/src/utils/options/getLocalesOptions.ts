@@ -1,10 +1,30 @@
 import { A, O, S } from "@auaust/primitive-kit";
 import type { Locale } from "~/types/config";
-import type {
-  LocaleDefinition,
-  LocaleDefinitionInit,
-} from "~/types/translations";
 import type { TranslationsInit, TranslationsOptions } from "~/utils/options";
+
+export type LocaleDefinition = {
+  locale: Locale;
+  name: string;
+  fallback: undefined | Locale[];
+};
+
+export type LocaleDefinitionInit = {
+  /** The locale's identifier. */
+  locale?: Locale;
+
+  /** The locale's name. Would likely be set to the locale's name in its own language. */
+  name?: string;
+
+  /**
+   * The fallback locales used to lookup missing translations.
+   * If `Locale[]`, will lookup the passed locale in order.
+   * If `true`, will loop through all the locales and return the first value that's found.
+   * If `false`, no fallback logic will be applied.
+   *
+   * @default true
+   */
+  fallback?: boolean | Locale | Locale[];
+};
 
 /**
  * Returns the current locale and a array of locale definitions.

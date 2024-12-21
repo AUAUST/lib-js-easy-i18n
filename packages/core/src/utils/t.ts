@@ -23,9 +23,8 @@ import type {
   NestedTranslationsRecord,
   Translation,
 } from "~/types/translations";
+import { notFoundKeysHandlers } from "~/utils/options/getInvalidKeysOptions";
 import type { TranslationsOptions } from "~/utils/options/index";
-
-import { notFoundKeysHandlers } from "~/utils/invalidKeys";
 
 // T-FUNCTION RETURN TYPE
 
