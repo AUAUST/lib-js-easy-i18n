@@ -28,7 +28,7 @@
     "vitest": "^1.1.3"
   },
   "dependencies": {
-    "@auaust/primitive-kit": "^0.9.4"
+    "@auaust/primitive-kit": "^0.34.0"
   },
   "files": [
     "dist",
