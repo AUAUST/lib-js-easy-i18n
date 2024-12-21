@@ -8,7 +8,7 @@ import type {
   NotFoundKeysOptions,
   TooDeepKeysOptions,
   TooShallowKeysOptions,
-} from "~/utils/invalidKeys";
+} from "~/utils/options/getInvalidKeysOptions";
 
 /**
  * An interface you can extend with the namespaces you want to use.

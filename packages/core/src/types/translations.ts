@@ -14,4 +14,4 @@ export type {
   PartialTranslationsStore,
   TranslationsForNamespace,
   TranslationsStore,
-} from "~/utils/translationsStore";
+} from "~/utils/translations";

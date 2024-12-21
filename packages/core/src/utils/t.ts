@@ -25,6 +25,7 @@ import type {
 } from "~/types/translations";
 import { notFoundKeysHandlers } from "~/utils/options/getInvalidKeysOptions";
 import type { TranslationsOptions } from "~/utils/options/index";
+import { isTranslation } from "~/utils/translations/isTranslation";
 
 // T-FUNCTION RETURN TYPE
 
@@ -153,7 +154,7 @@ type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
     : TooShallowKeysReturnType;
 
 /** A subset of the `TranslationsOptions` that only contains the parts that are used by the `t` function. */
-type TFunctionConfig = Pick<
+export type TFunctionConfig = Pick<
   TranslationsOptions,
   | "locale"
   | "locales"
@@ -307,17 +308,6 @@ function translationValue(translation: Translation, options?: { arg?: any }) {
   }
 
   return String(translation);
-}
-
-function isTranslation(value: any): value is Translation {
-  switch (typeof value) {
-    case "string":
-    case "function":
-    case "number": // While not officially supported, it makes no arm to support numbers.
-      return true;
-    default:
-      return false;
-  }
 }
 
 function notFoundKey(

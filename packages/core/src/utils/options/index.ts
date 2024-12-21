@@ -1,6 +1,6 @@
 // This file provides types used by the `Translations` class.
 
-import type { Locale } from "~/types/config";
+import type { KeysSeparator, Locale, NamespaceSeparator } from "~/types/config";
 import type {
   Namespace,
   NamespacedTranslations,
@@ -21,7 +21,7 @@ import {
 } from "~/utils/options/getLocalesOptions";
 import { getNamespacesOptions } from "~/utils/options/getNamespacesOptions";
 import { getSyntaxOptions } from "~/utils/options/getSyntaxOptions";
-import { getTranslationsStore } from "~/utils/translationsStore";
+import { getTranslationsStore } from "~/utils/translations";
 
 /**
  * The options that can be passed to the `Translations` class constructor, with a flexible structure.
@@ -193,11 +193,11 @@ export type TranslationsOptions = {
   /**
    * The separator used to separate the namespace from the key.
    */
-  namespaceSeparator: string;
+  namespaceSeparator: NamespaceSeparator;
   /**
    * The separator used to separate the key's segments.
    */
-  keysSeparator: string;
+  keysSeparator: KeysSeparator;
 
   /**
    * The way a key that's not found at all is handled.

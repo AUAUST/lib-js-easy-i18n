@@ -1,10 +1,10 @@
 import { O, S } from "@auaust/primitive-kit";
 import { HasEvents } from "~/classes/HasEvents";
+import { Translator } from "~/classes/Translator";
 import type { Locale, TranslationsSchema } from "~/types/config";
 import type { TranslationsEvents } from "~/types/events";
 import type {
   GenericNamespacedTranslations,
-  LocaleDefinition,
   Namespace,
   NestedTranslationsRecord,
 } from "~/types/translations";
@@ -13,7 +13,7 @@ import {
   type TranslationsInit,
   type TranslationsOptions,
 } from "~/utils/options/index";
-import { t, type TFunction } from "~/utils/t";
+import { t } from "~/utils/t";
 
 export class Translations extends HasEvents<TranslationsEvents> {
   /**
@@ -35,13 +35,30 @@ export class Translations extends HasEvents<TranslationsEvents> {
   /** @internal */
   private _isInitialized = false;
   /** @internal */
-  private _init: TranslationsInit;
+  private _init?: TranslationsInit;
   /** @internal */
   private _options: TranslationsOptions | undefined;
+  /** @internal - The `Translator` instance in charge of the translation mechanism. */
+  private translator: Translator | undefined;
 
   constructor(init?: TranslationsInit) {
     super();
     this._init = O.is(init) ? init : {};
+  }
+
+  /** @internal - Parses the options, initializes the instance and returns it. Contains the logic shared between `init` and `initSync`. */
+  private beforeInit(callback?: TranslationsEvents["initialized"]) {
+    if (this._isInitialized) return this;
+
+    this._isInitialized = true;
+    this._options = getOptions(this._init ?? {});
+    this.translator = new Translator(this);
+
+    callback && this.on("initialized", callback);
+
+    delete this._init;
+
+    return this;
   }
 
   /**
@@ -51,20 +68,14 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * If a callback is provided, it will be called when the instance is initialized.
    * It is the same as calling `on("initialized", callback)` before calling `init`.
    */
-  async init(callback?: TranslationsEvents["initialized"]) {
+  public async init(callback?: TranslationsEvents["initialized"]) {
     if (this._isInitialized) return this;
 
-    this._isInitialized = true;
-    this._options = getOptions(this._init);
-
+    this.beforeInit(callback);
     this.addTranslations(
       this.locale,
       await this.loadRequiredNamespaces(this.locale),
     );
-
-    this.updateTFunction();
-
-    callback && this.on("initialized", callback);
     this.emit("initialized", this);
 
     return this;
@@ -77,43 +88,44 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * If a callback is provided, it will be called right after the instance is initialized.
    * It is the same as calling `on("initialized", callback)` before calling `initSync`.
    */
-  initSync(callback?: TranslationsEvents["initialized"]) {
+  public initSync(callback?: TranslationsEvents["initialized"]) {
     if (this._isInitialized) return this;
 
-    this._isInitialized = true;
-    this._options = getOptions(this._init);
-
-    this.updateTFunction();
-
-    callback && this.on("initialized", callback);
+    this.beforeInit(callback);
     this.emit("initialized", this);
 
     return this;
   }
 
-  private _t: TFunction | undefined;
-
-  get t(): TFunction {
-    if (!this._t)
+  public t(key: string, options: { ns?: Namespace }) {
+    if (!this.translator) {
       throw new Error(
         "Translations: You must call `init` before being able to use `t`",
       );
+    }
 
-    return this._t;
+    return this.translator.translate(key, options);
   }
 
-  /**
-   * @internal
-   *
-   * Updates the `t` function to use the new state of the instance.
-   */
+  // private _t: TFunction | undefined;
+
+  // get t(): TFunction {
+  //   if (!this._t)
+  //     throw new Error(
+  //       "Translations: You must call `init` before being able to use `t`",
+  //     );
+
+  //   return this._t;
+  // }
+
+  /** @internal - Updates the `t` function to use the new state of the instance. */
   private updateTFunction() {
     this._t = t.bind({ ...this.options });
     this.emit("tChanged", this, this._t);
   }
 
   /** @internal */
-  private get options() {
+  public get options() {
     if (!this._options)
       throw new Error(
         "Translations: Tried using Translations before calling `init`",
@@ -122,60 +134,36 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return this._options;
   }
 
-  /**
-   * A boolean whether the instance is initialized or not.
-   */
-  get isInitialized() {
+  /** A boolean whether the instance is initialized or not. */
+  public get isInitialized() {
     return this._isInitialized;
   }
 
-  /**
-   * The locale that's currently active on the instance.
-   */
-  get locale(): Locale {
+  /** The locale that's currently active on the instance. */
+  public get locale(): Locale {
     return this.options.locale;
   }
 
-  /**
-   * The locales that are allowed on the instance.
-   */
-  get locales(): Locale[] {
+  /** The locales that are allowed on the instance. */
+  public get locales(): Locale[] {
     return O.keys(this.options.locales);
   }
 
-  /**
-   * The default namespace. It is used by `t` if no namespace is specified.
-   */
-  get defaultNamespace(): Namespace {
+  /** The default namespace. It is used by `t` if no namespace is specified. */
+  public get defaultNamespace(): Namespace {
     return this.options.defaultNamespace;
   }
 
-  /**
-   * All the translations that have been loaded.
-   * Includes all locales and namespaces.
-   */
-  get translations() {
+  /** All the translations that have been loaded. Includes all locales and namespaces. */
+  public get translations() {
     return this.options.translations;
-  }
-
-  /**
-   * Returns the configuration for the given locale.
-   * It's an object with the following properties:
-   * - `locale`: The locale code.
-   * - `name`: The name of the locale. (display purposes)
-   * - `fallback`: The locales to which this locale will fallback to or false if disabled.
-   *
-   * If the locale is invalid, it will return `undefined`.
-   */
-  getLocaleConfig(locale: Locale): LocaleDefinition | undefined {
-    return this.options.locales[locale];
   }
 
   /**
    * A function based on the `loadNamespace` or `loadNamespaces` init options.
    * It can be called to request the loading of new namespaces using the provided logic.
    */
-  async loadNamespaces(
+  public async loadNamespaces(
     ...args: Parameters<TranslationsOptions["loadNamespaces"]>
   ) {
     const lNs = await this.options.loadNamespaces(...args);
@@ -254,7 +242,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * If the locale is not allowed, it will ignore the request and return `false`.
    * If the locale is already active, it will ignore the request and return `null`.
    */
-  async switchLocale(newLocale: Locale) {
+  public async switchLocale(newLocale: Locale) {
     newLocale = S.toLowerCase(newLocale);
     const oldLocale = this.locale;
 
@@ -291,7 +279,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * If the locale is not allowed, it will ignore the request and return `false`.
    * If the locale is already active, it will ignore the request and return `null`.
    */
-  switchLocaleSync(newLocale: Locale) {
+  public switchLocaleSync(newLocale: Locale) {
     newLocale = S.toLowerCase(newLocale);
     const oldLocale = this.locale;
 
@@ -320,17 +308,17 @@ export class Translations extends HasEvents<TranslationsEvents> {
    *
    * If all required namespaces are provided with this function, `loadNamespaces` and `loadNamespace` will never be called.
    */
-  registerTranslations(
+  public registerTranslations(
     locale: Locale,
     namespace: Namespace,
     translations: TranslationsSchema,
   ): void;
-  registerTranslations(
+  public registerTranslations(
     locale: Locale,
     translations: Partial<GenericNamespacedTranslations>,
   ): void;
 
-  registerTranslations(
+  public registerTranslations(
     locale: Locale,
     namespaceOrTranslations: Namespace | GenericNamespacedTranslations,
     translations?: NestedTranslationsRecord,
@@ -394,10 +382,12 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * It returns a promise that resolves when the namespaces are loaded. The promise always resolves to `true`.
    * It can be used to await the loading of the namespaces.
    */
-  async requireNamespaces(...ns: (Namespace | Namespace[])[]): Promise<true> {
-    const locale = this.locale;
+  public async requireNamespaces(
+    ...ns: (Namespace | Namespace[])[]
+  ): Promise<true> {
+    const locale = this.locale,
+      namespaces = ns.flat(Infinity).map(S.lower);
 
-    const namespaces = ns.flat(Infinity).map(S.toLowerCase);
     this.options.requiredNamespaces.push(...namespaces); // Ensures later calls to `loadRequiredNamespaces` will load the new namespaces.
 
     const translations = await this.loadNamespaces(locale, namespaces);
@@ -417,14 +407,12 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * This is useful if you need to scope certain namespaces to a specific part of your application.
    * This way, you can call `requireNamespaces` when you enter the scope and `dropNamespaces` when you leave it.
    */
-  dropNamespaces(...ns: (Namespace | Namespace[])[]): true {
-    const namespaces = ns.flat(Infinity).map(S.toLowerCase);
-    const requiredNamespaces = this.options.requiredNamespaces;
+  public dropNamespaces(...ns: (Namespace | Namespace[])[]): true {
+    const namespaces = ns.flat(Infinity).map(S.lower);
 
-    for (const n of namespaces) {
-      const index = requiredNamespaces.indexOf(n);
-      if (index >= 0) requiredNamespaces.splice(index, 1);
-    }
+    this.options.requiredNamespaces = this.options.requiredNamespaces.filter(
+      (n) => !namespaces.includes(S.lower(n)),
+    );
 
     return true;
   }

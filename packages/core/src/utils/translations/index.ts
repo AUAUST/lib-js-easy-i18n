@@ -26,7 +26,10 @@ export type GenericNamespacedTranslations = Record<
 >;
 
 /** The global translation object. It's a record of locales to their namespaced translations. */
-export type TranslationsStore = Record<Locale, Map<string, Translation>>;
+export type TranslationsStore = Record<Locale, TranslationsMap>;
+
+/** The map of flattened translations keys to their values. One is created for each locale. */
+export type TranslationsMap = Map<string, Translation>;
 
 /** A partial global translation object. */
 export type PartialTranslationsStore = Partial<
