@@ -27,7 +27,7 @@ export class Store {
   private loader: Loader;
 
   /** @internal The map of namespaces to the number of times they are required or loaded. */
-  private namespaces: Map<Namespace, number> = new Map();
+  private namespaces: Set<Namespace> = new Set();
 
   constructor(private translations: Translations) {
     this.loader = Loader.from(this.translations, this);
@@ -79,7 +79,7 @@ export class Store {
       this.store[locale]![namespace] = new Map();
     }
 
-    this.incrementNamespace(namespace);
+    this.includeNamespaces(namespace);
 
     this.addTranslationsRecursively(
       this.store[locale]![namespace]!,
@@ -91,29 +91,13 @@ export class Store {
 
   /** Lists all the namespaces that are present in the store. */
   public getNamespaces() {
-    const map = this.namespaces;
-    return A(map.keys()).filter((namespace) => map.get(namespace)! > 0);
+    return A.from(this.namespaces);
   }
 
-  /** @internal Increments the count of the given namespace. */
-  private incrementNamespace(namespaces: Namespace | Namespace[]) {
-    if (!A.is(namespaces)) {
-      namespaces = [namespaces];
-    }
-
-    for (const namespace of namespaces) {
-      this.namespaces.set(namespace, (this.namespaces.get(namespace) || 0) + 1);
-    }
-  }
-
-  /** @internal Decrements the count of the given namespace. */
-  private decrementNamespace(namespaces: Namespace | Namespace[]) {
-    if (!A.is(namespaces)) {
-      namespaces = [namespaces];
-    }
-
-    for (const namespace of namespaces) {
-      this.namespaces.set(namespace, (this.namespaces.get(namespace) || 1) - 1);
+  /** @internal Includes the given namespaces in the list of namespaces. */
+  private includeNamespaces(namespaces: Namespace | Namespace[]) {
+    for (const namespace of A.is(namespaces) ? namespaces : [namespaces]) {
+      this.namespaces.add(namespace);
     }
   }
 
@@ -152,30 +136,20 @@ export class Store {
   }
 
   public requireNamespace(namespace: Namespace) {
-    this.incrementNamespace(namespace);
-
+    this.includeNamespaces(namespace);
     return this.loader.requireNamespace(namespace);
   }
 
   public requireNamespaces(namespaces: Namespace[]) {
-    for (const namespace of namespaces) {
-      this.incrementNamespace(namespace);
-    }
-
+    this.includeNamespaces(namespaces);
     return this.loader.requireNamespaces(namespaces);
   }
 
   public dropNamespace(namespace: Namespace) {
-    this.decrementNamespace(namespace);
-
     return this.loader.dropNamespace(namespace);
   }
 
   public dropNamespaces(namespaces: Namespace[]) {
-    for (const namespace of namespaces) {
-      this.decrementNamespace(namespace);
-    }
-
     return this.loader.dropNamespaces(namespaces);
   }
 
@@ -184,16 +158,12 @@ export class Store {
   }
 
   public async loadNamespaces(locale: Locale, namespaces: Namespace[]) {
-    for (const namespace of namespaces) {
-      this.incrementNamespace(namespace);
-    }
-
+    this.includeNamespaces(namespaces);
     return await this.loader.loadNamespaces(locale, namespaces);
   }
 
   public async loadNamespace(locale: Locale, namespace: Namespace) {
-    this.incrementNamespace(namespace);
-
+    this.includeNamespaces(namespace);
     return await this.loader.loadNamespaces(locale, [namespace]);
   }
 }
