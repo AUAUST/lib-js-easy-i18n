@@ -74,11 +74,11 @@ describe("Translations instances", () => {
       loadNamespace,
     });
 
-    test("and load them automatically", async () => {
+    test("and load them", async () => {
       expect(loadNamespace).toHaveBeenCalledTimes(1);
       expect(T.t("auth:login")).toBe(undefined); // Namespace not loaded yet
 
-      T.requireNamespaces("auth", "errors");
+      await T.requireNamespaces("auth", "errors");
 
       expect(loadNamespace).toHaveBeenCalledTimes(3);
       expect(loadNamespace).toHaveBeenCalledWith("en", "auth");
