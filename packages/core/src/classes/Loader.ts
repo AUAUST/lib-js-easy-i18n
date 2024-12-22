@@ -8,6 +8,10 @@ import type { Namespace } from "~/types/translations";
  * This class is used by the `Store` class to load translations into the store.
  */
 export class Loader {
+  static from(translations: Translations, store: Store) {
+    return new Loader(translations, store);
+  }
+
   /** @internal The array of required namespaces to load. */
   private requiredNamespaces: Namespace[] | undefined;
 
@@ -64,7 +68,7 @@ export class Loader {
     }
 
     if (namespaces.length === 1) {
-      return await this.loadNamespace(A.first(namespaces), locale);
+      return await this.loadNamespace(locale, A.first(namespaces));
     }
 
     const { loadNamespace, loadNamespaces } = this.translations.options;

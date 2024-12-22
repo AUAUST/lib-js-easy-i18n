@@ -11,6 +11,10 @@ import { notFoundKeysHandlers } from "~/utils/options/getInvalidKeysOptions";
  * It keeps track of its parent `Translations` instance, which is the configuration provider.
  */
 export class Translator {
+  static from(translations: Translations) {
+    return new Translator(translations);
+  }
+
   constructor(private translations: Translations) {}
 
   public translate(

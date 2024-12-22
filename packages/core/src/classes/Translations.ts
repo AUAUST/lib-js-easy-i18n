@@ -16,12 +16,17 @@ import {
 } from "~/utils/options/index";
 
 export class Translations extends HasEvents<TranslationsEvents> {
+  /** Same as calling the constructor with the options directly. */
+  static from(init: TranslationsInit): Translations {
+    return new Translations(init);
+  }
+
   /**
    * Creates an instance of `Translations` with the given configuration and initializes it.
    * Return a promise that resolves when the instance is initialized and returns it.
    */
   static create(init: TranslationsInit): Promise<Translations> {
-    return new Translations(init).init();
+    return Translations.from(init).init();
   }
 
   /**
@@ -29,7 +34,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * Won't run any asynchronous logic, which means translations must be provided in the options directly to be available.
    */
   static createSync(init: TranslationsInit): Translations {
-    return new Translations(init).initSync();
+    return Translations.from(init).initSync();
   }
 
   /** @internal Holds the rew config until the instance is initialized. */

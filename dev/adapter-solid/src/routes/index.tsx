@@ -56,16 +56,14 @@ export default function Home() {
       <hr />
       <pre>new Translations()</pre>
       <TranslationsProvider
-        init={
-          new Translations({
-            locale: "en",
-            async loadNamespace() {
-              return {
-                hello: "Hello for the third time!",
-              };
-            },
-          })
-        }
+        init={Translations.from({
+          locale: "en",
+          async loadNamespace() {
+            return {
+              hello: "Hello for the third time!",
+            };
+          },
+        })}
       >
         {useTranslations().t("hello")}
       </TranslationsProvider>

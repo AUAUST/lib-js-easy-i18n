@@ -16,6 +16,10 @@ import { TranslationsMap } from "~/utils/translations";
  * It keeps track of its parent `Translations` instance, which is the configuration provider.
  */
 export class Store {
+  static from(translations: Translations) {
+    return new Store(translations);
+  }
+
   /** @internal A record of locales to records of namespaces to translations. */
   private store: TranslationsStore = {};
 
@@ -23,7 +27,7 @@ export class Store {
   private loader: Loader;
 
   constructor(private translations: Translations) {
-    this.loader = new Loader(this.translations, this);
+    this.loader = Loader.from(this.translations, this);
   }
 
   /** Returns whether the store has any translations for the given locale. */
