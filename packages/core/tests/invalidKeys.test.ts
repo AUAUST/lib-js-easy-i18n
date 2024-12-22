@@ -34,6 +34,7 @@ describe("The `t` function", () => {
       ...init,
     }).initSync();
 
+    // @ts-expect-error
     expect(t()).toBe("");
     expect(t("nested.key")).toBe("Nested key");
 

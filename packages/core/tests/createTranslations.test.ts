@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { Translations } from "~/index";
+import type { NamespacedTranslations } from "~/utils/translations";
 
 describe("We can initialize a `Translations` instance", () => {
   test("without any options", () => {
@@ -7,6 +8,7 @@ describe("We can initialize a `Translations` instance", () => {
 
     expect(T.locale).toBe("default");
     expect(T.defaultNamespace).toBe("translations");
+    // @ts-expect-error
     expect(T.t()).toBe(""); // If `t()` returns an empty string, it means it was correctly initialized
 
     T.registerTranslations("default", {
@@ -67,7 +69,7 @@ describe("We can initialize a `Translations` instance", () => {
 
   describe("asyncronously", () => {
     const loadTranslations = async (locale: string, namespace: string) => {
-      const translations = {
+      const translations: Record<string, NamespacedTranslations> = {
         en: {
           namespace: {
             hello: "Hello",
@@ -75,7 +77,7 @@ describe("We can initialize a `Translations` instance", () => {
         },
       };
 
-      return (translations as any)[locale]?.[namespace];
+      return translations[locale]?.[namespace];
     };
 
     test("with the static `create` method", async () => {

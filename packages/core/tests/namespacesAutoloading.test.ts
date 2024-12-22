@@ -78,7 +78,7 @@ describe("Translations instances", () => {
       expect(loadNamespace).toHaveBeenCalledTimes(1);
       expect(T.t("auth:login")).toBe(undefined); // Namespace not loaded yet
 
-      await T.requireNamespaces("auth", "errors");
+      T.requireNamespaces("auth", "errors");
 
       expect(loadNamespace).toHaveBeenCalledTimes(3);
       expect(loadNamespace).toHaveBeenCalledWith("en", "auth");

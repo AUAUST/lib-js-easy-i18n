@@ -7,9 +7,10 @@ describe("Events registry", () => {
       const callback1 = vi.fn();
       const callback2 = vi.fn();
 
-      const T = new Translations({
+      const T = Translations.from({
         locales: ["en", "fr"],
       });
+
       T.on("locale_updated", callback1);
       T.initSync(callback2);
 
@@ -25,7 +26,7 @@ describe("Events registry", () => {
       const callback1 = vi.fn();
       const callback2 = vi.fn();
 
-      const T = new Translations({
+      const T = Translations.from({
         locales: ["en", "fr"],
         translations: {
           en: { translations: { hello: "Hello" } },
@@ -49,7 +50,7 @@ describe("Events registry", () => {
     const callback1 = vi.fn();
     const callback2 = vi.fn();
 
-    const T = new Translations({
+    const T = Translations.from({
       locale: "en",
       locales: ["en", "fr"],
     });
