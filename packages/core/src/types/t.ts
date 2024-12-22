@@ -1,3 +1,4 @@
+import type { Translations } from "~/classes/Translations";
 import type {
   NamespaceSeparator,
   NotFoundKeysReturnType,
@@ -39,7 +40,18 @@ type TFunction = UsesGenericTypes<
 interface LooselyTypedTFunction {
   (): TFunctionReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
   (key: string): TFunctionReturnType;
-  (key: string, options: { ns?: string; args?: any }): TFunctionReturnType;
+  (
+    key: string,
+    options: {
+      ns?: Namespace;
+      namespace?: Namespace;
+      args?: unknown;
+      [key: string]: unknown;
+    },
+  ): TFunctionReturnType;
+
+  /** The function's parent `Translations` instance. */
+  translations: Translations;
 }
 
 interface StrictlyTypedTFunction {
@@ -101,6 +113,9 @@ interface StrictlyTypedTFunction {
     key: "" | undefined,
     options: { ns: Namespace; args?: any },
   ): TFunctionReturnType;
+
+  /** The function's parent `Translations` instance. */
+  translations: Translations;
 }
 
 /** Extracts the first argument's type for a function translation. */

@@ -4,6 +4,7 @@ import { Store } from "~/classes/Store";
 import { Translator } from "~/classes/Translator";
 import type { Locale } from "~/types/config";
 import type { TranslationsEvents } from "~/types/events";
+import type { TFunction } from "~/types/t";
 import type {
   Namespace,
   NamespacedTranslations,
@@ -54,7 +55,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
   public store: Store;
 
   /** The translation function. */
-  public t: typeof Translator.prototype.translate;
+  public t: TFunction;
 
   constructor(init?: TranslationsInit) {
     super();
@@ -62,7 +63,9 @@ export class Translations extends HasEvents<TranslationsEvents> {
     this.translator = Translator.from(this);
     this.store = Store.from(this);
 
+    // @ts-expect-error
     this.t = (...args) => this.translator.translate(...args);
+    this.t.translations = this;
   }
 
   /** @internal Parses the options, initializes the instance and returns it. Contains the logic shared between `init` and `initSync`. */
