@@ -49,6 +49,13 @@ export class Loader {
     }
   }
 
+  /** Removes multiple namespaces from the list of required namespaces. Does not remove any loaded translations. */
+  public dropNamespaces(namespaces: Namespace[]) {
+    for (const namespace of namespaces) {
+      this.dropNamespace(namespace);
+    }
+  }
+
   /** Loads the required namespaces into the store. */
   public async loadRequiredNamespaces(locale?: Locale): Promise<boolean> {
     return await this.loadNamespaces(

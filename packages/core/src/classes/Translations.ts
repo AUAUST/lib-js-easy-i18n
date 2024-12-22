@@ -262,6 +262,11 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return this.store.dropNamespace(namespace);
   }
 
+  /** Removes multiple namespaces from the list of required namespaces. Does not remove any loaded translations. */
+  public dropNamespaces(...namespaces: (Namespace | Namespace[])[]) {
+    return this.store.dropNamespaces(namespaces.flat());
+  }
+
   /** Loads the required namespaces into the store for the given locale. */
   public async loadRequiredNamespaces(locale: Locale) {
     return await this.store.loadRequiredNamespaces(locale);

@@ -123,6 +123,10 @@ export class Store {
     return this.loader.dropNamespace(namespace);
   }
 
+  public dropNamespaces(namespaces: Namespace[]) {
+    return this.loader.dropNamespaces(namespaces);
+  }
+
   public async loadRequiredNamespaces(locale?: Locale) {
     return await this.loader.loadRequiredNamespaces(locale);
   }
