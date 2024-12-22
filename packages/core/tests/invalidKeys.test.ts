@@ -45,96 +45,96 @@ describe("The `t` function", () => {
     expect(t("nested.key.path.too.deep")).toBe("Real value"); // Too deep key
   });
 
-  test("handles config options for not found keys", () => {
-    {
-      const { t } = Translations.from({
-        ...init,
-        invalidKeys: {
-          notFound: "rawkey",
-        },
-      }).initSync();
+  test("handles `invalidKeys.notFound` set to `rawkey`", () => {
+    const { t } = Translations.from({
+      ...init,
+      invalidKeys: {
+        notFound: "rawkey",
+      },
+    }).initSync();
 
-      expect(t("unfound")).toBe("unfound");
-      expect(t("")).toBe("");
-      expect(t(":")).toBe("");
+    expect(t("unfound")).toBe("unfound");
+    expect(t("")).toBe("");
+    expect(t(":")).toBe("");
 
-      // Trims the namespace because it is known.
-      expect(t("namespace:fooBar")).toBe("fooBar");
-      expect(t("namespace:foo_bar")).toBe("foo_bar");
+    // Trims the namespace because it is known.
+    expect(t("namespace:fooBar")).toBe("fooBar");
+    expect(t("namespace:foo_bar")).toBe("foo_bar");
 
-      // Doesn't trim the "namespace" `Here:` because it is not known, thus is considered part of the key.
-      expect(
-        t("Here: What using default translation... as the key looks like."),
-      ).toBe("Here: What using default translation... as the key looks like.");
-    }
-
-    {
-      const { t } = new Translations({
-        ...init,
-        invalidKeys: {
-          notFound: "empty",
-        },
-      }).initSync();
-
-      expect(t("unfound")).toBe("");
-      expect(t("")).toBe("");
-      expect(t(":")).toBe("");
-      expect(t("namespace:fooBar")).toBe("");
-      expect(t("namespace:foo_bar")).toBe("");
-    }
-
-    {
-      const { t } = new Translations({
-        ...init,
-        invalidKeys: {
-          notFound: "undefined",
-        },
-      }).initSync();
-
-      expect(t("unfound")).toBe(undefined);
-      expect(t("")).toBe(undefined);
-      expect(t(":")).toBe(undefined);
-      expect(t("namespace:fooBar")).toBe(undefined);
-      expect(t("namespace:foo_bar")).toBe(undefined);
-    }
-
-    {
-      const { t } = new Translations({
-        ...init,
-        invalidKeys: {
-          notFound: "prettykey",
-        },
-      }).initSync();
-
-      expect(t("unfound")).toBe("Unfound");
-      expect(t("")).toBe("");
-      expect(t(":")).toBe("");
-      expect(t("namespace:fooBar")).toBe("Foo bar");
-      expect(t("namespace:foo_bar")).toBe("Foo bar");
-    }
+    // Doesn't trim the "namespace" `Here:` because it is not known, thus is considered part of the key.
+    expect(
+      t("Here: What using default translation... as the key looks like."),
+    ).toBe("Here: What using default translation... as the key looks like.");
   });
 
-  test("handles config options for too deep keys", () => {
-    {
-      const { t } = new Translations({
-        ...init,
-        invalidKeys: {
-          tooDeep: "lastvalue",
-        },
-      }).initSync();
+  test("handles `invalidKeys.notFound` set to `empty`", () => {
+    const { t } = Translations.from({
+      ...init,
+      invalidKeys: {
+        notFound: "empty",
+      },
+    }).initSync();
 
-      expect(t("nested.key.path.too.deep")).toEqual("Real value");
-    }
+    expect(t("unfound")).toBe("");
+    expect(t("")).toBe("");
+    expect(t(":")).toBe("");
+    expect(t(":..")).toBe("");
+    expect(t("namespace:fooBar")).toBe("");
+    expect(t("foo_bar", { namespace: "namespace" })).toBe("");
+  });
 
-    {
-      const { t } = new Translations({
-        ...init,
-        invalidKeys: {
-          tooDeep: "notfound",
-        },
-      }).initSync();
+  test("handles `invalidKeys.notFound` set to `undefined`", () => {
+    const { t } = new Translations({
+      ...init,
+      invalidKeys: {
+        notFound: "undefined",
+      },
+    }).initSync();
 
-      expect(t("nested.key.path.too.deep")).toEqual("Deep");
-    }
+    expect(t("unfound")).toBe(undefined);
+    expect(t("")).toBe(undefined);
+    expect(t(":")).toBe(undefined);
+    expect(t("namespace:fooBar")).toBe(undefined);
+    expect(t("namespace:foo_bar")).toBe(undefined);
+  });
+
+  test("handles `invalidKeys.notFound` set to `prettykey`", () => {
+    const { t } = new Translations({
+      ...init,
+      invalidKeys: {
+        notFound: "prettykey",
+      },
+    }).initSync();
+
+    expect(t("unfound")).toBe("Unfound");
+    expect(t("")).toBe("");
+    expect(t(":")).toBe("");
+    expect(t("namespace:fooBar")).toBe("Foo bar");
+    expect(t("namespace:foo_bar")).toBe("Foo bar");
+  });
+
+  test("handles `invalidKeys.tooDeep` set to `lastvalue`", () => {
+    const { t } = Translations.from({
+      ...init,
+      invalidKeys: {
+        tooDeep: "lastvalue",
+      },
+    }).initSync();
+
+    expect(t("nested.key.path")).toEqual("Real value");
+    expect(t("nested.key.path.too.deep")).toEqual("Real value");
+    expect(t("fnT.too.deep", { name: "Patrick" })).toEqual("Hello Patrick");
+  });
+
+  test("handles `invalidKeys.tooDeep` set to `notfound`", () => {
+    const { t } = new Translations({
+      ...init,
+      invalidKeys: {
+        tooDeep: "notfound",
+      },
+    }).initSync();
+
+    expect(t("nested.key.path.too.deep")).toEqual("Deep");
+    expect(t("fnT.too.deep", { name: "Patrick" })).toEqual("Deep");
   });
 });
