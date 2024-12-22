@@ -90,7 +90,7 @@ export type TranslationsInit = {
      * The way a key that's not found at all is handled.
      *
      * - `"rawKey"`: Returns the key as is, without the namespace.
-     * - `"prettyKey"`: Returns the key converted to sentence case. For example, `my.invalidKey` becomes `My invalid key`.
+     * - `"prettyKey"`: Returns the last segment of the key converted to sentence case. For example, `my.invalidKey` becomes `Invalid key`.
      * - `"empty"`: Returns an empty string.
      * - `"undefined"`: Returns `undefined`.
      *
