@@ -258,13 +258,13 @@ export class Translations extends HasEvents<TranslationsEvents> {
   /** Requires the given namespaces to be loaded. */
   public async requireNamespace(namespace: Namespace) {
     this.store.requireNamespace(namespace);
-    return this.loadRequiredNamespaces();
+    return this.loadRequiredNamespaces(this.locale);
   }
 
   /** Requires multiple namespaces to be loaded, and loads them. */
   public async requireNamespaces(...namespaces: (Namespace | Namespace[])[]) {
     this.store.requireNamespaces(namespaces.flat());
-    return this.loadRequiredNamespaces();
+    return this.loadRequiredNamespaces(this.locale);
   }
 
   /** Removes a namespace from the list of required namespaces. Does not remove any loaded translations. */
