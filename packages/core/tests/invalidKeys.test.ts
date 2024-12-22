@@ -34,9 +34,8 @@ describe("The `t` function", () => {
       ...init,
     }).initSync();
 
-    // @ts-expect-error
     expect(t()).toBe("");
-    expect(t("nested.key")).toBe("Nested key");
+    expect(t("nested.key")).toBe("Key");
 
     // Correct or too deep should return the last valid value (invalidKeys.tooDeep)
     expect(t("nested.key.path")).toBe("Real value");
@@ -44,7 +43,7 @@ describe("The `t` function", () => {
 
     // Not found at all should return the key (invalidKeys.notFound)
     expect(t("unfound")).toBe("Unfound");
-    expect(t("this.key.does.not.exist")).toBe("This key does not exist");
+    expect(t("this.key.does.not.exist")).toBe("Exist");
   });
 
   test("handles config options for not found keys", () => {
@@ -129,7 +128,7 @@ describe("The `t` function", () => {
         },
       }).initSync();
 
-      expect(t("nested.key.path.too.deep")).toEqual("Nested key path too deep");
+      expect(t("nested.key.path.too.deep")).toEqual("Deep");
     }
   });
 });

@@ -10,8 +10,10 @@ const notFoundKeysHandlers = {
 
     const { namespaceSeparator, keysSeparator } = translations.options;
 
-    key = S.afterFirst(key, namespaceSeparator);
-    key = S.beforeLast(key, keysSeparator) || key;
+    key =
+      S.afterLast(key, keysSeparator) || // Get the last segment of the key
+      S.afterFirst(key, namespaceSeparator) || // If there is only one segment, ensure to exclude the namespace
+      key; // If there is one segment and no namespace, return the key as is
 
     return S.toCustomCase(key, {
       firstWordCase: "capital",
