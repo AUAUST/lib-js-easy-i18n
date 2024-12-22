@@ -49,7 +49,14 @@ describe("Switching locale", () => {
 
     const T = await Translations.create({
       locale: "en",
-      locales: ["en", "fr"],
+      locales: {
+        en: {
+          fallback: ["fr"],
+        },
+        fr: {
+          fallback: ["en"],
+        },
+      },
       namespaces: "ns",
       loadNamespace,
     });

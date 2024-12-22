@@ -4,7 +4,11 @@ import { Store } from "~/classes/Store";
 import { Translator } from "~/classes/Translator";
 import type { Locale } from "~/types/config";
 import type { TranslationsEvents } from "~/types/events";
-import type { Namespace } from "~/types/translations";
+import type {
+  Namespace,
+  NamespacedTranslations,
+  NestedTranslationsRecord,
+} from "~/types/translations";
 import {
   getOptions,
   type TranslationsInit,
@@ -44,11 +48,16 @@ export class Translations extends HasEvents<TranslationsEvents> {
   /** @internal The `Store` instance in charge of holding the data. */
   public store: Store;
 
+  /** The translation function. */
+  public t: typeof Translator.prototype.translate;
+
   constructor(init?: TranslationsInit) {
     super();
     this._init = O.is(init) ? init : {};
     this.translator = new Translator(this);
     this.store = new Store(this);
+
+    this.t = (...args) => this.translator.translate(...args);
   }
 
   /** @internal Parses the options, initializes the instance and returns it. Contains the logic shared between `init` and `initSync`. */
@@ -67,11 +76,8 @@ export class Translations extends HasEvents<TranslationsEvents> {
   }
 
   /**
-   * Initializes an instance of `Translations` with the configuration given in the constructor.
-   * It will load the initial namespaces and generate the `t` function.
-   *
+   * Initializes an instance of `Translations` with the configuration given in the constructor. It will load the initial namespaces.
    * If a callback is provided, it will be called when the instance is initialized.
-   * It is the same as calling `on("initialized", callback)` before calling `init`.
    */
   public async init(callback?: TranslationsEvents["initialized"]) {
     if (this.initialized) return this;
@@ -87,10 +93,8 @@ export class Translations extends HasEvents<TranslationsEvents> {
 
   /**
    * Initializes an instance of `Translations` with the configuration given in the constructor.
-   * Won't run any asynchronous logic, which means translations must be provided in the options directly to be available.
-   *
+   * It won't run any asynchronous logic, which means translations must be provided in the options directly to be available.
    * If a callback is provided, it will be called right after the instance is initialized.
-   * It is the same as calling `on("initialized", callback)` before calling `initSync`.
    */
   public initSync(callback?: TranslationsEvents["initialized"]) {
     if (this.initialized) return this;
@@ -121,14 +125,24 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return this.options.defaultNamespace;
   }
 
-  public t(key: string, options: { ns?: Namespace }) {
-    if (!this.translator) {
-      throw new Error(
-        "Translations: You must call `init` before being able to use `t`",
-      );
+  /** @internal */
+  private beforeSwitchLocale(newLocale: Locale): Locale | false | null {
+    const oldLocale = this.locale;
+
+    if (newLocale === oldLocale) {
+      return null;
     }
 
-    return this.translator.translate(key, options);
+    if (!this.locales.includes(newLocale)) {
+      console.error(
+        `Translations: Tried to switch to an invalid locale "${newLocale}"`,
+      );
+      return false;
+    }
+
+    this.options.locale = newLocale;
+
+    return oldLocale;
   }
 
   /**
@@ -139,22 +153,15 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * If the locale is already active, it will ignore the request and return `null`.
    */
   public async switchLocale(newLocale: Locale) {
-    newLocale = S.toLowerCase(newLocale);
-    const oldLocale = this.locale;
+    const localeOrDiscard = this.beforeSwitchLocale(newLocale);
 
-    if (newLocale === oldLocale) return null;
-
-    if (!this.locales.includes(newLocale)) {
-      console.error(
-        `Translations: Tried to switch to an invalid locale "${newLocale}"`,
-      );
-      return false;
+    if (!localeOrDiscard) {
+      return localeOrDiscard;
     }
 
     await this.store.loadRequiredNamespaces(newLocale);
-    this.options.locale = newLocale;
 
-    this.emit("locale_updated", this, newLocale, oldLocale);
+    this.emit("locale_updated", this, newLocale, localeOrDiscard);
 
     return true;
   }
@@ -187,6 +194,39 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return true;
   }
 
+  public registerTranslations(
+    locale: Locale,
+    namespacedTranslations: NamespacedTranslations,
+  ): void;
+  public registerTranslations(
+    locale: Locale,
+    namespace: Namespace,
+    translations: NestedTranslationsRecord,
+  ): void;
+  public registerTranslations(
+    locale: Locale,
+    namespaceOrTranslations: Namespace | NamespacedTranslations,
+    translations?: NestedTranslationsRecord,
+  ): void {
+    if (S.is(namespaceOrTranslations)) {
+      return this.store.addTranslations(
+        locale,
+        namespaceOrTranslations,
+        translations,
+      );
+    }
+
+    if (O.is(namespaceOrTranslations)) {
+      for (const namespace in namespaceOrTranslations) {
+        this.store.addTranslations(
+          locale,
+          namespace,
+          namespaceOrTranslations[namespace],
+        );
+      }
+    }
+  }
+
   public getRequiredNamespaces() {
     return this.store.getRequiredNamespaces();
   }
@@ -199,11 +239,11 @@ export class Translations extends HasEvents<TranslationsEvents> {
     return this.store.dropNamespace(namespace);
   }
 
-  public async loadNamespaces(namespaces: Namespace[], locale: Locale) {
-    return await this.store.loadNamespaces(namespaces, locale);
+  public async loadNamespaces(locale: Locale, namespaces: Namespace[]) {
+    return await this.store.loadNamespaces(locale, namespaces);
   }
 
-  public async loadNamespace(namespace: Namespace, locale: Locale) {
-    return await this.store.loadNamespaces([namespace], locale);
+  public async loadNamespace(locale: Locale, namespace: Namespace) {
+    return await this.store.loadNamespaces(locale, [namespace]);
   }
 }

@@ -9,56 +9,54 @@ import type { Namespace } from "~/types/translations";
  */
 export class Loader {
   /** @internal The array of required namespaces to load. */
-  private requiredNamespaces: Namespace[];
+  private requiredNamespaces: Namespace[] | undefined;
 
   constructor(
     private translations: Translations,
     private store: Store,
-  ) {
-    this.requiredNamespaces = A.toDeduplicated(
-      translations.options.requiredNamespaces,
-    );
-  }
+  ) {}
 
   public getRequiredNamespaces() {
-    return this.requiredNamespaces;
+    return (this.requiredNamespaces ??= A.toDeduplicated(
+      this.translations.options.requiredNamespaces,
+    ));
   }
 
   /** Adds a new namespace to the list of required namespaces. Does not load it. */
   public requireNamespace(namespace: Namespace) {
-    if (!this.requiredNamespaces.includes(namespace)) {
-      this.requiredNamespaces.push(namespace);
+    if (!this.getRequiredNamespaces().includes(namespace)) {
+      this.getRequiredNamespaces().push(namespace);
     }
   }
 
   /** Removes a namespace from the list of required namespaces. Does not remove any loaded translations. */
   public dropNamespace(namespace: Namespace) {
-    const index = this.requiredNamespaces.indexOf(namespace);
+    const index = this.getRequiredNamespaces().indexOf(namespace);
 
     if (index !== -1) {
-      this.requiredNamespaces.splice(index, 1);
+      this.getRequiredNamespaces().splice(index, 1);
     }
   }
 
   /** Loads the required namespaces into the store. */
   public async loadRequiredNamespaces(locale?: Locale): Promise<boolean> {
     return await this.loadNamespaces(
-      this.requiredNamespaces,
       locale ?? this.translations.locale,
+      this.getRequiredNamespaces(),
     );
   }
 
   /** Loads the given namespaces into the store. */
   public async loadNamespaces(
-    namespaces: Namespace[],
     locale: Locale,
+    namespaces: Namespace[],
   ): Promise<boolean> {
     if (!namespaces?.length) {
       return false;
     }
 
     namespaces = A.toDeduplicated(namespaces).filter(
-      (namespace) => !this.store.hasNamespace(namespace, locale),
+      (namespace) => !this.store.hasNamespace(locale, namespace),
     );
 
     if (namespaces.length === 0) {
@@ -91,7 +89,7 @@ export class Loader {
       const results = await Promise.all(
         namespaces.map(
           async (namespace) =>
-            [namespace, await loadNamespace(namespace, locale)] as const,
+            [namespace, await loadNamespace(locale, namespace)] as const,
         ),
       );
 
@@ -111,21 +109,21 @@ export class Loader {
 
   /** Loads the given namespace into the store. */
   private async loadNamespace(
-    namespace: Namespace,
     locale: Locale,
+    namespace: Namespace,
   ): Promise<boolean> {
     if (!namespace) {
       return false;
     }
 
-    if (this.store.hasNamespace(namespace, locale)) {
+    if (this.store.hasNamespace(locale, namespace)) {
       return true;
     }
 
     const { loadNamespace, loadNamespaces } = this.translations.options;
 
     if (loadNamespace) {
-      const result = await loadNamespace(namespace, locale);
+      const result = await loadNamespace(locale, namespace);
 
       if (!result) {
         return false;

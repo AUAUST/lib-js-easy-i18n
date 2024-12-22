@@ -32,7 +32,7 @@ export class Store {
   }
 
   /** Returns whether the store has any translations for the given namespace. */
-  public hasNamespace(namespace: Namespace, locale?: Locale) {
+  public hasNamespace(locale: Locale | undefined, namespace: Namespace) {
     return O.is(this.store[locale ?? this.translations.locale]?.[namespace]);
   }
 
@@ -110,11 +110,11 @@ export class Store {
     return await this.loader.loadRequiredNamespaces(locale);
   }
 
-  public async loadNamespaces(namespaces: Namespace[], locale: Locale) {
-    return await this.loader.loadNamespaces(namespaces, locale);
+  public async loadNamespaces(locale: Locale, namespaces: Namespace[]) {
+    return await this.loader.loadNamespaces(locale, namespaces);
   }
 
-  public async loadNamespace(namespace: Namespace, locale: Locale) {
-    return await this.loader.loadNamespaces([namespace], locale);
+  public async loadNamespace(locale: Locale, namespace: Namespace) {
+    return await this.loader.loadNamespaces(locale, [namespace]);
   }
 }

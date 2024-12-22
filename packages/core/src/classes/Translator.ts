@@ -15,7 +15,7 @@ export class Translator {
 
   public translate(
     key: string,
-    options: {
+    options?: {
       ns?: Namespace;
       namespace?: Namespace;
       namespaceSeparator?: NamespaceSeparator;
@@ -31,7 +31,7 @@ export class Translator {
    */
   public getTranslation(
     key: string,
-    options: {
+    options?: {
       ns?: Namespace;
       namespace?: Namespace;
     },
