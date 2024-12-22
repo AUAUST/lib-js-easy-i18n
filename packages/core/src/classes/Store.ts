@@ -115,6 +115,10 @@ export class Store {
     return this.loader.requireNamespace(namespace);
   }
 
+  public requireNamespaces(namespaces: Namespace[]) {
+    return this.loader.requireNamespaces(namespaces);
+  }
+
   public dropNamespace(namespace: Namespace) {
     return this.loader.dropNamespace(namespace);
   }

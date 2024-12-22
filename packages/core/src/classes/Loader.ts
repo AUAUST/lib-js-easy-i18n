@@ -33,6 +33,13 @@ export class Loader {
     }
   }
 
+  /** Adds a list of namespaces to the list of required namespaces. Does not load them. */
+  public requireNamespaces(namespaces: Namespace[]) {
+    for (const namespace of namespaces) {
+      this.requireNamespace(namespace);
+    }
+  }
+
   /** Removes a namespace from the list of required namespaces. Does not remove any loaded translations. */
   public dropNamespace(namespace: Namespace) {
     const index = this.getRequiredNamespaces().indexOf(namespace);

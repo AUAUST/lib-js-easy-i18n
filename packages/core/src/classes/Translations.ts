@@ -148,6 +148,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
       console.error(
         `Translations: Tried to switch to an invalid locale "${newLocale}"`,
       );
+
       return false;
     }
 
@@ -164,15 +165,15 @@ export class Translations extends HasEvents<TranslationsEvents> {
    * If the locale is already active, it will ignore the request and return `null`.
    */
   public async switchLocale(newLocale: Locale) {
-    const localeOrDiscard = this.beforeSwitchLocale(newLocale);
+    const oldLocale = this.beforeSwitchLocale(newLocale); // Returns `false` if the locale is not allowed, `null` if it's already active, or the old locale if it's allowed.
 
-    if (!localeOrDiscard) {
-      return localeOrDiscard;
+    if (!oldLocale) {
+      return oldLocale;
     }
 
-    await this.store.loadRequiredNamespaces(newLocale);
+    await this.loadRequiredNamespaces(newLocale);
 
-    this.emit("locale_updated", this, newLocale, localeOrDiscard);
+    this.emit("locale_updated", this, newLocale, oldLocale);
 
     return true;
   }
@@ -241,27 +242,42 @@ export class Translations extends HasEvents<TranslationsEvents> {
     }
   }
 
+  /** Gets the list of the namespaces that are required to be loaded. */
   public getRequiredNamespaces() {
     return this.store.getRequiredNamespaces();
   }
 
+  /** Requires the given namespaces to be loaded. */
   public requireNamespace(namespace: Namespace) {
     return this.store.requireNamespace(namespace);
   }
 
+  /** Requires multiple namespaces to be loaded. */
+  public requireNamespaces(...namespaces: (Namespace | Namespace[])[]) {
+    return this.store.requireNamespaces(namespaces.flat());
+  }
+
+  /** Removes a namespace from the list of required namespaces. Does not remove any loaded translations. */
   public dropNamespace(namespace: Namespace) {
     return this.store.dropNamespace(namespace);
   }
 
+  /** Loads the required namespaces into the store for the given locale. */
+  public async loadRequiredNamespaces(locale: Locale) {
+    return await this.store.loadRequiredNamespaces(locale);
+  }
+
+  /** Loads the given namespaces into the store for the given locale. */
   public async loadNamespaces(locale: Locale, namespaces: Namespace[]) {
     return await this.store.loadNamespaces(locale, namespaces);
   }
 
+  /** Loads the given namespace into the store for the given locale. */
   public async loadNamespace(locale: Locale, namespace: Namespace) {
     return await this.store.loadNamespaces(locale, [namespace]);
   }
 
-  /** @internal */
+  /** @internal Retrieves the raw translation from the store, but doesn't process it. */
   public getRawTranslation(locale: Locale, namespace: Namespace, key: string) {
     return this.store.getTranslation(locale, namespace, key);
   }
