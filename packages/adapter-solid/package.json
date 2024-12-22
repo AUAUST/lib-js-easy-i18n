@@ -1,6 +1,6 @@
 {
   "name": "@auaust/easy-i18n-adapter-solid",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "The adapter that makes easy-i18n work with Solid smoothly.",
   "license": "GPL-3.0-only",
   "type": "module",

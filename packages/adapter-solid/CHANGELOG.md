@@ -1,5 +1,16 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 2.0.0
+
+### Minor Changes
+
+- fb15632: Massive internal refactoring for performance and code quality
+
+### Patch Changes
+
+- Updated dependencies [fb15632]
+  - @auaust/easy-i18n@0.3.0
+
 ## 1.0.0
 
 ### Patch Changes
