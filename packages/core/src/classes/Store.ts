@@ -27,7 +27,8 @@ export class Store {
   private loader: Loader;
 
   /** @internal The map of namespaces to the number of times they are required or loaded. */
-  private namespaces: Set<Namespace> = new Set();
+  // @ts-expect-error - We don't want to initialize the namespaces in the constructor, but having `undefined` in the type is annoying.
+  private namespaces: Set<Namespace>;
 
   constructor(private translations: Translations) {
     this.loader = Loader.from(this.translations, this);
@@ -91,13 +92,18 @@ export class Store {
 
   /** Lists all the namespaces that are present in the store. */
   public getNamespaces() {
-    return A.from(this.namespaces);
+    return (this.namespaces ??= new Set([
+      this.translations.options.defaultNamespace,
+      ...this.translations.options.requiredNamespaces,
+    ]));
   }
 
   /** @internal Includes the given namespaces in the list of namespaces. */
   private includeNamespaces(namespaces: Namespace | Namespace[]) {
+    const set = this.getNamespaces();
     for (const namespace of A.is(namespaces) ? namespaces : [namespaces]) {
-      this.namespaces.add(namespace);
+      set.add(namespace);
+      console.log("including namespaces", namespace, namespaces, A.from(set));
     }
   }
 

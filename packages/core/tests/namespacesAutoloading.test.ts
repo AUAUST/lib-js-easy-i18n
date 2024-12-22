@@ -7,7 +7,7 @@ import {
 } from "~/index";
 
 describe("Translations instances", () => {
-  const _loadNamespace = async (locale: Locale, namespace: Namespace) => {
+  const doLoadNamespace = async (locale: Locale, namespace: Namespace) => {
     const translations = {
       en: {
         global: { hello: "Hello" },
@@ -36,7 +36,7 @@ describe("Translations instances", () => {
   };
 
   test("take care of loading the initial namespaces", async () => {
-    const loadNamespace = vi.fn(_loadNamespace);
+    const loadNamespace = vi.fn(doLoadNamespace);
     const T = await Translations.create({
       locale: "en",
       namespaces: {
@@ -57,7 +57,7 @@ describe("Translations instances", () => {
   });
 
   describe("allow to require namespaces", async () => {
-    const loadNamespace = vi.fn(_loadNamespace);
+    const loadNamespace = vi.fn(doLoadNamespace);
     const T = await Translations.create({
       locale: "en",
       locales: {
@@ -106,5 +106,25 @@ describe("Translations instances", () => {
       expect(T.t("global:hello")).toBe("Hallo");
       expect(T.t("auth:login")).toBe(undefined);
     });
+  });
+
+  test("keeps track of used namespaces to power the namespace-splitting heuristic", async () => {
+    const T = Translations.from({
+      locale: "en",
+      namespaces: {
+        default: "global",
+        required: ["errors", "auth"],
+      },
+      translations: {
+        en: {
+          custom: { key: "Value" },
+        },
+      },
+    }).initSync();
+
+    // All referenced namespaces should have been tracked
+    expect(T.getNamespaces()).toEqual(
+      expect.arrayContaining(["global", "errors", "auth", "custom"]),
+    );
   });
 });

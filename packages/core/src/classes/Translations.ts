@@ -1,4 +1,4 @@
-import { O, S } from "@auaust/primitive-kit";
+import { A, O, S } from "@auaust/primitive-kit";
 import { HasEvents } from "~/classes/HasEvents";
 import { Store } from "~/classes/Store";
 import { Translator } from "~/classes/Translator";
@@ -245,9 +245,9 @@ export class Translations extends HasEvents<TranslationsEvents> {
     }
   }
 
-  /** Gets the list of all namespaces. This includes the default namespace, the required namespaces, and the loaded namespaces. */
-  public getNamespaces() {
-    return this.store.getNamespaces();
+  /** @internal Gets the list of all namespaces. This includes the default namespace, the required namespaces, and the loaded namespaces. */
+  public getNamespaces(): Namespace[] {
+    return A.from(this.store.getNamespaces());
   }
 
   /** Gets the list of the namespaces that are required to be loaded. */
