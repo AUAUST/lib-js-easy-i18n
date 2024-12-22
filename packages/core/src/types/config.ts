@@ -119,56 +119,47 @@ type GetConfig<K extends keyof TranslationsConfigDefaults> =
 // CONDITIONAL HELPERS
 
 /** If the user extended the `RegisteredTranslations` interface, uses the first type, otherwise uses the second. */
-export type UsesExtendedTranslations<True, False> =
+export type HasRegisteredTranslations<True, False> =
   IsInterfaceEmpty<RegisteredTranslations> extends true ? False : True;
 
 /** If the user wishes to use less strict types, uses the first type, otherwise uses the second. */
-export type UsesGenericTypes<True, False> =
+export type PrefersLooserTypes<True, False> =
   GetConfig<"genericTypes"> extends true ? True : False;
 
 // LOCALES-RELATED TYPES
 
-/** A generic type that would be valid as a locale, but is not necessarily one of the allowed locales. */
-export type GenericLocale = string;
+/** Any locale on the instance. */
+export type Locale = PrefersLooserTypes<string, AllowedLocales[number]>;
 
 /** The default locale. */
-export type DefaultLocale = UsesGenericTypes<
-  GenericLocale,
+export type DefaultLocale = PrefersLooserTypes<
+  string,
   GetConfig<"defaultLocale">
 >;
 
 /** The allowed locales. */
-export type AllowedLocales = UsesGenericTypes<
-  GenericLocale[],
+export type AllowedLocales = PrefersLooserTypes<
+  string[],
   GetConfig<"allowedLocales">
 >;
 
-/** Any locale on the instance. */
-export type Locale = UsesGenericTypes<GenericLocale, AllowedLocales[number]>;
-
 // NAMESPACES-RELATED TYPES
 
-/** A generic type that would be valid as a namespace, but is not necessarily one of the registered namespaces. */
-export type GenericNamespace = string;
-
 /** The default namespace. */
-export type DefaultNamespace = UsesGenericTypes<
-  GenericNamespace,
+export type DefaultNamespace = PrefersLooserTypes<
+  string,
   GetConfig<"defaultNamespace">
 >;
 
-/** The namespaces present on the instance as per the `RegisteredTranslations` interface. */
-export type RegisteredNamespaces = keyof RegisteredTranslations;
-
 /** The namespaces that provide explicit types. False for namespaces that allow any translation. */
-export type WellKnownNamespaces = UsesExtendedTranslations<
+export type WellknownNamespaces = HasRegisteredTranslations<
   {
     [K in Namespace]: string extends keyof TranslationsSchema[K] ? never : K;
   }[Namespace],
   string
 >;
 /** The namespaces that allow any translation. They come from namespaces set to `true` in the `RegisteredTranslations` interface. */
-export type UnknownNamespaces = UsesExtendedTranslations<
+export type UnknownNamespaces = HasRegisteredTranslations<
   {
     [K in Namespace]: string extends keyof TranslationsSchema[K] ? K : never;
   }[Namespace],
@@ -187,12 +178,10 @@ export type NamespaceSeparator = GetConfig<"namespaceSeparator">;
 
 /** The value of an invalid key when the key is not found. */
 export type NotFoundKeysReturnType =
-  // If `notFoundKeys` is set to anything else than "undefined", it'll be a string. (maybe empty, maybe ugly, but a string)
-  GetConfig<"notFoundKeys"> extends "undefined" ? undefined : string;
+  GetConfig<"notFoundKeys"> extends "undefined" ? undefined : string; // If `notFoundKeys` is set to anything else than "undefined", it'll be a string. (maybe empty, maybe ugly, but a string)
 
 /** The value a key that is too deep will return. */
 export type TooDeepKeysReturnType =
-  // If `tooDeepKeys` is set to "lastvalue", it'll be a string. (maybe empty, maybe ugly, but a string)
   GetConfig<"tooDeepKeys"> extends "lastvalue"
-    ? string
+    ? string // If `tooDeepKeys` is set to "lastvalue", it'll be a string. (maybe empty, maybe ugly, but a string)
     : NotFoundKeysReturnType;

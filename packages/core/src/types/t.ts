@@ -1,11 +1,11 @@
 import type { Translations } from "~/classes/Translations";
 import type {
+  HasRegisteredTranslations,
   NamespaceSeparator,
   NotFoundKeysReturnType,
+  PrefersLooserTypes,
   TooDeepKeysReturnType,
   UnknownNamespaces,
-  UsesExtendedTranslations,
-  UsesGenericTypes,
 } from "~/types/config";
 import type {
   FunctionTranslationKeys,
@@ -27,10 +27,10 @@ export type TFunctionReturnType =
   | NotFoundKeysReturnType
   | TooDeepKeysReturnType;
 
-type TFunction = UsesGenericTypes<
+type TFunction = PrefersLooserTypes<
   // Use loose types for `t` if the config says so
   LooselyTypedTFunction,
-  UsesExtendedTranslations<
+  HasRegisteredTranslations<
     // Also loosely type `t` if there's no type extension on which to base strict types
     StrictlyTypedTFunction,
     LooselyTypedTFunction
