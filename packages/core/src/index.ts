@@ -10,17 +10,17 @@ import type {
   TranslationsSchema,
 } from "~/types/config";
 import type {
+  LooselyTypedTFunction,
+  StrictlyTypedTFunction,
+  TFunction,
+  TFunctionReturnType,
+} from "~/types/t";
+import type {
   Namespace,
   NestedTranslationsRecord,
   Translation,
 } from "~/types/translations";
 import type { TranslationsInit } from "~/utils/options/index";
-import type {
-  LooselyTypedTFunction,
-  StrictlyTypedTFunction,
-  TFunction,
-  TFunctionReturnType,
-} from "~/utils/t";
 
 /**
  * Note we don't want to export the raw `t` function here since it must be initialized with a `Translations` instance to work.
