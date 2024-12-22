@@ -1,5 +1,12 @@
 # @auaust/easy-i18n-adapter-solid
 
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies [8667cfe]
+  - @auaust/easy-i18n@0.3.1
+
 ## 2.0.0
 
 ### Minor Changes

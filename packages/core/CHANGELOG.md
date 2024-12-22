@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.3.1
+
+### Patch Changes
+
+- 8667cfe: Fixed namespaces tracking
+
 ## 0.3.0
 
 ### Minor Changes
