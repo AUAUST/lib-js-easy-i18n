@@ -41,7 +41,7 @@ describe("Translations instances", () => {
       locale: "en",
       namespaces: {
         default: "global",
-        initial: ["errors", "auth"],
+        required: ["errors", "auth"],
       },
       loadNamespace,
     });

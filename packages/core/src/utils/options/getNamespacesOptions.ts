@@ -23,12 +23,13 @@ export function getNamespacesOptions(
   }
 
   const defaultNamespace = S.toLowerCase(nsInit.default);
-  const requiredNamespaces = (nsInit.initial ?? [nsInit.default]).map((ns) =>
+  const requiredNamespaces = (nsInit.required ?? [defaultNamespace]).map((ns) =>
     S.toLowerCase(ns),
   );
 
-  requiredNamespaces.includes(defaultNamespace) ||
+  if (!requiredNamespaces.includes(defaultNamespace)) {
     requiredNamespaces.unshift(defaultNamespace);
+  }
 
   return {
     defaultNamespace,

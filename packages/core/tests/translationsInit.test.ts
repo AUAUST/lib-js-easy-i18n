@@ -45,7 +45,7 @@ describe("The `getOptions` helper", () => {
       },
       namespaces: {
         default: "NameSpace",
-        initial: ["REQUIRED", "IMPORTANT"],
+        required: ["REQUIRED", "IMPORTANT"],
       },
     });
 

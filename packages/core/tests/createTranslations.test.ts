@@ -85,7 +85,7 @@ describe("We can initialize a `Translations` instance", () => {
         locale: "en",
         namespaces: {
           default: "namespace",
-          initial: ["namespace"],
+          required: ["namespace"],
         },
         loadNamespace: (locale, namespace) => {
           return loadTranslations(locale, namespace);
@@ -100,7 +100,7 @@ describe("We can initialize a `Translations` instance", () => {
         locale: "en",
         namespaces: {
           default: "namespace",
-          initial: ["namespace"],
+          required: ["namespace"],
         },
         loadNamespace: (locale, namespace) => {
           return loadTranslations(locale, namespace);

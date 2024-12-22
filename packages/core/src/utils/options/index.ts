@@ -60,7 +60,7 @@ export type TranslationsInit = {
          *
          * @default ["translations"]
          */
-        initial?: Namespace[];
+        required?: Namespace[];
       };
 
   /**
