@@ -71,6 +71,12 @@ export class Translations extends HasEvents<TranslationsEvents> {
 
     this.options = getOptions(this._init ?? {});
 
+    if (this._init?.translations) {
+      for (const locale in this._init.translations) {
+        this.registerTranslations(locale, this._init.translations[locale]);
+      }
+    }
+
     callback && this.on("initialized", callback);
 
     delete this._init;
@@ -201,7 +207,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
 
   public registerTranslations(
     locale: Locale,
-    namespacedTranslations: NamespacedTranslations,
+    namespacedTranslations: Partial<NamespacedTranslations> | undefined,
   ): void;
   public registerTranslations(
     locale: Locale,
@@ -210,7 +216,10 @@ export class Translations extends HasEvents<TranslationsEvents> {
   ): void;
   public registerTranslations(
     locale: Locale,
-    namespaceOrTranslations: Namespace | NamespacedTranslations,
+    namespaceOrTranslations:
+      | Namespace
+      | Partial<NamespacedTranslations>
+      | undefined,
     translations?: NestedTranslationsRecord,
   ): void {
     if (S.is(namespaceOrTranslations)) {
