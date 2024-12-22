@@ -39,7 +39,7 @@ type TFunction = UsesGenericTypes<
 interface LooselyTypedTFunction {
   (): TFunctionReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
   (key: string): TFunctionReturnType;
-  (key: string, options: { ns?: string; arg?: any }): TFunctionReturnType;
+  (key: string, options: { ns?: string; args?: any }): TFunctionReturnType;
 }
 
 interface StrictlyTypedTFunction {
@@ -66,7 +66,7 @@ interface StrictlyTypedTFunction {
     key: K,
     options: {
       ns?: undefined;
-      arg: ArgFromKey<K>;
+      args: ArgFromKey<K>;
     },
   ): ReturnTypeFromKey<K>;
 
@@ -76,20 +76,20 @@ interface StrictlyTypedTFunction {
     key: K,
     options: {
       ns: FunctionTranslationKeysToNamespaceMap[K];
-      arg?: ArgFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
+      args?: ArgFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
     },
   ): ReturnTypeFromKey<K, FunctionTranslationKeysToNamespaceMap[K]>;
 
   // Namespaces that have no strong types, which means we allow any `${namespace}:${string}` format.
   // Since we can't know the type of the key, we can't know whether it's a function or a string.
-  // This means the `arg` option is always available as an optional unknown.
+  // This means the `args` option is always available as an optional unknown.
   (
     key: `${UnknownNamespaces}${NamespaceSeparator}${string}`,
-    options?: { arg?: any },
+    options?: { args?: any },
   ): TFunctionReturnType;
   (
     key: string,
-    option: { ns: UnknownNamespaces; arg?: any },
+    option: { ns: UnknownNamespaces; args?: any },
   ): TFunctionReturnType;
 
   // Edge case: key is an empty string
@@ -99,7 +99,7 @@ interface StrictlyTypedTFunction {
   // Without this overload, a user writing the options first wouldn't get any hint on the namespaces.
   (
     key: "" | undefined,
-    options: { ns: Namespace; arg?: any },
+    options: { ns: Namespace; args?: any },
   ): TFunctionReturnType;
 }
 

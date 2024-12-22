@@ -71,13 +71,13 @@ describe("The `t` function", () => {
     expect(
       t("functionArgs", {
         ns: "namespaceA",
-        arg: { name: "John", age: 30 },
+        args: { name: "John", age: 30 },
       }),
     ).toBe("John is 30");
     expect(
       t("functionArgs", {
         ns: "namespaceB",
-        arg: { city: "London", country: "UK" },
+        args: { city: "London", country: "UK" },
       }),
     ).toBe("London is in UK");
 

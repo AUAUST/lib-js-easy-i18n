@@ -1,6 +1,5 @@
-import { S } from "@auaust/primitive-kit";
+import { F, S } from "@auaust/primitive-kit";
 import { Translations } from "~/classes/Translations";
-import type { KeysSeparator, NamespaceSeparator } from "~/types/config";
 import type { Namespace } from "~/types/translations";
 import { notFoundKeysHandlers } from "~/utils/options/getInvalidKeysOptions";
 
@@ -22,17 +21,20 @@ export class Translator {
     options?: {
       ns?: Namespace;
       namespace?: Namespace;
-      namespaceSeparator?: NamespaceSeparator;
-      keysSeparator?: KeysSeparator;
+      args?: unknown;
+      [key: string]: unknown;
     },
   ) {
-    return this.getTranslation(key, options);
+    const translation = this.getTranslation(key, options);
+
+    if (F.is(translation)) {
+      return translation(options?.args ?? options ?? {});
+    }
+
+    return translation;
   }
 
-  /**
-   * Returns the translation for the given key.
-   * The fallback mechanism is already applied, but the translation is still unprocessed.
-   */
+  /** Returns the translation for the given key. The fallback mechanism is already applied, but the translation is still unprocessed. */
   public getTranslation(
     key: string,
     options?: {

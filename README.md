@@ -38,7 +38,7 @@ t("hello", { ns: "myNamespace" }); // => "Hello"
 // If you set the default namespace:
 t("hello"); // => "Hello"
 
-t("myNamespace:helloName", { arg: { name: "Mrs. Norris" } }); // => "Hello Mrs. Norris"
+t("myNamespace:helloName", { args: { name: "Mrs. Norris" } }); // => "Hello Mrs. Norris"
 ```
 
 ## Motivation
