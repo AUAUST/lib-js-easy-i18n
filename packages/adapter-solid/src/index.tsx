@@ -1,6 +1,6 @@
 import {
   Translations,
-  type TFunction,
+  type TranslateFunction,
   type TranslationsInit,
 } from "@auaust/easy-i18n";
 import { createContext, createSignal, useContext, type JSX } from "solid-js";
@@ -32,20 +32,19 @@ function TranslationsProvider(props: {
 }
 
 function createTranslations(init: TranslationsInit | Translations) {
-  const instance = init instanceof Translations ? init : new Translations(init);
+  const instance =
+    init instanceof Translations ? init : Translations.from(init);
 
-  const [tFunction, setTFunction] = createSignal<TFunction>(
-    instance.isInitialized ? instance.t : () => "",
-  );
   const [locale, setLocale] = createSignal<string>(
     instance.isInitialized ? instance.locale : undefined!,
   );
 
-  instance.on("tChanged", (_, newT) => {
-    setTFunction(() => newT);
-  });
+  const [t, setT] = createSignal(instance.t, { equals: false });
 
-  instance.on("localeChanged", (_, newLocale) => setLocale(newLocale));
+  instance.on("locale_updated", (_, newLocale) => {
+    setLocale(newLocale);
+    setT(() => instance.t);
+  });
 
   if (!instance.isInitialized) {
     instance.init();
@@ -54,11 +53,12 @@ function createTranslations(init: TranslationsInit | Translations) {
   return {
     instance,
     locale,
-    t: (...args: Parameters<TFunction>) => tFunction()(...args),
+    // @ts-ignore
+    t: (...args) => t()(...args),
   } as {
     instance: Translations;
     locale: () => string;
-    t: TFunction;
+    t: TranslateFunction;
   };
 }
 
