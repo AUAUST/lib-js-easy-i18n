@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.3.0
+
+### Minor Changes
+
+- fb15632: Massive internal refactoring for performance and code quality
+
 ## 0.2.0
 
 ### Minor Changes
