@@ -40,8 +40,10 @@ export type {
   NestedTranslationsRecord,
   RegisteredTranslations,
   StrictlyTypedTFunction,
+  /** @deprecated Use `TranslateFunction` instead. */
   TranslateFunction as TFunction,
   TFunctionReturnType,
+  TranslateFunction,
   Translation,
   TranslationsConfig,
   TranslationsInit,

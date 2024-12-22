@@ -157,7 +157,5 @@ type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
 export type {
   LooselyTypedTFunction,
   StrictlyTypedTFunction,
-  /** @deprecated Use `TranslateFunction` instead. */
-  TranslateFunction as TFunction,
   TranslateFunction,
 };
