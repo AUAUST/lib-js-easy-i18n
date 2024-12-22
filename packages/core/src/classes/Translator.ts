@@ -101,7 +101,7 @@ export class Translator {
   ): [Namespace, string] {
     const { namespaceSeparator } = this.translations.options;
 
-    const [beforeSeparator, afterSeparator] = S.splitFirst(
+    let [beforeSeparator, afterSeparator] = S.splitFirst(
       key,
       namespaceSeparator,
     );
@@ -109,6 +109,8 @@ export class Translator {
     if (afterSeparator === "") {
       return [namespace, beforeSeparator];
     }
+
+    beforeSeparator = S.lower(beforeSeparator);
 
     if (allowedNamespaces.includes(beforeSeparator)) {
       return [beforeSeparator, afterSeparator];
