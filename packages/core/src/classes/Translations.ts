@@ -251,4 +251,9 @@ export class Translations extends HasEvents<TranslationsEvents> {
   public async loadNamespace(locale: Locale, namespace: Namespace) {
     return await this.store.loadNamespaces(locale, [namespace]);
   }
+
+  /** @internal */
+  public getRawTranslation(locale: Locale, namespace: Namespace, key: string) {
+    return this.store.getTranslation(locale, namespace, key);
+  }
 }

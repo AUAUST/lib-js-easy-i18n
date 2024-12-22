@@ -58,14 +58,11 @@ export class Translator {
 
   /** @internal Responsible for the fallback mechanism. */
   private findTranslation(key: string, namespace: Namespace) {
-    // TODO: expose a getTranslation method from the Translations class; each component should be contained except for the parent Translations, which itself serves as an API
-
-    const parent = this.translations,
-      store = parent.store;
+    const parent = this.translations;
 
     do {
       for (const locale of this.getLocalesOrder()) {
-        const translation = store?.getTranslation(key, namespace, locale);
+        const translation = parent.getRawTranslation(locale, namespace, key);
 
         if (translation !== undefined) {
           return translation;
