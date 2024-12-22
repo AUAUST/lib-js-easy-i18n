@@ -17,7 +17,6 @@ import type {
   TranslationDefinition,
 } from "~/types/store";
 import type { Namespace } from "~/types/translations";
-import type { TranslationsOptions } from "~/utils/options/index";
 
 // T-FUNCTION RETURN TYPE
 
@@ -27,18 +26,16 @@ export type TFunctionReturnType =
   | NotFoundKeysReturnType
   | TooDeepKeysReturnType;
 
-type TFunction = PrefersLooserTypes<
-  // Use loose types for `t` if the config says so
-  LooselyTypedTFunction,
+type TranslateFunction = PrefersLooserTypes<
+  LooselyTypedTFunction, // Use loose types for `t` if the config says so
   HasRegisteredTranslations<
-    // Also loosely type `t` if there's no type extension on which to base strict types
-    StrictlyTypedTFunction,
+    StrictlyTypedTFunction, // Also loosely type `t` if there's no type extension on which to base strict types
     LooselyTypedTFunction
   >
 >;
 
 interface LooselyTypedTFunction {
-  (): TFunctionReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
+  (): NotFoundKeysReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
   (key: string): TFunctionReturnType;
   (
     key: string,
@@ -55,8 +52,7 @@ interface LooselyTypedTFunction {
 }
 
 interface StrictlyTypedTFunction {
-  // No key provided
-  (): TFunctionReturnType;
+  (): NotFoundKeysReturnType;
 
   // Namespaced key provided
   <K extends StringTranslationKeys>(
@@ -158,21 +154,10 @@ type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
     ? NotFoundKeysReturnType
     : TFunctionReturnType;
 
-/** A subset of the `TranslationsOptions` that only contains the parts that are used by the `t` function. */
-export type TFunctionConfig = Pick<
-  TranslationsOptions,
-  | "locale"
-  | "locales"
-  | "defaultNamespace"
-  | "notFoundKeys"
-  | "tooDeepKeys"
-  | "namespaceSeparator"
-  | "keysSeparator"
->;
-
 export type {
-  // Exporting them is required for the `TFunction` type to be usable outside of this file.
   LooselyTypedTFunction,
   StrictlyTypedTFunction,
-  TFunction,
+  /** @deprecated Use `TranslateFunction` instead. */
+  TranslateFunction as TFunction,
+  TranslateFunction,
 };

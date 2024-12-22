@@ -12,8 +12,8 @@ import type {
 import type {
   LooselyTypedTFunction,
   StrictlyTypedTFunction,
-  TFunction,
   TFunctionReturnType,
+  TranslateFunction,
 } from "~/types/t";
 import type {
   Namespace,
@@ -40,7 +40,7 @@ export type {
   NestedTranslationsRecord,
   RegisteredTranslations,
   StrictlyTypedTFunction,
-  TFunction,
+  TranslateFunction as TFunction,
   TFunctionReturnType,
   Translation,
   TranslationsConfig,

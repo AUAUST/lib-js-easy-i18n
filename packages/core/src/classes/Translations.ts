@@ -4,7 +4,7 @@ import { Store } from "~/classes/Store";
 import { Translator } from "~/classes/Translator";
 import type { Locale } from "~/types/config";
 import type { TranslationsEvents } from "~/types/events";
-import type { TFunction } from "~/types/t";
+import type { TranslateFunction } from "~/types/t";
 import type {
   Namespace,
   NamespacedTranslations,
@@ -55,7 +55,7 @@ export class Translations extends HasEvents<TranslationsEvents> {
   public store: Store;
 
   /** The translation function. */
-  public t: TFunction;
+  public t: TranslateFunction;
 
   constructor(init?: TranslationsInit) {
     super();

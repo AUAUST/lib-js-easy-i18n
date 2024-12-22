@@ -43,13 +43,8 @@ export type KeysForNamespace<
       : string
 >;
 
-/** A union of all the keys for the default namespace. */
-export type KeysForDefaultNamespace<IncludeNamespaces extends boolean = false> =
-  KeysForNamespace<DefaultNamespace, IncludeNamespaces>;
-
 /**
- * An object of parsed translations.
- * It is used internally by the type system to know all the existing translations.
+ * An object of parsed translations. It is used internally by the type system to know all the existing translations.
  * It's used for:
  * - creating the union of allowed keys
  * - determining if a key passed to `t` is valid and final
@@ -261,7 +256,7 @@ type GenericNestedTranslationsDefinition = {
 };
 
 /**
- * It'll ensure the passed translation is valid and "genericify" it.
+ * It'll ensure the passed translation is valid then "genericifies" it.
  * - if a translation is a string literal (thanks to `as const`), it'll be converted to `string`.
  * - if a translation is a function, it'll be converted to `((args: Parameters<typeof fn>[0]) => string) | string`.
  * - if a translation is a number, it'll be converted to `string`.

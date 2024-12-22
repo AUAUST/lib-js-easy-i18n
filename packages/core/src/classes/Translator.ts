@@ -1,6 +1,6 @@
 import { F, S } from "@auaust/primitive-kit";
 import { Translations } from "~/classes/Translations";
-import type { TFunction } from "~/types/t";
+import type { TranslateFunction } from "~/types/t";
 import type { Namespace } from "~/types/translations";
 import { notFoundKeysHandlers } from "~/utils/options/getInvalidKeysOptions";
 
@@ -17,7 +17,7 @@ export class Translator {
 
   constructor(private translations: Translations) {}
 
-  public translate: TFunction = ((key, options) => {
+  public translate: TranslateFunction = ((key, options) => {
     const translation = this.getTranslation(key, options);
 
     if (F.is(translation)) {
@@ -25,7 +25,7 @@ export class Translator {
     }
 
     return translation;
-  }) as TFunction;
+  }) as TranslateFunction;
 
   /** Returns the translation for the given key. The fallback mechanism is already applied, but the translation is still unprocessed. */
   public getTranslation(
