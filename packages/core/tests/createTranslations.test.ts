@@ -8,7 +8,6 @@ describe("We can initialize a `Translations` instance", () => {
 
     expect(T.locale).toBe("default");
     expect(T.defaultNamespace).toBe("translations");
-    // @ts-expect-error
     expect(T.t()).toBe(""); // If `t()` returns an empty string, it means it was correctly initialized
 
     T.registerTranslations("default", {
@@ -111,5 +110,21 @@ describe("We can initialize a `Translations` instance", () => {
 
       expect(T.t("hello")).toBe("Hello");
     });
+  });
+
+  test("with `from`", () => {
+    const T = Translations.from({
+      locale: "en",
+      namespaces: "custom",
+      translations: {
+        en: {
+          custom: {
+            hello: "Olá",
+          },
+        },
+      },
+    }).initSync();
+
+    expect(T.t("hello")).toBe("Olá");
   });
 });

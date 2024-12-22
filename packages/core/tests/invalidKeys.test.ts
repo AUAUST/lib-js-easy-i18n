@@ -3,7 +3,6 @@ import { Translations } from "~/index";
 import type { GenericNamespacedTranslations } from "~/types/translations";
 import type { TranslationsInit } from "~/utils/options/index";
 
-// function translation
 const fnT = vi.fn(({ name }: { name: string }) => {
   return `Hello ${name}`;
 });
