@@ -1,5 +1,11 @@
 # @auaust/easy-i18n
 
+## 0.3.2
+
+### Patch Changes
+
+- b8a35b7: Debug code was included in the build
+
 ## 0.3.1
 
 ### Patch Changes
