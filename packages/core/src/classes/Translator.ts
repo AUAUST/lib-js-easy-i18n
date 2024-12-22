@@ -40,6 +40,7 @@ export class Translator {
     const [namespace, k] = this.getNamespaceAndKey(
       key,
       options?.ns ?? options?.namespace ?? parent.options.defaultNamespace,
+      parent.getNamespaces(),
     );
 
     const translation = this.findTranslation(k, namespace);
@@ -96,16 +97,23 @@ export class Translator {
   private getNamespaceAndKey(
     key: string,
     namespace: Namespace,
+    allowedNamespaces: Namespace[],
   ): [Namespace, string] {
+    const { namespaceSeparator } = this.translations.options;
+
     const [beforeSeparator, afterSeparator] = S.splitFirst(
       key,
-      this.translations.options.namespaceSeparator,
+      namespaceSeparator,
     );
 
     if (afterSeparator === "") {
       return [namespace, beforeSeparator];
     }
 
-    return [beforeSeparator, afterSeparator];
+    if (allowedNamespaces.includes(beforeSeparator)) {
+      return [beforeSeparator, afterSeparator];
+    }
+
+    return [namespace, key];
   }
 }

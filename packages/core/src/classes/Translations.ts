@@ -245,6 +245,11 @@ export class Translations extends HasEvents<TranslationsEvents> {
     }
   }
 
+  /** Gets the list of all namespaces. This includes the default namespace, the required namespaces, and the loaded namespaces. */
+  public getNamespaces() {
+    return this.store.getNamespaces();
+  }
+
   /** Gets the list of the namespaces that are required to be loaded. */
   public getRequiredNamespaces() {
     return this.store.getRequiredNamespaces();

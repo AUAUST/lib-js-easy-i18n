@@ -30,25 +30,24 @@ const init: TranslationsInit = {
 
 describe("The `t` function", () => {
   test("has correct config defaults for invalid keys", () => {
-    const { t } = new Translations({
+    const { t } = Translations.from({
       ...init,
     }).initSync();
 
+    // `notFoundKeys`'s default is `prettykey`
     expect(t()).toBe("");
-    expect(t("nested.key")).toBe("Key");
+    expect(t("unfound")).toBe("Unfound"); // not present in `translations`
+    expect(t("nested.key")).toBe("Key"); // present but not deep enough
+    expect(t("this.key.does.not.exist")).toBe("Exist"); // not present and deep
 
-    // Correct or too deep should return the last valid value (invalidKeys.tooDeep)
-    expect(t("nested.key.path")).toBe("Real value");
-    expect(t("nested.key.path.too.deep")).toBe("Real value");
-
-    // Not found at all should return the key (invalidKeys.notFound)
-    expect(t("unfound")).toBe("Unfound");
-    expect(t("this.key.does.not.exist")).toBe("Exist");
+    // `tooDeepKeys`'s default is `lastvalue`
+    expect(t("nested.key.path")).toBe("Real value"); // Real key
+    expect(t("nested.key.path.too.deep")).toBe("Real value"); // Too deep key
   });
 
   test("handles config options for not found keys", () => {
     {
-      const { t } = new Translations({
+      const { t } = Translations.from({
         ...init,
         invalidKeys: {
           notFound: "rawkey",
@@ -58,8 +57,15 @@ describe("The `t` function", () => {
       expect(t("unfound")).toBe("unfound");
       expect(t("")).toBe("");
       expect(t(":")).toBe("");
+
+      // Trims the namespace because it is known.
       expect(t("namespace:fooBar")).toBe("fooBar");
       expect(t("namespace:foo_bar")).toBe("foo_bar");
+
+      // Doesn't trim the "namespace" `Here:` because it is not known, thus is considered part of the key.
+      expect(
+        t("Here: What using default translation... as the key looks like."),
+      ).toBe("Here: What using default translation... as the key looks like.");
     }
 
     {
