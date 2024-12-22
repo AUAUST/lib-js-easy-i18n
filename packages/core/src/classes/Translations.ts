@@ -59,8 +59,8 @@ export class Translations extends HasEvents<TranslationsEvents> {
   constructor(init?: TranslationsInit) {
     super();
     this._init = O.is(init) ? init : {};
-    this.translator = new Translator(this);
-    this.store = new Store(this);
+    this.translator = Translator.from(this);
+    this.store = Store.from(this);
 
     this.t = (...args) => this.translator.translate(...args);
   }
