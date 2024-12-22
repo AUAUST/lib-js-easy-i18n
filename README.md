@@ -10,7 +10,7 @@ It's a minimal core library that only provides the well-known `t()` function, an
 
 ## Overview
 
-```tsx
+```js
 import { Translations } from "@auaust/easy-i18n";
 
 const easyI18n = await Translations.init({
@@ -83,7 +83,7 @@ The library revolves around the `Translations` class. You initialise an instance
 
 You have a few ways of initialising the `Translations` class, all of which are equivalent:
 
-```tsx
+```js
 const config: TranslationsInit = { ... };
 
 const easyI18n = await Translations.init(config);
