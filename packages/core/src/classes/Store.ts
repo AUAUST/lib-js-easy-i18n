@@ -41,7 +41,11 @@ export class Store {
   }
 
   /** Returns the translation for the given locale, namespace, and key. */
-  public getTranslation(key: string, namespace: Namespace, locale?: Locale) {
+  public getTranslation(
+    locale: Locale | undefined,
+    namespace: Namespace,
+    key: string,
+  ) {
     return this.store[locale ?? this.translations.locale]?.[namespace]?.get(
       key,
     );
@@ -68,7 +72,7 @@ export class Store {
     this.addTranslationsRecursively(
       this.store[locale]![namespace]!,
       translations,
-      `${namespace}${namespaceSeparator}`,
+      "",
       keysSeparator,
     );
   }
@@ -81,7 +85,7 @@ export class Store {
     keysSeparator: string,
   ) {
     for (const [part, value] of O.entries(translations)) {
-      const key = `${prefix}${keysSeparator}${part}`;
+      const key = `${prefix}${part}`;
 
       switch (typeof value) {
         case "string":
@@ -92,7 +96,12 @@ export class Store {
           break;
         case "object":
           if (value === null) break;
-          this.addTranslationsRecursively(map, value, key, keysSeparator);
+          this.addTranslationsRecursively(
+            map,
+            value,
+            `${key}${keysSeparator}`,
+            keysSeparator,
+          );
           break;
       }
     }
