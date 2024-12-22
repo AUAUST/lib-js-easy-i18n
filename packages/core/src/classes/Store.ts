@@ -101,9 +101,9 @@ export class Store {
   /** @internal Includes the given namespaces in the list of namespaces. */
   private includeNamespaces(namespaces: Namespace | Namespace[]) {
     const set = this.getNamespaces();
+
     for (const namespace of A.is(namespaces) ? namespaces : [namespaces]) {
       set.add(namespace);
-      console.log("including namespaces", namespace, namespaces, A.from(set));
     }
   }
 
