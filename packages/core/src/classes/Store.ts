@@ -1,4 +1,4 @@
-import { O } from "@auaust/primitive-kit";
+import { O, S } from "@auaust/primitive-kit";
 import { Loader } from "~/classes/Loader";
 import type { Translations } from "~/classes/Translations";
 import type { Locale } from "~/types/config";
@@ -32,12 +32,17 @@ export class Store {
 
   /** Returns whether the store has any translations for the given locale. */
   public hasLocale(locale: Locale) {
+    locale = S.lower(locale);
+
     return O.is(this.store[locale]);
   }
 
   /** Returns whether the store has any translations for the given namespace. */
   public hasNamespace(locale: Locale | undefined, namespace: Namespace) {
-    return O.is(this.store[locale ?? this.translations.locale]?.[namespace]);
+    locale = S.lower(locale ?? this.translations.locale);
+    namespace = S.lower(namespace);
+
+    return O.is(this.store[locale]?.[namespace]);
   }
 
   /** Returns the translation for the given locale, namespace, and key. */
@@ -46,9 +51,10 @@ export class Store {
     namespace: Namespace,
     key: string,
   ) {
-    return this.store[locale ?? this.translations.locale]?.[namespace]?.get(
-      key,
-    );
+    locale = S.lower(locale ?? this.translations.locale);
+    namespace = S.lower(namespace);
+
+    return this.store[locale]?.[namespace]?.get(key);
   }
 
   /** Registers the translations into the store under the given locale and namespace. */
@@ -59,6 +65,9 @@ export class Store {
   ) {
     if (!O.is(translations)) return;
 
+    locale = S.lower(locale);
+    namespace = S.lower(namespace);
+
     if (!this.hasLocale(locale)) {
       this.store[locale] = {};
     }
@@ -67,13 +76,11 @@ export class Store {
       this.store[locale]![namespace] = new Map();
     }
 
-    const { keysSeparator, namespaceSeparator } = this.translations.options;
-
     this.addTranslationsRecursively(
       this.store[locale]![namespace]!,
       translations,
       "",
-      keysSeparator,
+      this.translations.options.keysSeparator,
     );
   }
 

@@ -15,7 +15,7 @@ const translations: TranslationsInit["translations"] = {
     // Used to ensure the fallbacks are looked up in the right order
     fallbackOrder: {
       all: "All",
-      en: "En",
+      en: "English",
       enFr: "EnFr-En",
     },
   },
@@ -34,7 +34,7 @@ const translations: TranslationsInit["translations"] = {
     },
     fallbackOrder: {
       all: "Tous",
-      fr: "Fr",
+      fr: "Français",
       enFr: "EnFr-Fr",
       frEs: "FrEs-Fr",
     },
@@ -49,7 +49,7 @@ const translations: TranslationsInit["translations"] = {
     },
     fallbackOrder: {
       all: "Todos",
-      es: "Es",
+      es: "Español",
       frEs: "FrEs-Es",
       esDe: "EsDe-Es",
     },
@@ -61,7 +61,7 @@ const translations: TranslationsInit["translations"] = {
     },
     fallbackOrder: {
       all: "Alle",
-      de: "De",
+      de: "Deutsch",
       esDe: "EsDe-De",
     },
   },
@@ -179,7 +179,7 @@ describe("The default fallbacks strategy", () => {
       expect(t("name", { ns: "ns" })).toBe("Nombre");
 
       expect(t("all", { ns: "fallbackOrder" })).toBe("Todos");
-      expect(t("en", { ns: "fallbackOrder" })).toBe("En");
+      expect(t("en", { ns: "fallbackOrder" })).toBe("English");
       expect(t("enFr", { ns: "fallbackOrder" })).toBe("EnFr-En");
       expect(t("frEs", { ns: "fallbackOrder" })).toBe("FrEs-Es");
       expect(t("esDe", { ns: "fallbackOrder" })).toBe("EsDe-Es");
@@ -190,7 +190,7 @@ describe("The default fallbacks strategy", () => {
       expect(t("address.city", { ns: "ns" })).toBe("City");
 
       expect(t("all", { ns: "fallbackOrder" })).toBe("Alle");
-      expect(t("en", { ns: "fallbackOrder" })).toBe("En");
+      expect(t("en", { ns: "fallbackOrder" })).toBe("English");
       expect(t("enFr", { ns: "fallbackOrder" })).toBe("EnFr-En");
       expect(t("frEs", { ns: "fallbackOrder" })).toBe("FrEs-Fr");
     });
@@ -203,7 +203,7 @@ describe("The default fallbacks strategy", () => {
       expect(t("address.city")).toBe("Ville");
 
       expect(t("all", { ns: "fallbackOrder" })).toBe("Tous");
-      expect(t("fr", { ns: "fallbackOrder" })).toBe("Fr");
+      expect(t("fr", { ns: "fallbackOrder" })).toBe("Français");
       expect(t("en", { ns: "fallbackOrder" })).toBe(undefined);
     });
   });
@@ -248,10 +248,10 @@ describe("Custom fallbacks", () => {
     expect(t("all")).toBe("Alle");
 
     // Can't test any fallback that's present in more than one locale because the order
-    // of the fallbacks is not guaranteed (since object keys order is not guaranteed)
+    // of the fallbacks is not guaranteed when they're guessed.
     // i.e. `t("enEs")` could be "EnEs-En" or "EnEs-Es"
-    expect(t("es")).toBe("Es");
-    expect(t("fr")).toBe("Fr");
-    expect(t("en")).toBe("En");
+    expect(t("es")).toBe("Español");
+    expect(t("fr")).toBe("Français");
+    expect(t("en")).toBe("English");
   });
 });
