@@ -28,11 +28,6 @@
     "turbo": "^2.3.3",
     "typescript": "^5.7.2"
   },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "0.24.0"
-    }
-  },
   "engines": {
     "node": ">=18"
   },
