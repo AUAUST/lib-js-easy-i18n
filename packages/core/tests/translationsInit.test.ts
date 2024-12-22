@@ -21,14 +21,15 @@ describe("The `getOptions` helper", () => {
 
         defaultNamespace: "translations",
         requiredNamespaces: ["translations"],
-        loadNamespaces: expect.any(Function),
+
+        loadNamespaces: undefined,
+        loadNamespace: undefined,
 
         keysSeparator: ".",
         namespaceSeparator: ":",
 
         notFoundKeys: "prettykey",
         tooDeepKeys: "lastvalue",
-        tooShallowKeys: "notfound",
       }),
     );
   });
@@ -41,8 +42,6 @@ describe("The `getOptions` helper", () => {
         notFound: "rawKey",
         // @ts-expect-error
         tooDeep: "lastValue",
-        // @ts-expect-error
-        tooShallow: "notFound",
       },
       namespaces: {
         default: "NameSpace",
@@ -69,7 +68,6 @@ describe("The `getOptions` helper", () => {
 
         notFoundKeys: "rawkey",
         tooDeepKeys: "lastvalue",
-        tooShallowKeys: "notfound",
       }),
     );
   });

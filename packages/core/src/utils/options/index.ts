@@ -10,7 +10,6 @@ import {
   getInvalidKeysOptions,
   type NotFoundKeysOptions,
   type TooDeepKeysOptions,
-  type TooShallowKeysOptions,
 } from "~/utils/options/getInvalidKeysOptions";
 import {
   getLocalesOptions,
@@ -111,19 +110,6 @@ export type TranslationsInit = {
      * @default "lastValue"
      */
     tooDeep?: TooDeepKeysOptions;
-
-    /**
-     * The way a key that doesn't lead to a final translation is handled.
-     * For example, if `t("a.b")` is called but the translations are `{ a: { b: { c: "value" } } }`.
-     * Trying to access keys that are too shallow won't trigger the fallback mechanism,
-     * as it's expected that all translations follow the same structure.
-     *
-     * - `"object"`: Returns the object that was found.
-     * - `"notFound"`: Acts as if the key was not found at all.
-     *
-     * @default "notFound"
-     */
-    tooShallow?: TooShallowKeysOptions;
   };
 
   /**
@@ -190,9 +176,6 @@ export type TranslationsOptions = {
 
   /** The way a key that tries to access a translation that's "too deep" is handled. */
   tooDeepKeys: Lowercase<TooDeepKeysOptions>; // Lowercase to case-insensitify
-
-  /** The way a key that doesn't lead to a final translation is handled. */
-  tooShallowKeys: Lowercase<TooShallowKeysOptions>; // Lowercase to case-insensitify
 
   /** An async function that lazily loads namespaces of translations for a locale. */
   loadNamespaces:

@@ -38,7 +38,6 @@ const init: TranslationsInit = {
   invalidKeys: {
     notFound: "undefined",
     tooDeep: "lastvalue",
-    tooShallow: "object",
   },
   translations: {
     en: {

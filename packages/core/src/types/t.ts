@@ -2,7 +2,6 @@ import type {
   NamespaceSeparator,
   NotFoundKeysReturnType,
   TooDeepKeysReturnType,
-  TooShallowKeysReturnType,
   UnknownNamespaces,
   UsesExtendedTranslations,
   UsesGenericTypes,
@@ -25,8 +24,7 @@ import type { TranslationsOptions } from "~/utils/options/index";
 export type TFunctionReturnType =
   | string
   | NotFoundKeysReturnType
-  | TooDeepKeysReturnType
-  | TooShallowKeysReturnType;
+  | TooDeepKeysReturnType;
 
 type TFunction = UsesGenericTypes<
   // Use loose types for `t` if the config says so
@@ -39,14 +37,14 @@ type TFunction = UsesGenericTypes<
 >;
 
 interface LooselyTypedTFunction {
-  (): TooShallowKeysReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
+  (): TFunctionReturnType; // Based on the config, might either return an empty string or the whole translations object for the locale.
   (key: string): TFunctionReturnType;
   (key: string, options: { ns?: string; arg?: any }): TFunctionReturnType;
 }
 
 interface StrictlyTypedTFunction {
   // No key provided
-  (): TooShallowKeysReturnType;
+  (): TFunctionReturnType;
 
   // Namespaced key provided
   <K extends StringTranslationKeys>(
@@ -102,7 +100,7 @@ interface StrictlyTypedTFunction {
   (
     key: "" | undefined,
     options: { ns: Namespace; arg?: any },
-  ): TooShallowKeysReturnType;
+  ): TFunctionReturnType;
 }
 
 /** Extracts the first argument's type for a function translation. */
@@ -143,7 +141,7 @@ type HandleKeyDefinition<D extends TranslationDefinition> = D extends {
   ? D["final"]
   : D extends { isFinal: null }
     ? NotFoundKeysReturnType
-    : TooShallowKeysReturnType;
+    : TFunctionReturnType;
 
 /** A subset of the `TranslationsOptions` that only contains the parts that are used by the `t` function. */
 export type TFunctionConfig = Pick<
@@ -153,7 +151,6 @@ export type TFunctionConfig = Pick<
   | "defaultNamespace"
   | "notFoundKeys"
   | "tooDeepKeys"
-  | "tooShallowKeys"
   | "namespaceSeparator"
   | "keysSeparator"
 >;

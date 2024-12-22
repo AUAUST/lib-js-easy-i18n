@@ -39,21 +39,11 @@ const tooDeepKeysOptions = ["notfound", "lastvalue"] as const;
 type TooDeepKeysOptions = (typeof tooDeepKeysOptions)[number];
 
 /**
- * Allowed values for `tooShallowKeys`.
- * Happens for example when trying to access `a.b` when it's an object where `a.b.c` would be the translation.
- */
-const tooShallowKeysOptions = ["notfound", "object"] as const;
-type TooShallowKeysOptions = (typeof tooShallowKeysOptions)[number];
-
-/**
  * Returns the current locale and a array of locale definitions.
  */
 export function getInvalidKeysOptions(
   init: TranslationsInit,
-): Pick<
-  TranslationsOptions,
-  "notFoundKeys" | "tooDeepKeys" | "tooShallowKeys"
-> {
+): Pick<TranslationsOptions, "notFoundKeys" | "tooDeepKeys"> {
   const invalidKeysInit = init.invalidKeys;
 
   const notFoundKeysInit = S.toLowerCase(invalidKeysInit?.notFound!);
@@ -66,27 +56,11 @@ export function getInvalidKeysOptions(
     ? tooDeepKeysInit
     : "lastvalue";
 
-  const tooShallowKeysInit = S.toLowerCase(invalidKeysInit?.tooShallow!);
-  const tooShallowKeys = tooShallowKeysOptions.includes(tooShallowKeysInit)
-    ? tooShallowKeysInit
-    : "notfound";
-
   return {
     notFoundKeys,
     tooDeepKeys,
-    tooShallowKeys,
   };
 }
-export {
-  notFoundKeysHandlers,
-  notFoundKeysOptions,
-  tooDeepKeysOptions,
-  tooShallowKeysOptions,
-};
+export { notFoundKeysHandlers, notFoundKeysOptions, tooDeepKeysOptions };
 
-export type {
-  InvalidKeysTypes,
-  NotFoundKeysOptions,
-  TooDeepKeysOptions,
-  TooShallowKeysOptions,
-};
+export type { InvalidKeysTypes, NotFoundKeysOptions, TooDeepKeysOptions };

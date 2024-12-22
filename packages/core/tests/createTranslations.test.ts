@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { Translations } from "~/index";
 
-describe("We can initialize a Translations instance", () => {
+describe("We can initialize a `Translations` instance", () => {
   test("without any options", () => {
     const T = new Translations().initSync();
 

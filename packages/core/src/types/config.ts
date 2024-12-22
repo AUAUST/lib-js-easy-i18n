@@ -7,7 +7,6 @@ import type { IsInterfaceEmpty } from "~/types/utils";
 import type {
   NotFoundKeysOptions,
   TooDeepKeysOptions,
-  TooShallowKeysOptions,
 } from "~/utils/options/getInvalidKeysOptions";
 
 /**
@@ -66,7 +65,6 @@ export interface RegisteredTranslations {}
  *
  *     notFoundKeys: "prettykey" // NotFoundKeysOptions
  *     tooDeepKeys: "lastvalue" // TooDeepKeysOptions
- *     tooShallowKeys: "notfound" // TooShallowKeysOptions
  *   }
  * }
  * ```
@@ -90,7 +88,6 @@ interface TranslationsConfigDefaults {
 
   notFoundKeys: [NotFoundKeysOptions, "prettykey"];
   tooDeepKeys: [TooDeepKeysOptions, "lastvalue"];
-  tooShallowKeys: [TooShallowKeysOptions, "notfound"];
 }
 
 // USER-PROVIDED TRANSLATIONS-RELATED TYPES
@@ -198,11 +195,4 @@ export type TooDeepKeysReturnType =
   // If `tooDeepKeys` is set to "lastvalue", it'll be a string. (maybe empty, maybe ugly, but a string)
   GetConfig<"tooDeepKeys"> extends "lastvalue"
     ? string
-    : NotFoundKeysReturnType;
-
-/** The value a key that is too shallow will return. */
-export type TooShallowKeysReturnType =
-  // If `tooShallowKeys` is set to "object", it'll be an object.
-  GetConfig<"tooShallowKeys"> extends "object"
-    ? TranslationsSchema
     : NotFoundKeysReturnType;

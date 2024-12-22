@@ -34,7 +34,6 @@ describe("The `t` function", () => {
       ...init,
     }).initSync();
 
-    // Can't return an object by default (invalidKeys.tooShallow)
     expect(t()).toBe("");
     expect(t("nested.key")).toBe("Nested key");
 
@@ -107,22 +106,6 @@ describe("The `t` function", () => {
       expect(t("namespace:fooBar")).toBe("Foo bar");
       expect(t("namespace:foo_bar")).toBe("Foo bar");
     }
-  });
-
-  test("handles config options for too shallow keys", () => {
-    const { t } = new Translations({
-      ...init,
-      invalidKeys: {
-        tooShallow: "object",
-      },
-    }).initSync();
-
-    expect(t()).toEqual(translations);
-    expect(t("")).toEqual(translations);
-    expect(t(":")).toEqual(translations.namespace);
-    expect(t("namespace:")).toEqual(translations.namespace);
-    expect(t("namespace:nested")).toEqual(translations.namespace.nested);
-    expect(t("nested.key")).toEqual(translations.namespace.nested.key);
   });
 
   test("handles config options for too deep keys", () => {
